@@ -1,0 +1,151 @@
+---
+title: "From scattered tools to one campaign workflow: redesigning an AI marketing intelligence platform"
+slug: "connected-campaign-lifecycle-ai-platform"
+summary: "Users of a marketing intelligence platform relied on a few tools and overlooked its AI assistant. I led the audit and research, then redesigned the product around one campaign lifecycle with AI built into the workflow."
+product: "B2B SaaS marketing intelligence platform: audience research, media planning, analytics and reporting (NDA)"
+role: "[TODO: e.g. Product Designer, design lead on this project]"
+team: "[TODO: e.g. PM, N engineers, client stakeholders, other designers]"
+timeline: "[TODO: e.g. N weeks, 2026]"
+platform: "Web"
+tags: ["B2B SaaS", "AI", "Information architecture", "UX audit", "Design system"]
+metrics:
+  - value: "9"
+    label: "interviews: 5 users in 2 rounds + 4 stakeholders"
+    source: "project research"
+  - value: "5"
+    label: "stages joined into one campaign flow"
+    source: "final IA"
+  - value: "[TODO]"
+    label: "[TODO: e.g. UX issues found in the audit / AI chat usage after release]"
+    source: "[TODO: audit report / client analytics]"
+cover: "./images/connected-campaign-lifecycle-ai-platform/cover.png"
+nda: true
+order: [TODO]
+---
+
+## TL;DR
+A marketing intelligence platform had strong tools for research, planning and reporting, but **users worked in a small part of it and didn't see how the parts connected**. Its AI assistant, a key capability, stayed mostly unnoticed. I led a UX audit and 9 interviews with users and stakeholders, then redesigned the product around one campaign lifecycle, made the AI assistant visible inside real tasks, and delivered the redesign before a planned product presentation. [TODO: one line of result — e.g. client sign-off in N rounds, or release date / post-launch data.]
+
+## Context
+The product is a B2B SaaS platform for marketing teams. It covers audience research, segmentation, media planning, campaign analytics and reporting, plus an AI chat assistant. The users I interviewed were internal users of the platform. [TODO: who the end customers are and how the platform makes money.]
+
+Constraints:
+- A **full product redesign on a compressed timeline**, with time left for development before a planned product presentation.
+- A new brand identity to apply across a data-heavy interface.
+- A legacy design system with duplicated components and inconsistent variants.
+
+*Client name, data and logos are hidden under NDA.*
+
+## The problem
+**Business problem:** the client paid for a broad toolset, but users relied on only a small subset of features. The AI assistant, a capability meant to set the product apart, was underused. [TODO: any business signal from the client — churn risk, sales feedback, demo issues.]
+
+**User problem:** users understood each tool on its own but couldn't see the full campaign lifecycle. Navigation changed depending on the selected company or report, and terminology was inconsistent, so features were hard to find.
+
+**How might we turn a set of separate tools into one clear campaign workflow, with AI help where users actually need it?**
+
+## Goals
+- Make the path from research to reporting clear in one flow.
+- Make the AI assistant easy to find and start using, without knowing what to type.
+- Give the homepage a practical job.
+- Apply the new brand while keeping dense data readable.
+- [TODO: how success was or will be measured — e.g. AI chat usage, feature reach, client sign-off.]
+
+## My role
+- **Led the UX audit**: heuristics, consistency, analytics, user flows and loading performance.
+- **Ran the research**: 2 rounds of interviews with 5 users, then 4 stakeholder interviews (sales, reporting, executive).
+- Worked on the new IA and campaign flow [TODO: what exactly you owned vs. the team — "I helped restructure"].
+- **Owned the AI assistant and onboarding redesign**, the visual direction and the design system review.
+- **Agreed priorities, scope estimate and delivery plan with the client.**
+- [TODO: team — PM, developers, other designers you coordinated.]
+
+## Discovery & insights
+I started with an audit: I documented screen-level issues, consolidated them into one report and prioritized recommendations for design and development. Interviews then showed the problems behind the interface.
+
+<Figure src="[TODO: audit-report.png]" caption="UX audit: screen-level issues grouped by heuristic and priority. This turned a long list of findings into a plan for design and development." />
+
+1. **Users saw tools, not a process.** Interviews: users explained individual tools but not the campaign lifecycle. → Structure the product around the campaign, not around tool sections.
+2. **Users couldn't find features.** Audit and interviews: navigation changed with the selected company or report, and the same thing had different names. → Stable navigation and one set of terms.
+3. **The AI assistant's value was invisible.** Interviews: users didn't know what the AI chat or some conditional features could do. → Show AI capabilities in context, with example prompts.
+4. **The homepage gave little practical value.** Interviews and stakeholder sessions. → Use the homepage for insights that lead into work.
+5. **Data trust and entity relationships were unclear.** Stakeholder interviews: research credibility and the links between companies, clients and research entities needed attention. → [TODO: what you did about it, or mark as next step.]
+
+<Figure src="[TODO: research-synthesis.png]" caption="Interview synthesis: 5 users, 2 rounds, plus 4 stakeholders. The pattern across groups changed the brief from a visual refresh to a product structure problem." />
+
+## Exploring options
+**I reframed the project from a visual refresh to a structural redesign.** The research showed that a new look alone wouldn't fix the main problem: users didn't understand how the tools worked together. [TODO: was the original brief a visual refresh? How did you convince the client — which evidence did you show?]
+
+**I chose a unified campaign entry point over improving each section separately.** Polishing research, planning and reporting one by one would keep the gaps between them. One entry point guides users through the steps and explains the purpose of each. [TODO: other options you looked at — e.g. a dashboard hub, tabs, a wizard — and why they lost.]
+
+**I kept Research optional.** Users can start from existing insights or run new research and attach it to a media plan. A forced research step would slow down users who already have data.
+
+**I designed the flow to grow.** The client planned campaign automation, so the flow leaves room for new steps without a redesign.
+
+<Figure src="[TODO: ia-before-after.png]" caption="IA before / after: separate sections that changed with context vs. one campaign flow. This was the central decision of the project." />
+
+<Figure src="[TODO: rejected-options.png]" caption="[TODO: rejected flow or navigation options and why they were dropped.]" />
+
+## The solution
+### 1. One campaign lifecycle
+Research → Audience & Segmentation → Media Planning → Campaign Approval/Launch → Reporting. **Users now start a campaign from one place** and see where each tool fits.
+
+<Figure src="[TODO: campaign-flow.png]" caption="Campaign creation flow: each step explains its purpose, and Research can be skipped or attached later." />
+
+### 2. An AI assistant users can find and start
+The old entry point was easy to miss, and users had to know what to type. I made **AI part of the workflow, not a separate feature**:
+- suggested prompts that show what users can ask;
+- contextual tips and entry points on relevant screens;
+- a chat that expands from a side panel to a full workspace;
+- an introductory guide.
+
+<Figure src="[TODO: ai-before-after.png]" caption="AI assistant before / after: a hidden entry point vs. visible suggested prompts and contextual entry points." />
+
+<Figure src="[TODO: ai-layouts.png]" caption="Side panel and expanded workspace: quick questions stay next to the task, longer analysis gets full space." />
+
+### 3. A homepage that leads into work
+The homepage now shows **AI-powered insights that open a deeper conversation** with the assistant.
+
+<Figure src="[TODO: homepage-before-after.png]" caption="Homepage before / after: from low-value overview to insights that lead users into the AI chat." />
+
+### 4. Onboarding for different learning needs
+Three parts: a **guided tour** of core features, a **knowledge base** with short videos for specific tasks, and **contextual AI tips** inside the workflow. Each covers a different moment: first visit, a specific task, and help in context.
+
+<Figure src="[TODO: onboarding.png]" caption="Onboarding concept: guided tour, knowledge base and contextual AI tips." />
+
+### 5. Brand and design system
+I explored several directions with the brand's lime, blue and electric accents. **Lime didn't work well on many interactive elements, so I used it selectively and built the interface mainly on blue tones.** [TODO: what exactly failed with lime — contrast, readability in charts?]
+
+<Figure src="[TODO: visual-directions.png]" caption="Visual directions explored: why lime became an accent and blue the base." />
+
+<Figure src="[TODO: reporting-charts.png]" caption="Redesigned reporting interface and chart states." />
+
+## Delivery
+**I agreed priorities and scope with the client**: key workflows, navigation, AI experience, homepage and reporting. We deferred deeper analysis of lower-priority report metrics to keep time for development before the presentation.
+
+In the design system, I prioritized only the components the redesign needed and documented other fixes for later iterations. **This kept visual consistency without growing the scope.**
+
+Handoff included:
+- updated screens and interactive prototypes for key flows;
+- reporting interfaces and chart states;
+- updated design system components;
+- research and audit documentation.
+
+[TODO: how you worked with developers — annotations, reviews, QA.]
+
+<Figure src="[TODO: design-system.png]" caption="Updated components: duplicates merged, variants aligned for the redesign scope." />
+
+## Impact
+- Delivered on the agreed development plan, in time for the planned product presentation. [TODO: confirm]
+- **The client continued working with the team on additional projects.**
+- [TODO: number of audit issues found / addressed (audit report)]
+- [TODO: AI chat usage, feature adoption or retention after release, if the client shares data]
+
+> "[TODO: client or stakeholder quote]" — [TODO: role]
+
+Impact on adoption, retention and AI usage has not been measured yet.
+
+## What I learned
+- **Research changed the brief.** The audit and interviews turned a visual refresh into a structural redesign. I would bring this evidence to the client even earlier.
+- [TODO: what you would do differently — e.g. define AI usage metrics with the client before launch.]
+- **Next:** measure AI chat usage and campaign flow completion after release; [TODO: research credibility and entity relationships].
+
+> **AI in my process:** [TODO: where Claude / Figma AI helped — e.g. interview synthesis, audit structuring, copy for suggested prompts. Which decisions stayed human.]
