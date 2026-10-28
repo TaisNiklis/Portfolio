@@ -13,6 +13,13 @@
 - If a number is missing, write `[TODO: metric — e.g. % of active users who used AI chat
   before/after]`. Don't make one up.
 
+## "AI in my process"
+- Write only what the user confirmed she did with AI. Files, logs or transcripts that mention
+  Claude are not proof of her workflow.
+- Always say which decisions stayed human (entity model, status rules, navigation, and so on).
+- If the user can't tell an honest metric, leave the effect qualitative ("a first version faster").
+- If a public number is sensitive (e.g. time against estimate), confirm she agrees to show it.
+
 ## NDA
 - Replace the client name with a description: "a B2B SaaS for logistics with 200+ enterprise clients".
 - Use relative numbers (%, ×) instead of absolute ones (revenue, user counts).

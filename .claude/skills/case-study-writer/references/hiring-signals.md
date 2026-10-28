@@ -29,6 +29,7 @@
 ## Known cases and their angle
 | Case | Proves | Key number |
 |---|---|---|
+| ✅ AI marketing platform redesign (ANODA, done, see `examples/`) | complex B2B logic, AI assistant, IA, client influence | 9 interviews, 12 × 8 status model, ≈1 of 2 months |
 | AI assistant adoption in B2B SaaS (ANODA) ⭐ flagship | AI product design, adoption, research | AI feature usage growth `[TODO]` |
 | Complex B2B logic: role matrix, entity/status/lifecycle maps (ANODA) | systems thinking, discovery, client work | fewer rework cycles / faster sign-off `[TODO]` |
 | Design system: variables, tokens, auto layout (ANODA) | scale, dev collaboration | −35% dev time, −15% budget |

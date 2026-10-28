@@ -1,0 +1,146 @@
+---
+title: "From scattered tools to one campaign workflow: redesigning an AI marketing intelligence platform"
+slug: "connected-campaign-lifecycle-ai-platform"
+summary: "Users of an AI marketing platform saw separate tools, not a product. As UX lead, I rebuilt it around one Project entity, one campaign flow and an AI assistant inside the work, and shipped it to dev in agile batches."
+product: "AI-powered B2B advertising platform: research, media planning, launch and reporting (NDA)"
+role: "UX lead at a design agency: research, IA, flows, client presentations"
+team: "Design manager, 1–2 UI designers (second added mid-project); client VP of Product, commercial lead, project coordinator, in-house developers"
+timeline: "Jun – Aug 2026"
+platform: "Web"
+tags: ["B2B SaaS", "AI", "Information architecture", "Roles & statuses", "Design system"]
+metrics:
+  - value: "9"
+    label: "interviews in 2 rounds: 5 users, then 4 department leads"
+    source: "project research"
+  - value: "12 × 8"
+    label: "statuses × roles in one status model"
+    source: "status map"
+  - value: "≈1 of 2"
+    label: "months: full post-audit design scope delivered in about half the estimate"
+    source: "internal project retrospective"
+cover: "./images/connected-campaign-lifecycle-ai-platform/cover.png"
+nda: true
+order: 1
+project: "AIMarketingService"
+---
+
+## TL;DR
+An AI advertising platform covered the full campaign cycle, but **users saw separate tools, not one product**. Reports sat in two places, "Create campaign" opened an unexpected planning tool, and the AI assistant went unnoticed. As UX lead, I ran an audit and 9 interviews, then rebuilt the product around **one Project entity, one guided campaign flow and an AI assistant inside the work**. We shipped it to developers in batches before a product presentation, and the client went on to work with our team on other projects.
+
+## Context
+The platform helps brands research audiences and competitors, plan media, launch campaigns and track results. It serves brand clients, internal managers and admins.
+
+Constraints:
+- **A full redesign close to the client's deadline.** Developers worked in parallel, so critical pages went to dev as soon as they were ready.
+- A design system inherited from a previous agency, and a brand refresh at the same time.
+- **Client role first.** Manager and admin flows were deferred.
+
+*Client name, people and data are hidden under NDA.*
+
+## The problem
+**Business problem:** the client wanted a **full-cycle platform**, but the product looked like a tool for submitting campaigns, with research "on the side". In the VP of Product's words, they needed "a platform for researching, planning and creating campaigns".
+
+**User problem:** users understood each tool but not the lifecycle. Navigation changed with the selected company or report, terms were inconsistent, and many users didn't know what the AI chat could do.
+
+**How might we turn separate tools into one campaign workflow, with AI help where users already work?**
+
+## Goals
+- One entity and one flow from brief to reporting.
+- Clear navigation: where users *do* things vs. where they *see* results.
+- A homepage that is both a daily dashboard and a showcase of the full cycle.
+- A consistent design system, so the product stops being built page by page.
+- Main success signal: **by the end of month one, a new client checks the platform daily instead of waiting for an email report.**
+
+## My role
+- **Led the UX audit and 2 rounds of interviews:** 5 internal users, then 4 leads from Client Service, media planning (MPO) and growth.
+- **Designed the core model:** lifecycle map, roles and access, entity tree, status map.
+- **Defined IA, navigation and the campaign flow, and presented each stage** to the client's VP of Product and commercial team.
+- **Designed the AI assistant:** draft user flow, UI, client presentation and revisions after review.
+- Designed the homepage, Audience Personas and two Pro reports, and prepared the dev handoff batches. I worked with a design manager on scope and reviewed UI from 1–2 designers.
+
+## Discovery & insights
+I audited heuristics, consistency, analytics, flows and loading performance, and collected the findings into one prioritised report. Then I mapped departments to modules and lifecycle stages from the interviews.
+
+<Figure src="[TODO: audit-report.png]" caption="UX audit: issues grouped by heuristic and priority. The duplicated reports in the menu became the main structural finding." />
+
+1. **Users saw tools, not a process.** In interviews, users explained each tool but not the lifecycle. → Build the product around a campaign entity.
+2. **Reports lived in two places.** The audit found them in the main menu and inside campaigns. → Nest every report under its project.
+3. **"Create campaign" broke the mental model.** It redirected to "Advanced Planning"; a client reviewer reported the same confusion. → Make planning a step inside creation.
+4. **An empty dashboard looks broken.** Interviews showed data arrives on day 3 and is complete by day 7. → Onboarding explains the timeline instead of showing empty charts.
+5. **AI value was invisible.** Users didn't know what the chat could do. → Put AI inside tasks, with ready-made actions.
+
+<Figure src="[TODO: lifecycle-map.png]" caption="Lifecycle map from interviews: departments, modules and stages. It became the base for the new IA." />
+
+## Exploring options
+### One Project entity instead of separate features
+I proposed a **Project** (formerly "Campaign") that exists **from the brief onward** and holds the media plan, research, reporting, activity log and files. I chose "Project" over "Campaign" because the entity has to exist before a campaign goes live. The client approved it as the base structure.
+
+<Figure src="[TODO: entity-tree.png]" caption="Entity tree: staff → clients → projects. Each project holds its plan, research, reports, log and files." />
+
+### One status, many views
+The status map covers **12 statuses and 8 roles**. A project has one real status, but each role sees its own label. A client never sees an internal draft, and sees **"Needs Revision" instead of "Rejected"**.
+
+<Figure src="[TODO: status-map.png]" caption="Status map: 12 statuses × 8 roles. One real state, different views per role." />
+
+### Two modes, not a flat menu
+The client's team proposed a flat menu: Campaigns, Research, Plan and AI at one level, like SEMrush. **I argued against it:** clients must easily tell where they *do* things from where they only *see* reports. The VP of Product agreed. **We kept two modes, Projects and Tools.** Tool results can be saved into a project or a client-level Brand Hub.
+
+### Light sidebar over dark rail
+I showed a dark icon rail and a light sidebar with a top bar. The commercial lead found the rail too heavy. **I reframed the choice:** we needed a clear hierarchy, not a dark colour. The merged option, a **light collapsible sidebar with search and profile in the header**, met every point of feedback.
+
+<Figure src="[TODO: navigation-options.png]" caption="Option A (dark rail) vs. Option B (top header) for client, manager and admin. The merged option kept A's hierarchy and B's familiar utilities." />
+
+## The solution
+### 1. One button, one guided flow
+**"Create New Campaign"** lives on the homepage and the Campaigns page. Advanced Planning is now step 1, not a separate tool. **Research is optional:** users can attach saved research or click "Continue without research". Unfinished plans save as drafts.
+
+<Figure src="[TODO: campaign-flow-before-after.png]" caption="Before: 'Create campaign' redirected to a separate planning tool. After: one guided flow with an optional research step." />
+
+### 2. An AI assistant inside the work
+I drafted the flow and designed the assistant as a **persistent element, not a menu item**, with contextual entry points, a side panel that expands to full screen, and AI insights on the homepage. After the client review, I replaced the "Try asking" prompts with **quick-action tags that pre-fill an editable prompt**, and moved 6 specialised agents into a dropdown in the input field.
+
+<Figure src="[TODO: ai-before-after.png]" caption="AI assistant before / after: a hidden chat vs. quick actions, an agent picker and contextual entry points." />
+
+<Figure src="[TODO: ai-layouts.png]" caption="Side panel and full workspace: quick questions stay next to the task, longer analysis gets full space." />
+
+### 3. A homepage with two jobs
+The homepage is now a **daily dashboard and a full-cycle showcase**: Brand Hub, latest campaigns, tool widgets and AI insights. **Premium modules stay visible but locked, with a "Contact Us" button,** because upsell always goes through sales reps.
+
+<Figure src="[TODO: homepage-before-after.png]" caption="Homepage before / after: from low-value overview to live data, saved research and AI insights." />
+
+### 4. Onboarding that never starts empty
+New clients arrive with one active campaign. We combined a short tour, a video knowledge base, contextual AI tips and a **day 3 / day 7 data timeline**. On day 3, the assistant offers to explain the first numbers.
+
+<Figure src="[TODO: onboarding.png]" caption="Onboarding: tour, data timeline and the first AI explanation on day 3." />
+
+### 5. Design system and brand
+The audit found **contrast problems, an undefined palette structure and too few type styles**. I proposed a palette template that maps each colour to its use, and a wider type scale. Lime was hard to use on interactive elements, so it became an accent and blue the base. For charts, the client chose a colourful / all-blue theme toggle.
+
+<Figure src="[TODO: visual-directions.png]" caption="Visual directions: why lime became an accent and blue the base." />
+
+<Figure src="[TODO: reporting-charts.png]" caption="Reporting interfaces and chart states, with the colourful / all-blue chart theme." />
+
+## Delivery
+**I agreed the delivery approach with the client:** critical pages went to dev as soon as they were ready. I sent a task-level scope plan so the client could plan their developers around dependencies. We cut deeper analysis of lower-priority report metrics.
+
+- **Handoff batches:** clickable prototypes, acceptance criteria and edge cases (Home first, then Campaigns).
+- **Design system:** fixed only the components in use, documented the rest.
+- **Final handoff:** prototype, files moved to the client's Figma workspace, variables JSON export.
+- **About 90% of client comments** were closed in the last review round.
+
+<Figure src="[TODO: design-system.png]" caption="Updated components and the palette template: each colour mapped to where it is used." />
+
+## Impact
+- **The client approved the Project entity, two-mode navigation and the guided campaign flow** as the new base of the product. Their commercial lead called the Projects vs Tools structure an upgrade.
+- **The full design scope after the audit took ≈1 month of task time against a ≈2-month estimate** (internal retrospective). We added a second designer mid-project to make this possible.
+- The client later paused the next phase because their development timeline moved. **Based on this project, they continued working with our team on their other products.**
+- Impact on adoption, retention and AI usage was not measured.
+
+> "I really like how you kind of integrated the interactions with [the AI assistant] from time to time." — Project coordinator, client side
+
+## What I learned
+- **Set up the UX → UI transition in advance.** Client satisfaction dropped most at that point; they expected a fuller rebrand from the design system audit. Next time, I would agree what "audit" means at kick-off.
+- **Build components only in the parent design system file.** Components made in working files lost their links when files moved to the client's workspace.
+- **Next:** measure daily active clients, AI assistant usage and campaign-flow completion.
+
+> **AI in my process:** I used my own Claude skills to draft user flows, the customer journey map, and the role and status matrices from interview notes. This gave me a first version faster. The entity model, the status rules and the navigation decisions stayed with me and the client.

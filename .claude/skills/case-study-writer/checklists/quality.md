@@ -27,6 +27,6 @@ Run against every draft. Report each item as ✅ / ⚠️ (with a fix) / ❌.
 - [ ] No banned filler from `references/rules.md`
 - [ ] NDA handled (client name, data, `nda` flag)
 - [ ] Frontmatter complete: title, slug, summary, product, role, team, timeline, platform,
-      tags, metrics, cover, nda, order
-- [ ] The AI-in-process callout is present
+      tags, metrics, cover, nda, order (a number), project
+- [ ] The AI-in-process callout is present and confirmed by the user
 - [ ] Open `[TODO]`s are listed for the user
