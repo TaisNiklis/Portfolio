@@ -1,0 +1,259 @@
+---
+import '../styles/global.css';
+import logo from '../assets/logo.svg?raw';
+import { person } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const home = `${base}/`;
+const nav = [
+  { href: `${home}#work`, label: 'Work' },
+  { href: `${home}#playground`, label: 'Playground' },
+  { href: `${home}#about`, label: 'About' },
+  { href: person.links.cv, label: 'CV' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="bar">
+      <div class="wrap bar-inner">
+        <a class="logo" href={home} aria-label={`${person.name}, home`} set:html={logo} />
+        <nav class="pill" aria-label="Main">
+          {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+        </nav>
+        <a class="btn btn-amber say" href={`mailto:${person.email}?subject=Hi%20Taisiia`}>Say hi</a>
+        <details class="menu">
+          <summary class="btn btn-quiet">Menu</summary>
+          <nav aria-label="Main, mobile">
+            {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+            <a href={`mailto:${person.email}`}>Say hi</a>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="foot" id="contact">
+      <div class="wrap foot-top">
+        <div>
+          <h2 class="h2 foot-title" data-reveal>Let’s make complex<br />things simple.</h2>
+          <div class="foot-mail" data-reveal style="--i:1">
+            <a class="foot-email" href={`mailto:${person.email}`}>{person.email}</a>
+            <button class="btn btn-amber" type="button" data-copy={person.email}>Copy email</button>
+          </div>
+        </div>
+        <ul class="foot-links" data-reveal style="--i:2">
+          <li><a class="link-arrow" href={person.links.linkedin}>LinkedIn <span aria-hidden="true">↗</span></a></li>
+          <li><a class="link-arrow" href={person.links.behance}>Behance <span aria-hidden="true">↗</span></a></li>
+          <li><a class="link-arrow" href={person.links.dribbble}>Dribbble <span aria-hidden="true">↗</span></a></li>
+          <li><a class="link-arrow" href={person.links.cv}>CV <span aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+      <div class="wrap foot-legal small">
+        <span>{person.name} · Product designer · {person.location}</span>
+        <span>Designed in Figma, built with Astro and Claude</span>
+      </div>
+      <div class="foot-name" aria-hidden="true" set:html={logo} />
+    </footer>
+
+    <script>
+      import '../scripts/site.ts';
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: -999px;
+    top: 8px;
+    z-index: 50;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+  .skip:focus {
+    left: 8px;
+  }
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--bg);
+  }
+  .bar-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 76px;
+  }
+  .logo {
+    display: block;
+    width: 168px;
+    color: var(--ink);
+    flex: none;
+  }
+  .logo :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .pill {
+    margin-inline: auto;
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 5px;
+  }
+  .pill a {
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background-color 0.2s var(--ease);
+  }
+  .pill a:hover {
+    background: var(--bg);
+  }
+  .say {
+    min-height: 44px;
+  }
+  .menu {
+    display: none;
+    position: relative;
+    margin-left: auto;
+  }
+  .menu summary {
+    list-style: none;
+    min-height: 44px;
+  }
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .menu nav {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--radius);
+    padding: 10px;
+    display: grid;
+    min-width: 200px;
+    box-shadow: 0 18px 40px rgb(14 12 21 / 0.25); /* taste-skill-ignore: open menu floats */
+  }
+  .menu nav a {
+    padding: 12px 14px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+  @media (max-width: 760px) {
+    .pill,
+    .say {
+      display: none;
+    }
+    .menu {
+      display: block;
+    }
+    .logo {
+      width: 136px;
+    }
+  }
+
+  .foot {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--bg);
+    padding-top: clamp(96px, 10vw, 160px);
+    margin-top: calc(var(--gap-section) / 2);
+  }
+  .foot-top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: start;
+  }
+  .foot-title {
+    color: var(--bg);
+    margin-bottom: 40px;
+  }
+  .foot-mail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    align-items: center;
+  }
+  .foot-email {
+    font-size: var(--step-lead);
+    font-weight: 600;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+  .foot-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+    font-size: var(--step-body);
+  }
+  .foot-legal {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: clamp(72px, 9vw, 140px);
+    color: #c9c7d2;
+  }
+  .foot-name {
+    color: var(--bg);
+    width: 118vw;
+    margin-left: -2vw;
+    margin-top: 8px;
+    transform: translateY(18%);
+    margin-bottom: -6vw;
+  }
+  .foot-name :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  @media (max-width: 760px) {
+    .foot-top {
+      grid-template-columns: 1fr;
+    }
+    .foot-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+    }
+    .foot-name {
+      width: 150vw;
+    }
+  }
+</style>

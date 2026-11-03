@@ -1,0 +1,751 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import WorkVisual from '../components/WorkVisual.astro';
+import portrait from '../assets/portrait.jpg';
+import { person, tags, work, aiSteps, playground, experience } from '../data/site';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base
+  title="Taisiia Silkina · Product designer for B2B SaaS & AI"
+  description="Taisiia Silkina designs B2B SaaS and AI products: complex roles, statuses and workflows turned into clear interfaces."
+>
+  <!-- Hero -->
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="tags" data-tags>
+      {tags.map((t) => (
+        <span
+          class={`tag tone-${t.tone}`}
+          data-tag
+          tabindex="0"
+          role="button"
+          aria-label={`${t.text}. Drag, or move with arrow keys.`}
+          style={`left:${t.x}%;top:${t.y}%;--r:${t.r}deg`}
+        >
+          {t.text}
+        </span>
+      ))}
+    </div>
+    <p class="hello">
+      Hi
+      <Image src={portrait} alt="" width={64} height={64} class="hello-face" loading="eager" />
+      I’m {person.first}
+    </p>
+    <h1 id="hero-title" class="display">
+      <span class="line"><span>Product designer</span></span>
+      <span class="line"><span>for B2B SaaS & AI</span></span>
+    </h1>
+    <p class="lead hero-sub">
+      I turn messy business logic into products people understand: roles, statuses and AI features. Most recently at
+      <span class="chip">ANODA</span>, before that at <span class="chip">Pinta Webware</span>.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#work">View work</a>
+      <a class="btn btn-quiet" href={person.links.cv}>Download CV</a>
+    </div>
+  </section>
+
+  <!-- Fan of cards -->
+  <section class="fan wrap" aria-label="Where to start">
+    <a class="card tone-blue" href="#work" style="--r:-6deg" data-reveal>
+      <span class="card-title">Selected work</span>
+      <span class="card-text">How I untangle complex B2B products, with the numbers.</span>
+      <span class="card-go">Read the cases →</span>
+    </a>
+    <div class="card card-photo" style="--r:3deg" data-reveal>
+      <div class="photo-drift" data-drift>
+        <Image
+          src={portrait}
+          alt="Taisiia in a pink hoodie, lifting pixel-art sunglasses and smiling"
+          widths={[360, 540, 720]}
+          sizes="(max-width: 760px) 70vw, 280px"
+          loading="eager"
+        />
+      </div>
+    </div>
+    <a class="card tone-amber" href="#ai" style="--r:-3deg" data-reveal>
+      <span class="card-title">How I work with AI</span>
+      <span class="card-text">My own Claude skills, and the decisions I keep.</span>
+      <span class="card-go">See the pipeline →</span>
+    </a>
+    <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
+      <span class="card-title">Playground</span>
+      <span class="card-text">Side projects: an anime quiz, a pet app, drawings.</span>
+      <span class="card-go">Have a look →</span>
+    </a>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="section wrap" aria-labelledby="work-title">
+    <div class="sec-head" data-reveal>
+      <h2 id="work-title" class="h2">Selected work</h2>
+      <p class="lead sec-sub">B2B SaaS and AI products, from discovery to developer handoff.</p>
+    </div>
+    <ol class="timeline">
+      {work.map((w, i) => {
+        const href = 'slug' in w && w.slug ? `${base}/work/${w.slug}/` : null;
+        const Tag = href ? 'a' : 'div';
+        return (
+          <li class="item">
+            <p class="year" data-reveal>{w.year}</p>
+            <Tag class="item-body" href={href ?? undefined}>
+              <h3 class="h3" data-reveal>{w.title}</h3>
+              <p class="item-text" data-reveal style="--i:1">{w.text}</p>
+              <dl class="metrics" data-reveal style="--i:2">
+                {w.metrics.map((m) => (
+                  <div>
+                    <dt>{m.label}</dt>
+                    <dd>{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div data-reveal style="--i:3">
+                <WorkVisual kind={w.visual} />
+              </div>
+              <p class="item-go" data-reveal style="--i:4">
+                {href ? (
+                  <span class="link-arrow">Read the case study <span aria-hidden="true">→</span></span>
+                ) : (
+                  <span class="soon">Case study in progress</span>
+                )}
+              </p>
+            </Tag>
+          </li>
+        );
+      })}
+    </ol>
+  </section>
+
+  <!-- AI -->
+  <section id="ai" class="ai" aria-labelledby="ai-title">
+    <div class="wrap section">
+      <div class="ai-head" data-reveal>
+        <h2 id="ai-title" class="h2">How I work with AI</h2>
+        <p class="lead">
+          I write my own Claude skills for the slow parts of product design. They give me a first draft; the decisions stay
+          mine.
+        </p>
+      </div>
+      <ol class="steps">
+        {aiSteps.map((s, i) => (
+          <li class="step" data-reveal style={`--i:${i}`}>
+            <h3 class="verb">{s.verb}</h3>
+            <p>{s.text}</p>
+            <p class="human"><strong>Stays human:</strong> {s.human}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="ai-link" data-reveal>
+        <a class="btn btn-amber" href={person.links.skills}>Read my case-study-writer skill on GitHub</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Playground -->
+  <section id="playground" class="play" aria-labelledby="play-title">
+    <div class="canvas" data-canvas tabindex="0" aria-label="Playground canvas, drag or scroll to look around">
+      <div class="board">
+        <div class="play-center">
+          <h2 id="play-title" class="h2">Playground</h2>
+          <p class="lead">Side projects and things I make for fun.</p>
+        </div>
+        <p class="sticky hand" style="left:29%;top:44%">
+          my rules for side projects: <br />no client, no brief, <br />just curiosity
+        </p>
+        {playground.map((p, i) => {
+          const Tag = 'href' in p && p.href ? 'a' : 'article';
+          return (
+            <Tag
+              class="pcard"
+              href={'href' in p ? p.href : undefined}
+              style={`left:${p.x}%;top:${p.y}%;--r:${p.r}deg`}
+            >
+              <div class={`pcover tone-${p.tone}`}>
+                <h3 class="ptitle">{p.title}</h3>
+              </div>
+              <p class="ptext">{p.text}</p>
+            </Tag>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section wrap about" aria-labelledby="about-title">
+    <div class="about-photo" data-reveal>
+      <Image src={portrait} alt="Portrait of Taisiia Silkina" widths={[420, 640, 840]} sizes="(max-width: 760px) 90vw, 420px" />
+    </div>
+    <div class="about-text">
+      <h2 id="about-title" class="h2" data-reveal>About me</h2>
+      <p class="lead" data-reveal style="--i:1">
+        I’m a product designer from Dnipro, Ukraine, with 4+ years and 40+ projects across web, mobile, B2B SaaS and AI. I
+        like the messy part: interviews, role matrices, status maps. At ANODA I led client projects end to end and covered for
+        the Design Lead, coordinating up to three designers.
+      </p>
+      <p data-reveal style="--i:2">
+        Outside client work I build small apps, draw and write Claude skills. I’m looking for a remote role in a B2B SaaS or AI
+        product team.
+      </p>
+      <h3 class="h3 exp-title" data-reveal style="--i:3">Experience</h3>
+      <ul class="exp" data-reveal style="--i:4">
+        {experience.map((e) => (
+          <li>
+            <span class="exp-years">{e.years}</span>
+            <span class="exp-company">{e.company}</span>
+            <span class="exp-role">{e.role}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="facts small" data-reveal style="--i:5">
+        Domains: B2B SaaS · AI products · FinTech · Healthcare · E-commerce · English B2
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    padding-top: clamp(24px, 3vw, 40px);
+    padding-bottom: clamp(56px, 6vw, 96px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tags {
+    position: relative;
+    width: 100%;
+    height: clamp(200px, 20vw, 280px);
+    margin-bottom: 24px;
+    overflow: clip;
+    touch-action: none;
+  }
+  .tag {
+    position: absolute;
+    transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--r));
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.2rem);
+    white-space: nowrap;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    transition: scale 0.2s var(--ease);
+  }
+  .tag:hover {
+    scale: 1.05;
+  }
+  .tag:global(.is-held) {
+    cursor: grabbing;
+    scale: 1.08;
+    box-shadow: 0 14px 30px rgb(14 12 21 / 0.2); /* taste-skill-ignore: tag lifted while dragged */
+  }
+  .hello {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .hello :global(.hello-face) {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+  .display {
+    font-size: var(--step-display);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+    margin: 0;
+  }
+  .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+  .line > span {
+    display: block;
+    animation: rise 0.9s var(--ease) both;
+  }
+  .line:nth-child(2) > span {
+    animation-delay: 0.11s;
+  }
+  @keyframes rise {
+    from {
+      transform: translateY(105%);
+    }
+  }
+  .hero-sub {
+    max-width: 46ch;
+    margin: 32px 0 0;
+    animation: fade 0.8s 0.35s var(--ease) both;
+  }
+  .chip {
+    display: inline-block;
+    background: var(--surface);
+    border-radius: 999px;
+    padding: 0.05em 0.5em;
+    font-weight: 600;
+  }
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    animation: fade 0.8s 0.45s var(--ease) both;
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  /* Fan */
+  .fan {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding-bottom: calc(var(--gap-section) / 2);
+  }
+  .card {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
+    padding: clamp(20px, 2vw, 32px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+    rotate: var(--r);
+    margin-inline: -12px;
+    transition:
+      rotate 0.4s var(--ease),
+      translate 0.4s var(--ease);
+  }
+  .card:hover,
+  .card:focus-visible {
+    rotate: 0deg;
+    translate: 0 -10px;
+    z-index: 2;
+  }
+  .card-title {
+    font-size: var(--step-lead);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .card-text {
+    font-size: var(--step-body);
+    line-height: 1.4;
+  }
+  .card-go {
+    margin-top: auto;
+    font-weight: 600;
+  }
+  .card-photo {
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .photo-drift {
+    height: 112%;
+    margin-top: -6%;
+    transform: translateY(var(--drift, 0));
+  }
+  .card-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  /* Work */
+  .sec-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: end;
+    margin-bottom: clamp(48px, 6vw, 96px);
+  }
+  .sec-sub {
+    margin: 0;
+    max-width: 36ch;
+    justify-self: end;
+  }
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(88px, 10vw, 160px);
+  }
+  .item {
+    display: grid;
+    grid-template-columns: minmax(120px, 2fr) 10fr;
+    gap: 24px;
+  }
+  .year {
+    margin: 0;
+    font-size: var(--step-lead);
+    font-weight: 800;
+    color: var(--muted);
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+  .item-body {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 20px 48px;
+    text-decoration: none;
+    align-items: start;
+  }
+  .item-body > .h3 {
+    grid-column: 1 / -1;
+    font-size: var(--step-head);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .item-text {
+    margin: 0;
+    max-width: 44ch;
+  }
+  .metrics {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+    grid-column: 1;
+  }
+  .metrics div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .metrics dd {
+    margin: 0;
+    font-size: var(--step-head);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .metrics dt {
+    font-size: var(--step-small);
+    color: var(--muted);
+    max-width: 18ch;
+    margin-top: 6px;
+  }
+  .item-body > div:has(.vis) {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+  }
+  .item-go {
+    margin: 0;
+    grid-column: 1;
+  }
+  .soon {
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* AI */
+  .ai {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .ai-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 48px;
+    align-items: end;
+    margin-bottom: clamp(48px, 6vw, 88px);
+  }
+  .ai-head .lead {
+    margin: 0;
+    max-width: 40ch;
+  }
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(48px, 5vw, 80px) clamp(32px, 5vw, 96px);
+  }
+  .verb {
+    font-size: clamp(3rem, 1.5rem + 6vw, 7.5rem);
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+    margin: 0 0 20px;
+    color: var(--amber);
+  }
+  .step p {
+    margin: 0 0 12px;
+    max-width: 44ch;
+  }
+  .human {
+    color: #d8d6e0;
+  }
+  .ai-link {
+    margin: clamp(56px, 6vw, 96px) 0 0;
+  }
+
+  /* Playground */
+  .play {
+    background: var(--surface);
+    margin-top: 0;
+  }
+  .canvas {
+    height: min(88vh, 860px);
+    overflow: auto;
+    cursor: grab;
+    scrollbar-width: none;
+  }
+  .canvas::-webkit-scrollbar {
+    display: none;
+  }
+  .canvas:global(.is-dragging) {
+    cursor: grabbing;
+    user-select: none;
+  }
+  .board {
+    position: relative;
+    width: 150vw;
+    height: 1100px;
+  }
+  .play-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    text-align: center;
+    width: 32ch;
+  }
+  .play-center .lead {
+    margin: 12px 0 0;
+  }
+  .sticky {
+    position: absolute;
+    background: var(--amber);
+    padding: 18px 20px;
+    font-size: 1.6rem;
+    line-height: 1.05;
+    rotate: -5deg;
+    border-radius: 6px;
+    margin: 0;
+  }
+  .pcard {
+    position: absolute;
+    width: 340px;
+    rotate: var(--r);
+    text-decoration: none;
+    transition:
+      rotate 0.4s var(--ease),
+      translate 0.4s var(--ease);
+  }
+  .pcard:hover {
+    rotate: 0deg;
+    translate: 0 -8px;
+  }
+  .pcover {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+  .pcover .ptitle {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+  .ptext {
+    margin: 14px 4px 0;
+    color: var(--muted);
+    font-size: var(--step-small);
+    max-width: 34ch;
+  }
+
+  /* About */
+  .about {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  .about-photo :global(img) {
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 30%;
+    width: 100%;
+  }
+  .about-text .h2 {
+    margin-bottom: 28px;
+  }
+  .about-text .lead {
+    margin: 0 0 20px;
+  }
+  .exp-title {
+    margin: 48px 0 16px;
+  }
+  .exp {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .exp li {
+    display: grid;
+    grid-template-columns: 90px 160px 1fr;
+    gap: 16px;
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+  .exp-years {
+    color: var(--muted);
+  }
+  .exp-company {
+    font-weight: 600;
+  }
+  .facts {
+    color: var(--muted);
+    margin-top: 24px;
+  }
+
+  @media (max-width: 1000px) {
+    .fan {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .card {
+      margin-inline: 0;
+    }
+    .steps {
+      gap: 72px 48px;
+    }
+    .canvas {
+      height: auto;
+      overflow: visible;
+      cursor: auto;
+    }
+    .board {
+      width: auto;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 56px 32px;
+      padding: 96px var(--margin);
+      max-width: calc(var(--max) + 2 * var(--margin));
+      margin-inline: auto;
+    }
+    .play-center {
+      position: static;
+      translate: none;
+      text-align: left;
+      grid-column: 1 / -1;
+      width: auto;
+    }
+    .sticky {
+      display: none;
+    }
+    .pcard {
+      position: static;
+      width: auto;
+      rotate: calc(var(--r) * 0.4);
+    }
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .about-photo {
+      max-width: 420px;
+    }
+    .item {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .year {
+      position: static;
+    }
+    .item-body {
+      grid-template-columns: 1fr;
+    }
+    .item-body > div:has(.vis),
+    .metrics,
+    .item-go {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+  @media (max-width: 760px) {
+    .tags {
+      height: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 8px;
+      padding: 16px 0 8px;
+    }
+    .tag {
+      position: relative;
+      left: auto !important;
+      top: auto !important;
+      padding: 9px 16px;
+      rotate: calc(var(--r) * 0.5);
+      transform: translate(var(--dx, 0), var(--dy, 0));
+    }
+    .fan {
+      gap: 16px;
+    }
+    .card {
+      aspect-ratio: 3 / 4;
+      padding: 16px;
+    }
+    .card-text {
+      font-size: var(--step-small);
+    }
+    .sec-head,
+    .ai-head {
+      grid-template-columns: 1fr;
+    }
+    .sec-sub {
+      justify-self: start;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .board {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding: 72px calc(var(--margin) + 8px);
+    }
+    .pcard {
+      rotate: calc(var(--r) * 0.25);
+    }
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .exp li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+</style>

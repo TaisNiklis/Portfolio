@@ -1,0 +1,235 @@
+@import 'tailwindcss';
+@import '@fontsource/schibsted-grotesk/400.css';
+@import '@fontsource/schibsted-grotesk/600.css';
+@import '@fontsource/schibsted-grotesk/800.css';
+@import '@fontsource/caveat/600.css';
+
+:root {
+  --bg: #fcfcfc;
+  --surface: #f0f0f3;
+  --surface-2: #e6e6ec;
+  --ink: #0e0c15;
+  --muted: #4a4757;
+  --accent: #0f29d2;
+  --accent-ink: #ffffff;
+  --amber: #ffbf00;
+
+  --font: 'Schibsted Grotesk', system-ui, sans-serif;
+  --hand: 'Caveat', cursive;
+
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: clamp(2.125rem, 0.9rem + 5.2vw, 5.75rem);
+
+  --margin: clamp(16px, 2.2vw, 32px);
+  --max: 1376px;
+  --gap-section: clamp(112px, 12vw, 200px);
+  --radius: 20px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--step-body);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--margin));
+  margin-inline: auto;
+  padding-inline: var(--margin);
+}
+
+.section {
+  padding-block: calc(var(--gap-section) / 2);
+}
+
+.h2 {
+  font-size: var(--step-head);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-size: var(--step-lead);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: var(--step-lead);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+.small {
+  font-size: var(--step-small);
+}
+
+.hand {
+  font-family: var(--hand);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* Buttons: one shape (fully round), flat fills */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0.7em 1.35em;
+  border: 0;
+  border-radius: 999px;
+  font: 600 var(--step-body) / 1 var(--font);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.25s var(--ease),
+    background-color 0.25s var(--ease);
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-primary:hover {
+  background: #0a1fa8;
+}
+.btn-quiet {
+  background: var(--surface);
+  color: var(--ink);
+}
+.btn-quiet:hover {
+  background: var(--surface-2);
+}
+.btn-amber {
+  background: var(--amber);
+  color: var(--ink);
+}
+.btn-amber:hover {
+  background: #f0b300;
+}
+.btn-ink {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.link-arrow {
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  gap: 0.4em;
+  align-items: center;
+}
+.link-arrow span {
+  transition: transform 0.25s var(--ease);
+}
+.link-arrow:hover span {
+  transform: translateX(4px);
+}
+
+/* Tones shared by tags, cards and playground items */
+.tone-blue {
+  background: var(--accent);
+  color: #fff;
+}
+.tone-amber {
+  background: var(--amber);
+  color: var(--ink);
+}
+.tone-ink {
+  background: var(--ink);
+  color: var(--bg);
+}
+.tone-soft {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+/* Entrance: only hidden once JS has confirmed it can reveal */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

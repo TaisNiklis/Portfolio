@@ -1,0 +1,200 @@
+---
+// Interface fragments that stand in for case images until exports from Figma arrive.
+interface Props {
+  kind: 'entity' | 'tokens' | 'skills' | 'conversion';
+}
+const { kind } = Astro.props;
+const entity = [
+  { name: 'Staff', depth: 0 },
+  { name: 'Clients', depth: 1 },
+  { name: 'Projects', depth: 2, open: true },
+  { name: 'Media plan', depth: 3 },
+  { name: 'Research', depth: 3 },
+  { name: 'Reports', depth: 3, active: true },
+  { name: 'Activity log', depth: 3 },
+  { name: 'Files', depth: 3 },
+];
+const tokens = [
+  { name: 'color/action', hex: '#0F29D2', use: 'Buttons, links, focus' },
+  { name: 'color/highlight', hex: '#FFBF00', use: 'Badges, selection' },
+  { name: 'color/text', hex: '#0E0C15', use: 'Body text, icons' },
+  { name: 'color/surface', hex: '#F0F0F3', use: 'Cards, inputs' },
+];
+const skills = ['SKILL.md', 'references/structure.md', 'references/rules.md', 'checklists/quality.md', 'templates/case-study.mdx'];
+---
+
+<div class={`vis vis-${kind}`} data-ui>
+  {kind === 'entity' && (
+    <div class="panel">
+      <p class="panel-title">Project structure</p>
+      <ul class="tree">
+        {entity.map((n) => (
+          <li style={`--d:${n.depth}`} class:list={[{ active: n.active }]}>
+            <span class="caret" aria-hidden="true">{n.depth < 3 ? '▾' : ''}</span>
+            {n.name}
+          </li>
+        ))}
+      </ul>
+      <p class="note">One Project from the brief onward</p>
+    </div>
+  )}
+  {kind === 'tokens' && (
+    <div class="panel">
+      <p class="panel-title">Palette template · colour → where it’s used</p>
+      <ul class="tokens">
+        {tokens.map((t) => (
+          <li>
+            <span class="swatch" style={`background:${t.hex}`} />
+            <span class="tname">{t.name}</span>
+            <span class="tuse">{t.use}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+  {kind === 'skills' && (
+    <div class="panel panel-dark">
+      <p class="panel-title">.claude/skills/case-study-writer</p>
+      <ul class="files">
+        {skills.map((f) => <li>{f}</li>)}
+      </ul>
+      <p class="note">Open on GitHub</p>
+    </div>
+  )}
+  {kind === 'conversion' && (
+    <div class="big">
+      <span class="big-num">+167%</span>
+      <span class="big-label">conversion after the new IA</span>
+    </div>
+  )}
+</div>
+
+<style>
+  .vis {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 4vw, 48px);
+    overflow: hidden;
+  }
+  .vis-entity {
+    background: var(--accent);
+  }
+  .vis-tokens {
+    background: var(--amber);
+  }
+  .vis-skills {
+    background: var(--surface-2);
+  }
+  .vis-conversion {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .panel {
+    width: min(100%, 460px);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 15px;
+    transition: transform 0.5s var(--ease);
+  }
+  :global(a:hover) > .vis .panel,
+  .vis:hover .panel {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+  .panel-dark {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .panel-title {
+    margin: 0 0 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: inherit;
+    opacity: 0.85;
+  }
+  .tree,
+  .tokens,
+  .files {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+  .tree li {
+    padding: 6px 10px 6px calc(10px + var(--d) * 18px);
+    border-radius: 8px;
+    display: flex;
+    gap: 6px;
+  }
+  .tree li.active {
+    background: #e8ebff;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .caret {
+    width: 12px;
+    color: var(--muted);
+  }
+  .tokens li {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 6px 0;
+  }
+  .swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    outline: 1px solid rgb(14 12 21 / 0.12);
+  }
+  .tname {
+    font-weight: 600;
+  }
+  .tuse {
+    color: var(--muted);
+  }
+  .files li {
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgb(255 255 255 / 0.06);
+  }
+  .note {
+    margin: 12px 0 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .panel-dark .note {
+    color: #c9c7d2;
+  }
+  .big {
+    display: grid;
+    gap: 8px;
+    text-align: left;
+  }
+  .big-num {
+    font-size: clamp(64px, 11vw, 168px);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    color: var(--amber);
+  }
+  .big-label {
+    font-size: var(--step-lead);
+  }
+  @media (max-width: 600px) {
+    .vis {
+      aspect-ratio: 4 / 3;
+    }
+    .tuse {
+      display: none;
+    }
+    .tokens li {
+      grid-template-columns: 28px 1fr;
+    }
+  }
+</style>
