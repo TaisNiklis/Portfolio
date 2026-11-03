@@ -1,13 +1,13 @@
 # Portfolio
 
 Portfolio site of **Taisiia Silkina**, product designer for B2B SaaS & AI.
-Built with Astro and Tailwind, deployed to GitHub Pages: https://taisniklis.github.io/portfolio/
+Built with Astro and Tailwind, deployed to GitHub Pages: https://taisniklis.github.io/Portfolio/
 
 ## Run locally
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321/portfolio/
+npm run dev      # http://localhost:4321/Portfolio/
 npm run build    # static site in dist/
 ```
 
