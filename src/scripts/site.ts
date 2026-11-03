@@ -1,0 +1,117 @@
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Section entrances: each [data-reveal] rises once as it enters.
+const io = new IntersectionObserver(
+  (entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      }
+    }
+  },
+  { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+);
+document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+// Copy email
+document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+  btn.addEventListener('click', async () => {
+    const label = btn.textContent;
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+      btn.textContent = 'Copied';
+    } catch {
+      window.location.href = `mailto:${btn.dataset.copy}`;
+    }
+    setTimeout(() => (btn.textContent = label), 1600);
+  });
+});
+
+// Hero tags: drag any tag with mouse or finger; arrow keys nudge a focused tag.
+const field = document.querySelector<HTMLElement>('[data-tags]');
+if (field) {
+  let top = 10;
+  field.querySelectorAll<HTMLElement>('[data-tag]').forEach((tag) => {
+    let sx = 0, sy = 0, ox = 0, oy = 0;
+    const pos = { x: 0, y: 0 };
+    const apply = () => tag.style.setProperty('--dx', `${pos.x}px`), applyY = () => tag.style.setProperty('--dy', `${pos.y}px`);
+    const move = (x: number, y: number) => {
+      const f = field.getBoundingClientRect();
+      const t = tag.getBoundingClientRect();
+      const bx = t.left - pos.x, by = t.top - pos.y;
+      pos.x = Math.min(Math.max(x, f.left - bx), f.right - t.width - bx);
+      pos.y = Math.min(Math.max(y, f.top - by), f.bottom - t.height - by);
+      apply();
+      applyY();
+    };
+    tag.addEventListener('pointerdown', (e) => {
+      tag.setPointerCapture(e.pointerId);
+      tag.classList.add('is-held');
+      tag.style.zIndex = String(++top);
+      sx = e.clientX; sy = e.clientY; ox = pos.x; oy = pos.y;
+    });
+    tag.addEventListener('pointermove', (e) => {
+      if (!tag.hasPointerCapture(e.pointerId)) return;
+      move(ox + e.clientX - sx, oy + e.clientY - sy);
+    });
+    const drop = () => tag.classList.remove('is-held');
+    tag.addEventListener('pointerup', drop);
+    tag.addEventListener('pointercancel', drop);
+    tag.addEventListener('keydown', (e) => {
+      const step = e.shiftKey ? 40 : 12;
+      const d: Record<string, [number, number]> = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+      if (!d[e.key]) return;
+      e.preventDefault();
+      move(pos.x + d[e.key][0], pos.y + d[e.key][1]);
+    });
+  });
+}
+
+// Playground: the canvas opens centred on its title; with a mouse it can be dragged to look around.
+const canvas = document.querySelector<HTMLElement>('[data-canvas]');
+if (canvas) {
+  let touched = false;
+  const centre = () => {
+    if (touched) return;
+    canvas.scrollLeft = (canvas.scrollWidth - canvas.clientWidth) / 2;
+    canvas.scrollTop = (canvas.scrollHeight - canvas.clientHeight) / 2;
+  };
+  centre();
+  new ResizeObserver(centre).observe(canvas);
+  canvas.addEventListener('wheel', () => (touched = true), { passive: true });
+  canvas.addEventListener('touchstart', () => (touched = true), { passive: true });
+
+  if (window.matchMedia('(pointer: fine)').matches) {
+    let down = false, sx = 0, sy = 0, sl = 0, st = 0, moved = false;
+    canvas.addEventListener('pointerdown', (e) => {
+      if ((e.target as HTMLElement).closest('a, button')) return;
+      touched = true; down = true; moved = false;
+      sx = e.clientX; sy = e.clientY; sl = canvas.scrollLeft; st = canvas.scrollTop;
+      canvas.classList.add('is-dragging');
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) > 4) moved = true;
+      canvas.scrollLeft = sl - (e.clientX - sx);
+      canvas.scrollTop = st - (e.clientY - sy);
+    });
+    window.addEventListener('pointerup', () => {
+      down = false;
+      canvas.classList.remove('is-dragging');
+    });
+    canvas.addEventListener('click', (e) => { if (moved) e.preventDefault(); }, true);
+  }
+}
+
+// One moving picture: the portrait drifts slowly with the scroll.
+const drift = document.querySelector<HTMLElement>('[data-drift]');
+if (drift && !reduce) {
+  const onScroll = () => {
+    const r = drift.getBoundingClientRect();
+    const p = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
+    drift.style.setProperty('--drift', `${(p * -6).toFixed(2)}%`);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}

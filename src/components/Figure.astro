@@ -1,0 +1,47 @@
+---
+// Case-study image. Until the Figma export lands, `src` holds "[TODO: file.png]" and a captioned slot is shown.
+interface Props {
+  src: string;
+  caption: string;
+  alt?: string;
+}
+const { src, caption, alt = '' } = Astro.props;
+const pending = src.startsWith('[TODO');
+const file = pending ? src.replace(/^\[TODO:\s*|\]$/g, '') : src;
+---
+
+<figure class="fig" data-reveal>
+  {pending ? (
+    <div class="slot" role="img" aria-label={`Image coming soon: ${caption}`}>
+      <span>{file}</span>
+    </div>
+  ) : (
+    <img src={src} alt={alt || caption} loading="lazy" />
+  )}
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .fig {
+    margin: 48px 0;
+  }
+  .slot {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    background: var(--surface);
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  img {
+    border-radius: var(--radius);
+    width: 100%;
+  }
+  figcaption {
+    margin-top: 12px;
+    font-size: var(--step-small);
+    color: var(--muted);
+    max-width: 60ch;
+  }
+</style>
