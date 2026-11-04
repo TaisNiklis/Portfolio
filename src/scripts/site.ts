@@ -28,44 +28,21 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
   });
 });
 
-// Hero tags: drag any tag with mouse or finger; arrow keys nudge a focused tag.
-const field = document.querySelector<HTMLElement>('[data-tags]');
-if (field) {
-  let top = 10;
-  field.querySelectorAll<HTMLElement>('[data-tag]').forEach((tag) => {
-    let sx = 0, sy = 0, ox = 0, oy = 0;
-    const pos = { x: 0, y: 0 };
-    const apply = () => tag.style.setProperty('--dx', `${pos.x}px`), applyY = () => tag.style.setProperty('--dy', `${pos.y}px`);
-    const move = (x: number, y: number) => {
-      const f = field.getBoundingClientRect();
-      const t = tag.getBoundingClientRect();
-      const bx = t.left - pos.x, by = t.top - pos.y;
-      pos.x = Math.min(Math.max(x, f.left - bx), f.right - t.width - bx);
-      pos.y = Math.min(Math.max(y, f.top - by), f.bottom - t.height - by);
-      apply();
-      applyY();
-    };
-    tag.addEventListener('pointerdown', (e) => {
-      tag.setPointerCapture(e.pointerId);
-      tag.classList.add('is-held');
-      tag.style.zIndex = String(++top);
-      sx = e.clientX; sy = e.clientY; ox = pos.x; oy = pos.y;
-    });
-    tag.addEventListener('pointermove', (e) => {
-      if (!tag.hasPointerCapture(e.pointerId)) return;
-      move(ox + e.clientX - sx, oy + e.clientY - sy);
-    });
-    const drop = () => tag.classList.remove('is-held');
-    tag.addEventListener('pointerup', drop);
-    tag.addEventListener('pointercancel', drop);
-    tag.addEventListener('keydown', (e) => {
-      const step = e.shiftKey ? 40 : 12;
-      const d: Record<string, [number, number]> = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
-      if (!d[e.key]) return;
-      e.preventDefault();
-      move(pos.x + d[e.key][0], pos.y + d[e.key][1]);
-    });
-  });
+// Hero tags: parallax. Each tag drifts up at its own speed as the hero scrolls away (desktop only).
+const heroTags = [...document.querySelectorAll<HTMLElement>('.tag[data-speed]')];
+if (heroTags.length && !reduce) {
+  const wide = window.matchMedia('(min-width: 761px)');
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = wide.matches ? window.scrollY : 0;
+    for (const t of heroTags) t.style.setProperty('--py', `${(-y * Number(t.dataset.speed)).toFixed(1)}px`);
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  wide.addEventListener('change', update);
+  update();
 }
 
 // Playground: the canvas opens centred on its title; with a mouse it can be dragged to look around.

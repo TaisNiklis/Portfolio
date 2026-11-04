@@ -15,16 +15,17 @@ export const person = {
   },
 };
 
-// Hero tags: the work behind the cases. Draggable.
+// Hero tags: the work behind the cases. Scattered around the hero, they drift at different speeds on scroll.
+// x/y are % of the hero box; speed is the parallax factor (higher = moves faster).
 export const tags = [
-  { text: 'Mapping 12 statuses', tone: 'blue', x: 4, y: 14, r: -8 },
-  { text: 'Untangling roles', tone: 'amber', x: 16, y: 56, r: 6 },
-  { text: 'Interviewing users', tone: 'ink', x: 36, y: 8, r: -4 },
-  { text: 'Writing Claude skills', tone: 'soft', x: 52, y: 50, r: 7 },
-  { text: 'Design tokens', tone: 'amber', x: 66, y: 12, r: -9 },
-  { text: 'Shipping to dev', tone: 'blue', x: 72, y: 62, r: 5 },
-  { text: 'UX audits', tone: 'soft', x: 0, y: 60, r: 4 },
-  { text: 'AI onboarding', tone: 'ink', x: 84, y: 30, r: -6 },
+  { text: 'Mapping 12 statuses', x: 3, y: 6, r: -8, speed: 0.35 },
+  { text: 'Untangling roles', x: 8, y: 40, r: 6, speed: 0.15 },
+  { text: 'Interviewing users', x: 1, y: 74, r: -4, speed: 0.5 },
+  { text: 'UX audits', x: 22, y: 92, r: 4, speed: 0.25 },
+  { text: 'Design tokens', x: 80, y: 4, r: -9, speed: 0.45 },
+  { text: 'Writing Claude skills', x: 82, y: 38, r: 7, speed: 0.2 },
+  { text: 'Shipping to dev', x: 86, y: 70, r: 5, speed: 0.4 },
+  { text: 'AI onboarding', x: 66, y: 92, r: -6, speed: 0.3 },
 ] as const;
 
 // Selected work. `slug` set = a live case page; otherwise the card says the case is in progress.
