@@ -15,6 +15,10 @@ export const person = {
   },
 };
 
+// Intro video in the second hero card. Drop the file into /public (e.g. public/intro.mp4) and set the name here.
+// Empty = the card shows the portrait instead.
+export const introVideo = '';
+
 // Hero tags: the work behind the cases. Scattered around the hero, they drift at different speeds on scroll.
 // x/y are % of the hero box; speed is the parallax factor (higher = moves faster).
 export const tags = [

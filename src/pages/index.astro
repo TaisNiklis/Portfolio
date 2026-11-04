@@ -3,9 +3,11 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import WorkVisual from '../components/WorkVisual.astro';
 import portrait from '../assets/portrait.jpg';
-import { person, tags, work, aiSteps, playground, experience } from '../data/site';
+import { person, tags, work, aiSteps, playground, experience, introVideo } from '../data/site';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const firstYear = Math.min(...experience.map((e) => Number(e.years.slice(0, 4))));
+const years = new Date().getFullYear() - firstYear;
 ---
 
 <Base
@@ -42,30 +44,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- Fan of cards -->
   <section class="fan wrap" aria-label="Where to start">
     <a class="card tone-blue" href="#work" style="--r:-6deg" data-reveal>
-      <span class="card-title">Selected work</span>
-      <span class="card-text">How I untangle complex B2B products, with the numbers.</span>
+      <span class="card-title">In numbers</span>
+      <dl class="card-stats">
+        <div><dt>years in B2B SaaS & AI</dt><dd>{years}+</dd></div>
+        <div><dt>case studies with results</dt><dd>{work.length}</dd></div>
+      </dl>
       <span class="card-go">Read the cases →</span>
     </a>
     <div class="card card-photo" style="--r:3deg" data-reveal>
       <div class="photo-drift" data-drift>
-        <Image
-          src={portrait}
-          alt="Taisiia in a pink hoodie, lifting pixel-art sunglasses and smiling"
-          widths={[360, 540, 720]}
-          sizes="(max-width: 760px) 70vw, 280px"
-          loading="eager"
-        />
+        {introVideo ? (
+          <video src={`${base}/${introVideo}`} autoplay muted loop playsinline aria-label="Taisiia saying hi" />
+        ) : (
+          <Image
+            src={portrait}
+            alt="Taisiia in a pink hoodie, lifting pixel-art sunglasses and smiling"
+            widths={[360, 540, 720]}
+            sizes="(max-width: 760px) 70vw, 280px"
+            loading="eager"
+          />
+        )}
       </div>
     </div>
     <a class="card tone-amber" href="#ai" style="--r:-3deg" data-reveal>
-      <span class="card-title">How I work with AI</span>
-      <span class="card-text">My own Claude skills, and the decisions I keep.</span>
+      <span class="card-title">Faster with AI</span>
+      <span class="card-big">−40%</span>
+      <span class="card-text">UX process and review time with my own Claude skills pipeline.</span>
       <span class="card-go">See the pipeline →</span>
     </a>
     <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
-      <span class="card-title">Playground</span>
-      <span class="card-text">Side projects: an anime quiz, a pet app, drawings.</span>
-      <span class="card-go">Have a look →</span>
+      <span class="card-title">On the side</span>
+      <span class="card-text">Mobile apps, games and drawings I make for fun. One quiz app has 1,000+ downloads.</span>
+      <span class="card-go">Go to the playground →</span>
     </a>
   </section>
 
@@ -340,14 +350,36 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding: 0;
     overflow: hidden;
     position: relative;
-    z-index: 1;
   }
   .photo-drift {
     height: 112%;
     margin-top: -6%;
     transform: translateY(var(--drift, 0));
   }
-  .card-photo :global(img) {
+  .card-stats {
+    display: grid;
+    gap: 14px;
+    margin: 8px 0 0;
+  }
+  .card-stats div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .card-stats dd,
+  .card-big {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.4rem + 2.6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+  }
+  .card-stats dt {
+    font-size: var(--step-small);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .card-photo :global(img),
+  .card-photo video {
     width: 100%;
     height: 100%;
     object-fit: cover;
