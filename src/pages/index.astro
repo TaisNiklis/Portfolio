@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import WorkVisual from '../components/WorkVisual.astro';
 import portrait from '../assets/portrait.jpg';
-import { person, tags, work, aiSteps, playground, experience, introVideo } from '../data/site';
+import { person, tags, work, pipeline, pipelineStats, playground, experience, introVideo } from '../data/site';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const firstYear = Math.min(...experience.map((e) => Number(e.years.slice(0, 4))));
@@ -47,7 +47,7 @@ const years = new Date().getFullYear() - firstYear;
       <span class="card-title">In numbers</span>
       <dl class="card-stats">
         <div><dt>years in B2B SaaS & AI</dt><dd>{years}+</dd></div>
-        <div><dt>case studies with results</dt><dd>{work.length}</dd></div>
+        <div><dt>projects across web, mobile, SaaS & AI</dt><dd>40+</dd></div>
       </dl>
       <span class="card-go">Read the cases →</span>
     </a>
@@ -130,15 +130,44 @@ const years = new Date().getFullYear() - firstYear;
           mine.
         </p>
       </div>
-      <ol class="steps">
-        {aiSteps.map((s, i) => (
-          <li class="step" data-reveal style={`--i:${i}`}>
-            <h3 class="verb">{s.verb}</h3>
-            <p>{s.text}</p>
-            <p class="human"><strong>Stays human:</strong> {s.human}</p>
-          </li>
+      <dl class="ai-stats" data-reveal>
+        {pipelineStats.map((st) => (
+          <div>
+            <dt>{st.label}</dt>
+            <dd>{st.value}</dd>
+          </div>
         ))}
-      </ol>
+      </dl>
+      <div class="pipe" data-reveal>
+        <div class="lanes" aria-hidden="true">
+          <span>Stage</span>
+          <span class="lane-ai">AI drafts</span>
+          <span>I decide</span>
+          <span>Output</span>
+        </div>
+        <ol class="pipe-stages">
+          {pipeline.map((p, i) => (
+            <li class="pstage">
+              <h3 class="pstage-head">
+                <span class="pnum">{String(i + 1).padStart(2, '0')}</span>
+                <span class="pname">{p.stage}</span>
+              </h3>
+              <div class={`pcell pai${p.ai ? '' : ' is-empty'}`}>
+                <span class="plabel">AI drafts</span>
+                {p.ai || 'No AI here'}
+              </div>
+              <div class="pcell pme">
+                <span class="plabel">I decide</span>
+                {p.me}
+              </div>
+              <div class="pcell pout">
+                <span class="plabel">Output</span>
+                {p.out}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
       <p class="ai-link" data-reveal>
         <a class="btn btn-amber" href={person.links.skills}>Read my case-study-writer skill on GitHub</a>
       </p>
@@ -153,7 +182,7 @@ const years = new Date().getFullYear() - firstYear;
           <h2 id="play-title" class="h2">Playground</h2>
           <p class="lead">Side projects and things I make for fun.</p>
         </div>
-        <p class="sticky hand" style="left:29%;top:44%">
+        <p class="sticky hand" style="left:27%;top:45%">
           my rules for side projects: <br />no client, no brief, <br />just curiosity
         </p>
         {playground.map((p, i) => {
@@ -203,6 +232,9 @@ const years = new Date().getFullYear() - firstYear;
       </ul>
       <p class="facts small" data-reveal style="--i:5">
         Domains: B2B SaaS · AI products · FinTech · Healthcare · E-commerce · English B2
+      </p>
+      <p class="about-cta" data-reveal style="--i:6">
+        <a class="btn btn-primary" href={person.links.cv}>Open my full CV <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
@@ -499,28 +531,146 @@ const years = new Date().getFullYear() - firstYear;
     margin: 0;
     max-width: 40ch;
   }
-  .steps {
+  .ai-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 48px;
+    margin: 0 0 clamp(48px, 6vw, 80px);
+    padding-top: 28px;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+  }
+  .ai-stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ai-stats dd {
+    order: -1;
+  }
+  .ai-stats dd {
+    margin: 0;
+    font-size: var(--step-head);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--amber);
+  }
+  .ai-stats dt {
+    color: #d8d6e0;
+    font-size: var(--step-small);
+    max-width: 26ch;
+  }
+
+  /* Pipeline infographic: stages run left to right, lanes split AI drafts from my decisions. */
+  .pipe {
+    display: grid;
+    grid-template-columns: 112px 1fr;
+    grid-template-rows: auto auto auto auto;
+    column-gap: 16px;
+  }
+  .lanes,
+  .pipe-stages,
+  .pstage {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: 1 / span 4;
+  }
+  .lanes span {
+    align-self: start;
+    padding-top: 14px;
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: #a9a6b6;
+  }
+  .lanes span:first-child {
+    padding-top: 0;
+  }
+  .lanes .lane-ai {
+    color: var(--amber);
+  }
+  .pipe-stages {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(48px, 5vw, 80px) clamp(32px, 5vw, 96px);
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 10px;
   }
-  .verb {
-    font-size: clamp(3rem, 1.5rem + 6vw, 7.5rem);
+  .pstage {
+    row-gap: 10px;
+  }
+  .pstage-head {
+    position: relative;
+    margin: 0 0 8px;
+    padding-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  /* the track: a dot per stage joined by a line */
+  .pstage-head::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+    right: -10px;
+    height: 2px;
+    background: rgb(255 255 255 / 0.18);
+  }
+  .pstage:last-child .pstage-head::before {
+    right: 0;
+    background: linear-gradient(90deg, rgb(255 255 255 / 0.18), var(--amber));
+  }
+  .pstage-head::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2px solid var(--amber);
+  }
+  .pstage:last-child .pstage-head::after {
+    background: var(--amber);
+  }
+  .pnum {
+    font-size: var(--step-small);
+    font-weight: 600;
+    color: #a9a6b6;
+  }
+  .pname {
+    font-size: var(--step-lead);
     font-weight: 800;
-    letter-spacing: -0.055em;
-    line-height: 0.9;
-    margin: 0 0 20px;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+  .pcell {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: var(--step-small);
+    line-height: 1.4;
+  }
+  .pai {
+    border: 1.5px dashed var(--amber);
     color: var(--amber);
   }
-  .step p {
-    margin: 0 0 12px;
-    max-width: 44ch;
+  .pai.is-empty {
+    border-color: rgb(255 255 255 / 0.14);
+    color: #a9a6b6;
   }
-  .human {
-    color: #d8d6e0;
+  .pme {
+    background: rgb(255 255 255 / 0.08);
+    color: var(--bg);
+  }
+  .pout {
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .plabel {
+    display: none;
   }
   .ai-link {
     margin: clamp(56px, 6vw, 96px) 0 0;
@@ -546,8 +696,8 @@ const years = new Date().getFullYear() - firstYear;
   }
   .board {
     position: relative;
-    width: 150vw;
-    height: 1100px;
+    width: max(175vw, 2200px);
+    height: 1300px;
   }
   .play-center {
     position: absolute;
@@ -648,6 +798,9 @@ const years = new Date().getFullYear() - firstYear;
   .exp-company {
     font-weight: 600;
   }
+  .about-cta {
+    margin: 32px 0 0;
+  }
   .facts {
     color: var(--muted);
     margin-top: 24px;
@@ -661,8 +814,56 @@ const years = new Date().getFullYear() - firstYear;
     .card {
       margin-inline: 0;
     }
-    .steps {
-      gap: 72px 48px;
+    .pipe {
+      display: block;
+    }
+    .lanes {
+      display: none;
+    }
+    .pipe-stages {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      row-gap: 36px;
+      padding-left: 28px;
+      position: relative;
+    }
+    .pipe-stages::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(rgb(255 255 255 / 0.18), var(--amber));
+    }
+    .pstage {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: none;
+      grid-row: auto;
+      gap: 10px;
+    }
+    .pstage-head {
+      grid-column: 1 / -1;
+      padding-top: 0;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .pstage-head::before {
+      display: none;
+    }
+    .pstage-head::after {
+      left: -28px;
+      top: 6px;
+    }
+    .plabel {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      opacity: 0.75;
+      margin-bottom: 4px;
     }
     .canvas {
       height: auto;
@@ -759,13 +960,16 @@ const years = new Date().getFullYear() - firstYear;
     .sec-sub {
       justify-self: start;
     }
-    .steps {
+    .pstage {
+      grid-template-columns: 1fr;
+    }
+    .ai-stats {
       grid-template-columns: 1fr;
     }
     .board {
       grid-template-columns: 1fr;
-      gap: 48px;
-      padding: 72px calc(var(--margin) + 8px);
+      gap: 72px;
+      padding: 88px calc(var(--margin) + 8px);
     }
     .pcard {
       rotate: calc(var(--r) * 0.25);

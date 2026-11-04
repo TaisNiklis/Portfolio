@@ -74,41 +74,71 @@ export const work = [
   },
 ] as const;
 
-export const aiSteps = [
+// AI pipeline, brief to delivery. `ai` = what my Claude skills (or Figma AI) draft; empty = no AI at this stage.
+// `me` = the decisions that stay mine; `out` = what the stage hands to the next one.
+export const pipeline = [
   {
-    verb: 'Listen',
-    text: 'I run the user interviews and stakeholder sessions. A skill turns my notes into a first customer journey map.',
-    human: 'What to ask, and which pain matters most.',
+    stage: 'Brief',
+    ai: '',
+    me: 'Goals, constraints and success metrics with the stakeholders.',
+    out: 'Framed problem',
   },
   {
-    verb: 'Map',
-    text: 'My skills draft the role matrix and the status map, so I start from a structure instead of a blank page.',
-    human: 'The entity model and the status rules.',
+    stage: 'Research',
+    ai: 'First customer journey map from my interview notes.',
+    me: 'Running the interviews; what to ask and which pain matters most.',
+    out: 'Journey map',
   },
   {
-    verb: 'Shape',
-    text: 'A skill drafts the user flows; I design the IA and UI in Figma, with Figma AI for quick variants.',
-    human: 'Navigation and every trade-off.',
+    stage: 'Model',
+    ai: 'Role matrix and status map drafts.',
+    me: 'The entity model and the status rules.',
+    out: 'Roles × statuses',
   },
   {
-    verb: 'Hand off',
-    text: 'Annotated screen maps and edge cases for developers. case-study-writer turns the finished project into a case study.',
-    human: 'What ships first and what waits.',
+    stage: 'Flows',
+    ai: 'User flow drafts for each role.',
+    me: 'Information architecture and navigation.',
+    out: 'Flows and IA',
   },
+  {
+    stage: 'Design',
+    ai: 'Quick layout variants in Figma AI.',
+    me: 'The UI, the design system and every trade-off.',
+    out: 'UI in Figma',
+  },
+  {
+    stage: 'Hand off',
+    ai: '',
+    me: 'Annotated screen maps and edge cases; what ships first and what waits.',
+    out: 'Dev-ready specs',
+  },
+  {
+    stage: 'Deliver',
+    ai: 'case-study-writer turns the finished project into a case study.',
+    me: 'Checking the result against the metrics, and the final word on the story.',
+    out: 'Shipped product + case study',
+  },
+] as const;
+
+export const pipelineStats = [
+  { value: 'up to −40%', label: 'UX process and review time' },
+  { value: '4', label: 'artefacts my skills draft: flows, CJM, roles, statuses' },
+  { value: '7', label: 'stages, from brief to delivery' },
 ] as const;
 
 // Playground items. Copy is a draft for Taisiia to confirm; covers come later.
 export const playground = [
-  { title: 'Anime quiz', text: 'My own mobile quiz app. 1,000+ downloads, no paid ads.', tone: 'blue', x: 18, y: 17, r: -6 },
-  { title: 'Pet owners app', text: 'An app for people who look after pets.', tone: 'amber', x: 65, y: 18, r: 5 },
-  { title: 'Alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'ink', x: 19, y: 56, r: 4 },
-  { title: 'Recovery app', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'soft', x: 65, y: 56, r: -5 },
-  { title: 'Drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'amber', x: 43, y: 58, r: -3 },
-  { title: 'Claude skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'blue', x: 43, y: 15, r: 3, href: person.links.skills },
+  { title: 'Anime quiz', text: 'My own mobile quiz app. 1,000+ downloads, no paid ads.', tone: 'blue', x: 24, y: 8, r: -6 },
+  { title: 'Pet owners app', text: 'An app for people who look after pets.', tone: 'amber', x: 64, y: 9, r: 5 },
+  { title: 'Alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'ink', x: 23, y: 64, r: 4 },
+  { title: 'Recovery app', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'soft', x: 65, y: 63, r: -5 },
+  { title: 'Drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'amber', x: 44, y: 67, r: -3 },
+  { title: 'Claude skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'blue', x: 44, y: 5, r: 3, href: person.links.skills },
 ] as const;
 
 export const experience = [
   { years: '2025–26', company: 'ANODA', role: 'Product Designer, covering for the Design Lead' },
-  { years: '2022–25', company: 'Pinta Webware', role: 'UI/UX Designer' },
+  { years: '2022–25', company: 'Pinta Webware', role: 'Product Designer' },
   { years: '2023–24', company: 'Bleakers', role: 'UI/UX Designer, part-time' },
 ] as const;
