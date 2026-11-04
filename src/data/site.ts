@@ -77,60 +77,25 @@ export const work = [
 // AI pipeline, brief to delivery. `ai` = what my Claude skills (or Figma AI) draft; empty = no AI at this stage.
 // `me` = the decisions that stay mine; `out` = what the stage hands to the next one.
 export const pipeline = [
-  {
-    stage: 'Brief',
-    ai: 'Works from the brief docs, which I write so that AI can use them too.',
-    me: 'What has to be built, the requirements and the expected result. I clarify and ask the extra questions.',
-    out: 'Brief docs: scope, requirements, result',
-  },
-  {
-    stage: 'Research',
-    ai: 'Packs my findings into a structured research report.',
-    me: 'Business, market and competitor analysis, audit, interviews, surveys, analytics. The problem and hypotheses.',
-    out: 'Research report + hypotheses',
-  },
-  {
-    stage: 'Model',
-    ai: 'Drafts the status map, role matrix and IA from the report.',
-    me: 'The entity model and status rules, agreed with the client.',
-    out: 'Status map, role matrix, IA',
-  },
-  {
-    stage: 'Flows',
-    ai: 'User flow drafts for each role.',
-    me: 'Flows after client sign-off; the design system and styles start in parallel.',
-    out: 'User flows + design system',
-  },
-  {
-    stage: 'Design',
-    ai: 'Clickable prototypes built with Claude for testing.',
-    me: 'The UI and every trade-off. Usability tests on wireframes or prototypes.',
-    out: 'Tested UI',
-  },
-  {
-    stage: 'Hand off',
-    ai: '',
-    me: 'Client demo, developer documentation, screen map and next steps.',
-    out: 'Dev docs + screen map',
-  },
-  {
-    stage: 'Deliver',
-    ai: 'case-study-writer turns the finished project into a case study.',
-    me: 'Measuring the result with the company’s analytics.',
-    out: 'Measured result + case study',
-  },
+  { stage: 'Brief', ai: 'AI-ready docs', me: 'Requirements and goals', out: 'Clear brief' },
+  { stage: 'Research', ai: 'Research report', me: 'Market, users, analytics', out: 'Hypotheses' },
+  { stage: 'Model', ai: 'Statuses, roles, IA', me: 'Rules, client sign-off', out: 'System model' },
+  { stage: 'Flows', ai: 'Flow drafts', me: 'Flows and design system', out: 'User flows' },
+  { stage: 'Design', ai: 'Clickable prototypes', me: 'UI and usability tests', out: 'Tested UI' },
+  { stage: 'Hand off', ai: '', me: 'Demo, docs, screen map', out: 'Dev-ready' },
+  { stage: 'Deliver', ai: 'Case study draft', me: 'Measure with analytics', out: 'Result' },
 ] as const;
 
 // Shown under the pipeline: where the line between AI and me sits.
 export const aiPrinciple = {
   title: 'AI never owns a decision.',
-  text: 'It helps me deliver and shape research results. It still can’t build a complex product on its own: it misses constraints and loses the whole picture. Holding that picture is my job.',
+  text: 'It misses constraints and the whole picture. Holding that picture is my job.',
 };
 
 export const pipelineStats = [
-  { value: 'up to −40%', label: 'UX process and review time' },
-  { value: '6', label: 'artefacts AI drafts: report, status map, roles, IA, flows, prototypes' },
-  { value: '7', label: 'stages, from brief to delivery' },
+  { value: '−40%', label: 'UX process and review time' },
+  { value: '6', label: 'artefacts AI drafts for me' },
+  { value: '7', label: 'stages, brief to delivery' },
 ] as const;
 
 // Playground items. Copy is a draft for Taisiia to confirm; covers come later.

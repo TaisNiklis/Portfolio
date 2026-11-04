@@ -126,8 +126,7 @@ const years = new Date().getFullYear() - firstYear;
       <div class="ai-head" data-reveal>
         <h2 id="ai-title" class="h2">How I work with AI</h2>
         <p class="lead">
-          From brief to delivery, I write my own Claude skills for the slow parts of product design. AI drafts and
-          formats; the research, the decisions and the responsibility stay mine.
+          My own Claude skills take the slow parts. AI drafts, I decide.
         </p>
       </div>
       <dl class="ai-stats" data-reveal>
@@ -140,10 +139,10 @@ const years = new Date().getFullYear() - firstYear;
       </dl>
       <div class="pipe" data-reveal>
         <div class="lanes" aria-hidden="true">
-          <span>Stage</span>
-          <span class="lane-ai">AI drafts</span>
-          <span>I decide</span>
-          <span>Output</span>
+          <span></span>
+          <span class="lane-ai">AI</span>
+          <span>Me</span>
+          <span>Result</span>
         </div>
         <ol class="pipe-stages">
           {pipeline.map((p, i) => (
@@ -153,16 +152,16 @@ const years = new Date().getFullYear() - firstYear;
                 <span class="pname">{p.stage}</span>
               </h3>
               <div class={`pcell pai${p.ai ? '' : ' is-empty'}`}>
-                <span class="plabel">AI drafts</span>
-                {p.ai || 'No AI here'}
+                <span class="plabel">AI</span>
+                {p.ai || '—'}
               </div>
               <div class="pcell pme">
-                <span class="plabel">I decide</span>
+                <span class="plabel">Me</span>
                 {p.me}
               </div>
               <div class="pcell pout">
-                <span class="plabel">Output</span>
-                {p.out}
+                <span class="plabel">Result</span>
+                <span aria-hidden="true">→ </span>{p.out}
               </div>
             </li>
           ))}
@@ -568,7 +567,7 @@ const years = new Date().getFullYear() - firstYear;
   /* Pipeline infographic: stages run left to right, lanes split AI drafts from my decisions. */
   .pipe {
     display: grid;
-    grid-template-columns: 112px 1fr;
+    grid-template-columns: 64px 1fr;
     grid-template-rows: auto auto auto auto;
     column-gap: 16px;
   }
@@ -581,7 +580,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .lanes span {
     align-self: start;
-    padding-top: 14px;
+    padding-top: 6px;
     font-size: var(--step-small);
     font-weight: 600;
     color: #a9a6b6;
@@ -597,10 +596,10 @@ const years = new Date().getFullYear() - firstYear;
     margin: 0;
     padding: 0;
     grid-template-columns: repeat(7, 1fr);
-    column-gap: 10px;
+    column-gap: 20px;
   }
   .pstage {
-    row-gap: 10px;
+    row-gap: 14px;
   }
   .pstage-head {
     position: relative;
@@ -651,27 +650,31 @@ const years = new Date().getFullYear() - firstYear;
   }
   .pcell {
     margin: 0;
-    padding: 12px 14px;
-    border-radius: 14px;
     font-size: var(--step-small);
-    line-height: 1.4;
+    line-height: 1.35;
   }
   .pai {
+    justify-self: start;
+    align-self: start;
+    padding: 6px 12px;
     border: 1.5px dashed var(--amber);
+    border-radius: 999px;
     color: var(--amber);
+    font-weight: 600;
   }
   .pai.is-empty {
-    border-color: rgb(255 255 255 / 0.14);
-    color: #a9a6b6;
+    border-color: rgb(255 255 255 / 0.16);
+    color: #77748a;
   }
   .pme {
-    background: rgb(255 255 255 / 0.08);
     color: var(--bg);
+    padding-top: 4px;
   }
   .pout {
-    background: var(--amber);
-    color: var(--ink);
-    font-weight: 600;
+    color: var(--amber);
+    font-weight: 700;
+    padding-top: 12px;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
   }
   .plabel {
     display: none;
@@ -880,12 +883,12 @@ const years = new Date().getFullYear() - firstYear;
       left: -28px;
       top: 6px;
     }
-    .plabel {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      opacity: 0.75;
-      margin-bottom: 4px;
+    .pai.is-empty {
+      display: none;
+    }
+    .pout {
+      border-top: 0;
+      padding-top: 0;
     }
     .canvas {
       height: auto;
