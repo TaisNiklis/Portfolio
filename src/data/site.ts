@@ -19,19 +19,6 @@ export const person = {
 // Empty = the card shows the portrait instead.
 export const introVideo = '';
 
-// Hero tags: the work behind the cases. Scattered around the hero, they drift at different speeds on scroll.
-// x/y are % of the hero box; speed is the parallax factor (higher = moves faster).
-export const tags = [
-  { text: 'Mapping 12 statuses', x: 3, y: 6, r: -8, speed: 0.35 },
-  { text: 'Untangling roles', x: 8, y: 40, r: 6, speed: 0.15 },
-  { text: 'Interviewing users', x: 1, y: 74, r: -4, speed: 0.5 },
-  { text: 'UX audits', x: 22, y: 92, r: 4, speed: 0.25 },
-  { text: 'Design tokens', x: 80, y: 4, r: -9, speed: 0.45 },
-  { text: 'Writing Claude skills', x: 82, y: 38, r: 7, speed: 0.2 },
-  { text: 'Shipping to dev', x: 86, y: 70, r: 5, speed: 0.4 },
-  { text: 'AI onboarding', x: 66, y: 92, r: -6, speed: 0.3 },
-] as const;
-
 // Selected work. `slug` set = a live case page; otherwise the card says the case is in progress.
 export const work = [
   {

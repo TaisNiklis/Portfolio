@@ -28,39 +28,6 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
   });
 });
 
-// Hero tags: parallax with depth. Each tag has its own speed: on scroll it drifts up at that speed,
-// and with a mouse it follows the cursor, nearer tags moving more. Motion is eased so it feels floaty.
-const heroTags = [...document.querySelectorAll<HTMLElement>('.tag[data-speed]')];
-const hero = document.querySelector<HTMLElement>('.hero');
-if (heroTags.length && hero && !reduce) {
-  const narrow = window.matchMedia('(max-width: 1000px)');
-  const target = { x: 0, y: 0 };
-  const cur = { x: 0, y: 0, s: 0 };
-  let raf = 0;
-  const frame = () => {
-    const s = window.scrollY * (narrow.matches ? 0.25 : 1);
-    cur.x += (target.x - cur.x) * 0.08;
-    cur.y += (target.y - cur.y) * 0.08;
-    cur.s += (s - cur.s) * 0.2;
-    for (const t of heroTags) {
-      const k = Number(t.dataset.speed);
-      t.style.setProperty('--px', `${(cur.x * k * 90).toFixed(1)}px`);
-      t.style.setProperty('--py', `${(cur.y * k * 90 - cur.s * k).toFixed(1)}px`);
-    }
-    const settled = Math.abs(target.x - cur.x) + Math.abs(target.y - cur.y) < 0.001 && Math.abs(s - cur.s) < 0.5;
-    raf = settled ? 0 : requestAnimationFrame(frame);
-  };
-  const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
-  window.addEventListener('scroll', kick, { passive: true });
-  window.addEventListener('mousemove', (e) => {
-    target.x = e.clientX / window.innerWidth - 0.5;
-    target.y = e.clientY / window.innerHeight - 0.5;
-    kick();
-  }, { passive: true });
-  document.documentElement.addEventListener('mouseleave', () => { target.x = 0; target.y = 0; kick(); });
-  kick();
-}
-
 // Work cards stack: as the next card slides over, the one beneath shrinks and dims a little.
 const stack = [...document.querySelectorAll<HTMLElement>('[data-stack]')];
 if (stack.length > 1 && !reduce) {
