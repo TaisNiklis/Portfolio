@@ -70,7 +70,7 @@ const years = new Date().getFullYear() - firstYear;
       <span class="card-title">Faster with AI</span>
       <span class="card-big">−40%</span>
       <span class="card-text">UX process and review time with my own Claude skills pipeline.</span>
-      <span class="card-go">See the pipeline →</span>
+      <span class="card-go">See my approach →</span>
     </a>
     <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
       <span class="card-title">On the side</span>
@@ -124,9 +124,9 @@ const years = new Date().getFullYear() - firstYear;
   <section id="ai" class="ai" aria-labelledby="ai-title">
     <div class="wrap section">
       <div class="ai-head" data-reveal>
-        <h2 id="ai-title" class="h2">How I work with AI</h2>
+        <h2 id="ai-title" class="h2">How I work</h2>
         <p class="lead">
-          My own Claude skills take the slow parts. AI drafts, I decide.
+          My approach from brief to delivery. My own Claude skills take the slow parts: AI drafts, I decide.
         </p>
       </div>
       <dl class="ai-stats" data-reveal>
@@ -137,36 +137,25 @@ const years = new Date().getFullYear() - firstYear;
           </div>
         ))}
       </dl>
-      <div class="pipe" data-reveal>
-        <div class="lanes" aria-hidden="true">
-          <span></span>
-          <span class="lane-ai">AI</span>
-          <span>Me</span>
-          <span>Result</span>
-        </div>
-        <ol class="pipe-stages">
-          {pipeline.map((p, i) => (
-            <li class="pstage">
-              <h3 class="pstage-head">
-                <span class="pnum">{String(i + 1).padStart(2, '0')}</span>
-                <span class="pname">{p.stage}</span>
-              </h3>
-              <div class={`pcell pai${p.ai ? '' : ' is-empty'}`}>
-                <span class="plabel">AI</span>
-                {p.ai || '—'}
-              </div>
-              <div class="pcell pme">
-                <span class="plabel">Me</span>
-                {p.me}
-              </div>
-              <div class="pcell pout">
-                <span class="plabel">Result</span>
-                <span aria-hidden="true">→ </span>{p.out}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
+      <ol class="flow">
+        {pipeline.map((p, i) => (
+          <li class={`fstep ${i % 2 ? 'fstep-paper' : 'fstep-amber'}`} style={`grid-row:${i + 1};--i:${i};--r:${[-1.2, 1, -0.6, 1.4, -1, 0.8, -0.4][i]}deg`} data-reveal>
+            <span class="fshape" aria-hidden="true" style={`--shape:${i % 3}`}></span>
+            <h3 class="ftitle">
+              <span class="fnum">{i + 1}.</span> {p.stage}
+            </h3>
+            <p class="fme">{p.me}</p>
+            {p.ai && <p class="fai"><span>AI drafts</span> {p.ai}</p>}
+            <p class="fout">→ {p.out}</p>
+            {i < pipeline.length - 1 && (
+              <svg class="farrow" viewBox="0 0 120 90" aria-hidden="true">
+                <path d="M8 8 C 30 70, 70 78, 104 62" />
+                <path d="M88 50 L 106 62 L 90 76" />
+              </svg>
+            )}
+          </li>
+        ))}
+      </ol>
       <blockquote class="ai-principle" data-reveal>
         <p class="ai-principle-title">{aiPrinciple.title}</p>
         <p>{aiPrinciple.text}</p>
@@ -564,120 +553,111 @@ const years = new Date().getFullYear() - firstYear;
     max-width: 26ch;
   }
 
-  /* Pipeline infographic: stages run left to right, lanes split AI drafts from my decisions. */
-  .pipe {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    grid-template-rows: auto auto auto auto;
-    column-gap: 16px;
-  }
-  .lanes,
-  .pipe-stages,
-  .pstage {
-    display: grid;
-    grid-template-rows: subgrid;
-    grid-row: 1 / span 4;
-  }
-  .lanes span {
-    align-self: start;
-    padding-top: 6px;
-    font-size: var(--step-small);
-    font-weight: 600;
-    color: #a9a6b6;
-  }
-  .lanes span:first-child {
-    padding-top: 0;
-  }
-  .lanes .lane-ai {
-    color: var(--amber);
-  }
-  .pipe-stages {
+  /* Approach flow: torn-paper blocks zigzag down the page, joined by hand-drawn arrows. */
+  .flow {
     list-style: none;
     margin: 0;
     padding: 0;
-    grid-template-columns: repeat(7, 1fr);
-    column-gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
   }
-  .pstage {
-    row-gap: 14px;
-  }
-  .pstage-head {
+  .fstep {
     position: relative;
-    margin: 0 0 8px;
-    padding-top: 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    grid-column: 1 / span 6;
+    padding: clamp(28px, 3.2vw, 52px) clamp(28px, 3.6vw, 60px) clamp(32px, 3.6vw, 56px);
+    rotate: var(--r);
+    color: var(--ink);
   }
-  /* the track: a dot per stage joined by a line */
-  .pstage-head::before {
-    content: '';
+  .fstep:nth-child(even) {
+    grid-column: 7 / span 6;
+  }
+  .fstep + .fstep {
+    margin-top: clamp(-120px, -7vw, -60px);
+  }
+  .fshape {
     position: absolute;
-    top: 6px;
-    left: 0;
-    right: -10px;
-    height: 2px;
-    background: rgb(255 255 255 / 0.18);
-  }
-  .pstage:last-child .pstage-head::before {
-    right: 0;
-    background: linear-gradient(90deg, rgb(255 255 255 / 0.18), var(--amber));
-  }
-  .pstage-head::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--ink);
-    border: 2px solid var(--amber);
-  }
-  .pstage:last-child .pstage-head::after {
+    inset: 0;
+    z-index: -1;
     background: var(--amber);
+    clip-path: polygon(0% 6%, 22% 0%, 64% 3%, 100% 0%, 98% 46%, 100% 100%, 58% 96%, 18% 100%, 1% 94%, 3% 50%);
   }
-  .pnum {
-    font-size: var(--step-small);
+  .fshape[style*='--shape:1'] {
+    clip-path: polygon(2% 0%, 48% 4%, 97% 1%, 100% 38%, 97% 96%, 62% 100%, 24% 97%, 0% 100%, 2% 54%);
+  }
+  .fshape[style*='--shape:2'] {
+    clip-path: polygon(0% 2%, 36% 0%, 100% 5%, 98% 58%, 100% 97%, 70% 100%, 30% 95%, 3% 100%, 0% 40%);
+  }
+  .fstep-paper .fshape {
+    background: #f6f3ea;
+  }
+  .flow {
+    isolation: isolate;
+  }
+  .fstep {
+    isolation: isolate;
+    z-index: calc(10 - var(--i));
+  }
+  .ftitle {
+    margin: 0 0 14px;
+    font-family: var(--hand);
+    font-size: clamp(2.4rem, 1.6rem + 2.4vw, 3.8rem);
     font-weight: 600;
-    color: #a9a6b6;
+    line-height: 0.95;
+    letter-spacing: 0;
   }
-  .pname {
-    font-size: var(--step-lead);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
+  .fnum {
+    color: var(--accent);
   }
-  .pcell {
+  .fme {
     margin: 0;
-    font-size: var(--step-small);
-    line-height: 1.35;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    line-height: 1.2;
+    max-width: 22ch;
   }
-  .pai {
-    justify-self: start;
-    align-self: start;
-    padding: 6px 12px;
-    border: 1.5px dashed var(--amber);
+  .fai {
+    display: inline-flex;
+    gap: 8px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin: 16px 0 0;
+    padding: 6px 14px;
+    border: 1.5px dashed currentColor;
     border-radius: 999px;
-    color: var(--amber);
+    font-size: var(--step-small);
     font-weight: 600;
   }
-  .pai.is-empty {
-    border-color: rgb(255 255 255 / 0.16);
-    color: #77748a;
+  .fai span {
+    font-family: var(--hand);
+    font-size: 1.25em;
+    color: var(--accent);
   }
-  .pme {
-    color: var(--bg);
-    padding-top: 4px;
+  .fout {
+    margin: 16px 0 0;
+    font-family: var(--hand);
+    font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
+    font-weight: 600;
+    line-height: 1;
   }
-  .pout {
-    color: var(--amber);
-    font-weight: 700;
-    padding-top: 12px;
-    border-top: 1px solid rgb(255 255 255 / 0.12);
+  .farrow {
+    position: absolute;
+    z-index: 2;
+    width: clamp(90px, 10vw, 150px);
+    right: -24%;
+    bottom: 18%;
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  .plabel {
-    display: none;
+  .fstep:nth-child(even) .farrow {
+    right: auto;
+    left: -24%;
+    transform: scaleX(-1);
+  }
+  .fstep-amber .farrow {
+    stroke: #f6f3ea;
   }
   .ai-principle {
     margin: clamp(56px, 6vw, 96px) 0 0;
@@ -839,56 +819,21 @@ const years = new Date().getFullYear() - firstYear;
     .card {
       margin-inline: 0;
     }
-    .pipe {
-      display: block;
-    }
-    .lanes {
-      display: none;
-    }
-    .pipe-stages {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: none;
-      row-gap: 36px;
-      padding-left: 28px;
-      position: relative;
-    }
-    .pipe-stages::before {
-      content: '';
-      position: absolute;
-      left: 6px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: linear-gradient(rgb(255 255 255 / 0.18), var(--amber));
-    }
-    .pstage {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: none;
-      grid-row: auto;
-      gap: 10px;
-    }
-    .pstage-head {
+    .fstep,
+    .fstep:nth-child(even) {
       grid-column: 1 / -1;
-      padding-top: 0;
-      flex-direction: row;
-      align-items: baseline;
-      gap: 12px;
+      grid-row: auto !important;
     }
-    .pstage-head::before {
-      display: none;
+    .fstep + .fstep {
+      margin-top: 40px;
     }
-    .pstage-head::after {
-      left: -28px;
-      top: 6px;
-    }
-    .pai.is-empty {
-      display: none;
-    }
-    .pout {
-      border-top: 0;
-      padding-top: 0;
+    .farrow,
+    .fstep:nth-child(even) .farrow {
+      left: 50%;
+      right: auto;
+      bottom: -52px;
+      width: 64px;
+      transform: translateX(-50%) rotate(60deg);
     }
     .canvas {
       height: auto;
@@ -984,9 +929,6 @@ const years = new Date().getFullYear() - firstYear;
     }
     .sec-sub {
       justify-self: start;
-    }
-    .pstage {
-      grid-template-columns: 1fr;
     }
     .ai-stats {
       grid-template-columns: 1fr;
