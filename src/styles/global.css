@@ -2,7 +2,6 @@
 @import '@fontsource/schibsted-grotesk/400.css';
 @import '@fontsource/schibsted-grotesk/600.css';
 @import '@fontsource/schibsted-grotesk/800.css';
-@import '@fontsource/caveat/600.css';
 
 :root {
   --bg: #fcfcfc;
@@ -15,7 +14,6 @@
   --amber: #ffbf00;
 
   --font: 'Schibsted Grotesk', system-ui, sans-serif;
-  --hand: 'Caveat', cursive;
 
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
@@ -115,12 +113,6 @@ a {
 
 .small {
   font-size: var(--step-small);
-}
-
-.hand {
-  font-family: var(--hand);
-  font-weight: 600;
-  letter-spacing: 0;
 }
 
 /* Buttons: one shape (fully round), flat fills */

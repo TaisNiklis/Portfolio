@@ -74,16 +74,15 @@ export const work = [
   },
 ] as const;
 
-// AI pipeline, brief to delivery. `ai` = what my Claude skills (or Figma AI) draft; empty = no AI at this stage.
-// `me` = the decisions that stay mine; `out` = what the stage hands to the next one.
+// How I work, brief to delivery: one short line per stage.
 export const pipeline = [
-  { stage: 'Brief', ai: 'AI-ready docs', me: 'Requirements and goals', out: 'Clear brief' },
-  { stage: 'Research', ai: 'Research report', me: 'Market, users, analytics', out: 'Hypotheses' },
-  { stage: 'Model', ai: 'Statuses, roles, IA', me: 'Rules, client sign-off', out: 'System model' },
-  { stage: 'Flows', ai: 'Flow drafts', me: 'Flows and design system', out: 'User flows' },
-  { stage: 'Design', ai: 'Clickable prototypes', me: 'UI and usability tests', out: 'Tested UI' },
-  { stage: 'Hand off', ai: '', me: 'Demo, docs, screen map', out: 'Dev-ready' },
-  { stage: 'Deliver', ai: 'Case study draft', me: 'Measure with analytics', out: 'Result' },
+  { stage: 'Brief', me: 'Requirements, goals and the expected result, written as AI-ready docs.' },
+  { stage: 'Research', me: 'Market, competitors, users and analytics. AI packs it into a report.' },
+  { stage: 'Model', me: 'Status map, roles and IA: AI drafts, the client signs off.' },
+  { stage: 'Flows', me: 'User flows after sign-off; the design system starts in parallel.' },
+  { stage: 'Design', me: 'UI tested on wireframes or clickable prototypes built with Claude.' },
+  { stage: 'Hand off', me: 'Client demo, developer docs and a screen map.' },
+  { stage: 'Deliver', me: 'Results measured with analytics; AI drafts the case study.' },
 ] as const;
 
 // Shown under the pipeline: where the line between AI and me sits.
