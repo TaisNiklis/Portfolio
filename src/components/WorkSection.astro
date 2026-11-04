@@ -1,0 +1,162 @@
+---
+import WorkVisual from './WorkVisual.astro';
+import { work } from '../data/site';
+
+interface Props {
+  /** h1 on the Work page, h2 on the home page */
+  as?: 'h1' | 'h2';
+  /** show the link to the Work page */
+  more?: boolean;
+}
+const { as: H = 'h2', more = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section id="work" class="section wrap" aria-labelledby="work-title">
+  <div class="sec-head" data-reveal>
+    <H id="work-title" class="h2">Selected work</H>
+    <div class="sec-sub">
+      <p class="lead">B2B SaaS and AI products, from discovery to developer handoff.</p>
+      {more && <a class="link-arrow sec-more" href={`${base}/work/`}>All work <span aria-hidden="true">→</span></a>}
+    </div>
+  </div>
+  <ol class="timeline">
+    {work.map((w, i) => {
+      const href = 'slug' in w && w.slug ? `${base}/work/${w.slug}/` : null;
+      const Tag = href ? 'a' : 'div';
+      return (
+        <li class="item" style={`--i:${i}`} data-stack>
+          <Tag class="item-body" href={href ?? undefined}>
+            <h3 class="h3" data-reveal>{w.title}</h3>
+            <p class="item-text" data-reveal style="--i:1">{w.text}</p>
+            <dl class="metrics" data-reveal style="--i:2">
+              {w.metrics.map((m) => (
+                <div>
+                  <dt>{m.label}</dt>
+                  <dd>{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <div data-reveal style="--i:3">
+              <WorkVisual kind={w.visual} />
+            </div>
+            <p class="item-go" data-reveal style="--i:4">
+              {href ? (
+                <span class="link-arrow">Read the case study <span aria-hidden="true">→</span></span>
+              ) : (
+                <span class="soon">Case study in progress</span>
+              )}
+            </p>
+          </Tag>
+        </li>
+      );
+    })}
+  </ol>
+</section>
+
+<style>
+  /* Work */
+  /* Work cards stack: each card sticks under the header and the next one slides over it. */
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(32px, 4vw, 56px);
+  }
+  .item {
+    position: sticky;
+    top: calc(96px + var(--i) * 18px);
+    display: block;
+    padding: clamp(24px, 3vw, 48px);
+    background: var(--surface);
+    border-radius: calc(var(--radius) + 8px);
+    transform-origin: 50% 0;
+    scale: var(--s, 1);
+    filter: brightness(var(--b, 1));
+    box-shadow: 0 -12px 40px rgb(14 12 21 / 0.06); /* taste-skill-ignore: edge of the card sliding over */
+  }
+  .item-body {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    grid-template-rows: auto auto auto 1fr;
+    gap: 20px 48px;
+    text-decoration: none;
+    align-items: start;
+  }
+  .item-body > .h3 {
+    grid-column: 1 / -1;
+    font-size: var(--step-sub);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .item-text {
+    margin: 0;
+    max-width: 44ch;
+  }
+  .metrics {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+    grid-column: 1;
+  }
+  .metrics div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .metrics dd {
+    margin: 0;
+    font-size: var(--step-sub);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .metrics dt {
+    font-size: var(--step-body);
+    color: var(--muted);
+    max-width: 18ch;
+    margin-top: 6px;
+  }
+  .item-body > div:has(.vis) {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+  }
+  .item-go {
+    margin: 0;
+    grid-column: 1;
+    align-self: end;
+  }
+  .soon {
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1000px) {
+    .item {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .item-body {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+    }
+    .item-body > div:has(.vis),
+    .metrics,
+    .item-go {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+  @media (max-width: 760px) {
+    .item {
+      position: relative;
+      top: auto;
+      scale: none;
+      filter: none;
+      box-shadow: none; /* taste-skill-ignore: removes the stack shadow */
+    }
+  }
+</style>

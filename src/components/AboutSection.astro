@@ -1,0 +1,133 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import { person, experience } from '../data/site';
+
+interface Props {
+  as?: 'h1' | 'h2';
+  more?: boolean;
+}
+const { as: H = 'h2', more = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section id="about" class="section wrap about" aria-labelledby="about-title">
+  <div class="about-photo" data-reveal>
+    <Image src={portrait} alt="Portrait of Taisiia Silkina" widths={[420, 640, 840]} sizes="(max-width: 760px) 90vw, 420px" />
+  </div>
+  <div class="about-text">
+    <H id="about-title" class="h2" data-reveal>About me</H>
+    <p class="lead" data-reveal style="--i:1">
+      I’m a product designer from Dnipro, Ukraine, with 4+ years and 40+ projects across web, mobile, B2B SaaS and AI. I
+      like the messy part: interviews, role matrices, status maps. At ANODA I led client projects end to end and covered for
+      the Design Lead, coordinating up to three designers.
+    </p>
+    <p data-reveal style="--i:2">
+      Outside client work I build small apps, draw and write Claude skills. I’m looking for a remote role in a B2B SaaS or AI
+      product team.
+    </p>
+    <h3 class="h3 exp-title" data-reveal style="--i:3">Experience</h3>
+    <ul class="exp" data-reveal style="--i:4">
+      {experience.map((e) => (
+        <li>
+          <span class="exp-years">{e.years}</span>
+          <span class="exp-company">{e.company}</span>
+          <span class="exp-role">{e.role}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="facts" data-reveal style="--i:5">
+      Domains: B2B SaaS · AI products · FinTech · Healthcare · E-commerce · English B2
+    </p>
+    <p class="about-cta" data-reveal style="--i:6">
+      <a class="btn btn-primary" href={person.links.cv}>Open my full CV <span aria-hidden="true">→</span></a>
+      {more && <a class="link-arrow about-more" href={`${base}/about/`}>More about me <span aria-hidden="true">→</span></a>}
+    </p>
+  </div>
+</section>
+
+<style>
+  /* About */
+  .about {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  /* The photo stays put while the About text scrolls past it. */
+  .about-photo {
+    position: sticky;
+    top: 110px;
+  }
+  .about-photo :global(img) {
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 30%;
+    width: 100%;
+    max-height: min(calc(100vh - 150px), 520px);
+  }
+  .about-text .h2 {
+    margin-bottom: 28px;
+  }
+  .about-text .lead {
+    margin: 0 0 20px;
+  }
+  .exp-title {
+    margin: 48px 0 16px;
+  }
+  .exp {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .exp li {
+    display: grid;
+    grid-template-columns: 90px 160px 1fr;
+    gap: 16px;
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+  .exp-years {
+    color: var(--muted);
+  }
+  .exp-company {
+    font-weight: 600;
+  }
+  .about-cta {
+    margin: 32px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+  }
+  .about-more {
+    font-weight: 600;
+  }
+  .facts {
+    color: var(--muted);
+    margin-top: 24px;
+  }
+
+  @media (max-width: 1000px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .about-photo {
+      position: static;
+      max-width: 420px;
+    }
+  }
+  @media (max-width: 760px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .exp li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+</style>

@@ -11,11 +11,14 @@ const { title, description } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const home = `${base}/`;
 const nav = [
-  { href: `${home}#work`, label: 'Work' },
-  { href: `${home}#playground`, label: 'Playground' },
-  { href: `${home}#about`, label: 'About' },
+  { href: `${base}/work/`, label: 'Work' },
+  { href: `${base}/playground/`, label: 'Playground' },
+  { href: `${base}/about/`, label: 'About' },
   { href: person.links.cv, label: 'CV' },
 ];
+// The current section of the site is marked in the navigation.
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const isCurrent = (href: string) => href.startsWith(base) && path.startsWith(href);
 ---
 
 <!doctype html>
@@ -36,13 +39,13 @@ const nav = [
       <div class="wrap bar-inner">
         <a class="logo" href={home} aria-label={`${person.name}, home`} set:html={logo} />
         <nav class="pill" aria-label="Main">
-          {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+          {nav.map((l) => <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
         </nav>
         <a class="btn btn-amber say" href={`mailto:${person.email}?subject=Hi%20Taisiia`}>Say hi</a>
         <details class="menu">
           <summary class="btn btn-quiet">Menu</summary>
           <nav aria-label="Main, mobile">
-            {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+            {nav.map((l) => <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
             <a href={`mailto:${person.email}`}>Say hi</a>
           </nav>
         </details>
@@ -137,6 +140,10 @@ const nav = [
   }
   .pill a:hover {
     background: var(--bg);
+  }
+  .pill a[aria-current='page'] {
+    background: var(--ink);
+    color: var(--bg);
   }
   .say {
     min-height: 44px;
