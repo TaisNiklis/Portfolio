@@ -18,6 +18,7 @@
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-sub: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
   --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
   --step-display: clamp(2.125rem, 0.9rem + 5.2vw, 5.75rem);
 

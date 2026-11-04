@@ -18,7 +18,7 @@ const years = new Date().getFullYear() - firstYear;
   <section class="hero wrap" aria-labelledby="hero-title">
     <div class="tags" aria-hidden="true">
       {tags.map((t) => (
-        <span class="tag" data-speed={t.speed} style={`left:${t.x}%;top:${t.y}%;--r:${t.r}deg`}>
+        <span class="tag" data-speed={t.speed} style={`${t.x < 50 ? `left:${t.x}%` : `right:${Math.max(0, 96 - t.x - 10)}%`};top:${t.y}%;--r:${t.r}deg`}>
           {t.text}
         </span>
       ))}
@@ -123,12 +123,9 @@ const years = new Date().getFullYear() - firstYear;
   <section id="ai" class="ai" aria-labelledby="ai-title">
     <div class="wrap section">
       <div class="ai-head" data-reveal>
-        <div>
-          <p class="ai-eyebrow">How I work · brief to delivery</p>
-          <h2 id="ai-title" class="h2">{aiPrinciple.title}</h2>
-        </div>
+        <h2 id="ai-title" class="h2">{aiPrinciple.title}</h2>
         <p class="lead">
-          My own Claude skills take the slow parts and draft. {aiPrinciple.text}
+          How I work, from brief to delivery: my own Claude skills take the slow parts and draft. {aiPrinciple.text}
         </p>
       </div>
       <dl class="ai-stats" data-reveal>
@@ -142,11 +139,12 @@ const years = new Date().getFullYear() - firstYear;
       <ol class="flow">
         {pipeline.map((p, i) => (
           <li class={`fstep ${i % 2 ? 'fstep-paper' : 'fstep-amber'}`} style={`grid-row:${i + 1};--i:${i};--r:${[-1.2, 1, -0.6, 1.4, -1, 0.8, -0.4][i]}deg`} data-reveal>
-            <span class="fshape" aria-hidden="true" style={`--shape:${i % 3}`}></span>
-            <h3 class="ftitle">
-              <span class="fnum">{i + 1}.</span> {p.stage}
-            </h3>
-            <p class="fme">{p.me}</p>
+            <div class={`fpaper shape-${i % 3}`}>
+              <h3 class="ftitle">
+                <span class="fnum">{i + 1}.</span> {p.stage}
+              </h3>
+              <p class="fme">{p.me}</p>
+            </div>
             {i < pipeline.length - 1 && (
               <svg class="farrow" viewBox="0 0 124 92" aria-hidden="true">
                 <path d="M6 16 C 58 2, 102 26, 104 82" />
@@ -378,7 +376,9 @@ const years = new Date().getFullYear() - firstYear;
   }
   .card-stats {
     display: grid;
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 14px 16px;
     margin: 8px 0 0;
   }
   .card-stats div {
@@ -388,7 +388,7 @@ const years = new Date().getFullYear() - firstYear;
   .card-stats dd,
   .card-big {
     margin: 0;
-    font-size: clamp(2.25rem, 1.4rem + 2.6vw, 4rem);
+    font-size: var(--step-sub);
     font-weight: 800;
     letter-spacing: -0.05em;
     line-height: 0.95;
@@ -442,13 +442,14 @@ const years = new Date().getFullYear() - firstYear;
   .item-body {
     display: grid;
     grid-template-columns: 5fr 7fr;
+    grid-template-rows: auto auto auto 1fr;
     gap: 20px 48px;
     text-decoration: none;
     align-items: start;
   }
   .item-body > .h3 {
     grid-column: 1 / -1;
-    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
+    font-size: var(--step-sub);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -456,8 +457,6 @@ const years = new Date().getFullYear() - firstYear;
   .item-text {
     margin: 0;
     max-width: 44ch;
-    font-size: var(--step-small);
-    line-height: 1.5;
   }
   .metrics {
     margin: 0;
@@ -472,7 +471,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .metrics dd {
     margin: 0;
-    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+    font-size: var(--step-sub);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -491,6 +490,7 @@ const years = new Date().getFullYear() - firstYear;
   .item-go {
     margin: 0;
     grid-column: 1;
+    align-self: end;
   }
   .soon {
     color: var(--muted);
@@ -518,8 +518,6 @@ const years = new Date().getFullYear() - firstYear;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px 48px;
     margin: 0 0 clamp(48px, 6vw, 80px);
-    padding-top: 28px;
-    border-top: 1px solid rgb(255 255 255 / 0.14);
   }
   .ai-stats div {
     display: flex;
@@ -554,9 +552,8 @@ const years = new Date().getFullYear() - firstYear;
   .fstep {
     position: relative;
     grid-column: 1 / span 6;
-    padding: clamp(28px, 3.2vw, 52px) clamp(28px, 3.6vw, 60px) clamp(32px, 3.6vw, 56px);
     rotate: var(--r);
-    color: var(--ink);
+    z-index: calc(10 - var(--i));
   }
   .fstep:nth-child(even) {
     grid-column: 7 / span 6;
@@ -564,28 +561,21 @@ const years = new Date().getFullYear() - firstYear;
   .fstep + .fstep {
     margin-top: -72px;
   }
-  .fshape {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+  /* torn-paper ground: the text sits on it, so contrast is measured against it */
+  .fpaper {
+    padding: clamp(28px, 3.2vw, 52px) clamp(28px, 3.6vw, 60px) clamp(32px, 3.6vw, 56px);
     background: var(--amber);
+    color: var(--ink);
     clip-path: polygon(0% 6%, 22% 0%, 64% 3%, 100% 0%, 98% 46%, 100% 100%, 58% 96%, 18% 100%, 1% 94%, 3% 50%);
   }
-  .fshape[style*='--shape:1'] {
+  .fpaper.shape-1 {
     clip-path: polygon(2% 0%, 48% 4%, 97% 1%, 100% 38%, 97% 96%, 62% 100%, 24% 97%, 0% 100%, 2% 54%);
   }
-  .fshape[style*='--shape:2'] {
+  .fpaper.shape-2 {
     clip-path: polygon(0% 2%, 36% 0%, 100% 5%, 98% 58%, 100% 97%, 70% 100%, 30% 95%, 3% 100%, 0% 40%);
   }
-  .fstep-paper .fshape {
+  .fstep-paper .fpaper {
     background: #f6f3ea;
-  }
-  .flow {
-    isolation: isolate;
-  }
-  .fstep {
-    isolation: isolate;
-    z-index: calc(10 - var(--i));
   }
   .ftitle {
     margin: 0 0 14px;
@@ -622,12 +612,6 @@ const years = new Date().getFullYear() - firstYear;
   }
   .fstep-amber .farrow {
     stroke: #f6f3ea;
-  }
-  .ai-eyebrow {
-    margin: 0 0 16px;
-    font-size: var(--step-small);
-    font-weight: 600;
-    color: var(--amber);
   }
   .ai-link {
     margin: clamp(56px, 6vw, 96px) 0 0;
@@ -771,12 +755,31 @@ const years = new Date().getFullYear() - firstYear;
   }
 
   @media (max-width: 1000px) {
+    .tags {
+      position: relative;
+      inset: auto;
+      order: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 8px;
+      padding: 40px 0 0;
+    }
+    .tag {
+      position: relative;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      padding: 8px 14px;
+      transform: translateY(var(--py, 0px)) rotate(calc(var(--r) * 0.5));
+    }
     .fan {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 24px;
     }
     .card {
       margin-inline: 0;
+      rotate: calc(var(--r) * 0.35);
     }
     .fstep,
     .fstep:nth-child(even) {
@@ -837,6 +840,7 @@ const years = new Date().getFullYear() - firstYear;
     }
     .item-body {
       grid-template-columns: 1fr;
+      grid-template-rows: none;
     }
     .item-body > div:has(.vis),
     .metrics,
@@ -851,27 +855,11 @@ const years = new Date().getFullYear() - firstYear;
       top: auto;
       scale: none;
       filter: none;
+      box-shadow: none; /* taste-skill-ignore: removes the stack shadow */
     }
     .hero {
       padding-top: 24px;
       padding-bottom: 56px;
-    }
-    .tags {
-      position: relative;
-      inset: auto;
-      order: -1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px 8px;
-      padding: 8px 0 32px;
-    }
-    .tag {
-      position: relative;
-      left: auto !important;
-      top: auto !important;
-      padding: 8px 14px;
-      transform: translateY(var(--py, 0px)) rotate(calc(var(--r) * 0.5));
     }
     .fan {
       gap: 16px;

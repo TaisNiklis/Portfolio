@@ -61,7 +61,7 @@ export const work = [
     text: 'Own Claude skills draft user flows, journey maps and role and status matrices from interview notes. The decisions stay mine.',
     metrics: [
       { value: 'up to −40%', label: 'UX process and review time' },
-      { value: '4', label: 'artefacts my skills draft: flows, CJM, roles, statuses' },
+      { value: '6', label: 'artefacts AI drafts: report, statuses, roles, IA, flows, prototypes' },
     ],
     visual: 'skills',
   },

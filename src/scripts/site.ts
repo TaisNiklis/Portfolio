@@ -33,12 +33,12 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
 const heroTags = [...document.querySelectorAll<HTMLElement>('.tag[data-speed]')];
 const hero = document.querySelector<HTMLElement>('.hero');
 if (heroTags.length && hero && !reduce) {
-  const narrow = window.matchMedia('(max-width: 760px)');
+  const narrow = window.matchMedia('(max-width: 1000px)');
   const target = { x: 0, y: 0 };
   const cur = { x: 0, y: 0, s: 0 };
   let raf = 0;
   const frame = () => {
-    const s = window.scrollY * (narrow.matches ? 0.5 : 1);
+    const s = window.scrollY * (narrow.matches ? 0.25 : 1);
     cur.x += (target.x - cur.x) * 0.08;
     cur.y += (target.y - cur.y) * 0.08;
     cur.s += (s - cur.s) * 0.2;
