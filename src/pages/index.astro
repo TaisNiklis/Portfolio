@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import WorkVisual from '../components/WorkVisual.astro';
 import portrait from '../assets/portrait.jpg';
-import { person, tags, work, pipeline, pipelineStats, playground, experience, introVideo } from '../data/site';
+import { person, tags, work, pipeline, pipelineStats, aiPrinciple, playground, experience, introVideo } from '../data/site';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const firstYear = Math.min(...experience.map((e) => Number(e.years.slice(0, 4))));
@@ -126,8 +126,8 @@ const years = new Date().getFullYear() - firstYear;
       <div class="ai-head" data-reveal>
         <h2 id="ai-title" class="h2">How I work with AI</h2>
         <p class="lead">
-          I write my own Claude skills for the slow parts of product design. They give me a first draft; the decisions stay
-          mine.
+          From brief to delivery, I write my own Claude skills for the slow parts of product design. AI drafts and
+          formats; the research, the decisions and the responsibility stay mine.
         </p>
       </div>
       <dl class="ai-stats" data-reveal>
@@ -168,6 +168,10 @@ const years = new Date().getFullYear() - firstYear;
           ))}
         </ol>
       </div>
+      <blockquote class="ai-principle" data-reveal>
+        <p class="ai-principle-title">{aiPrinciple.title}</p>
+        <p>{aiPrinciple.text}</p>
+      </blockquote>
       <p class="ai-link" data-reveal>
         <a class="btn btn-amber" href={person.links.skills}>Read my case-study-writer skill on GitHub</a>
       </p>
@@ -671,6 +675,24 @@ const years = new Date().getFullYear() - firstYear;
   }
   .plabel {
     display: none;
+  }
+  .ai-principle {
+    margin: clamp(56px, 6vw, 96px) 0 0;
+    padding-left: clamp(20px, 2.5vw, 40px);
+    border-left: 4px solid var(--amber);
+    max-width: 60ch;
+  }
+  .ai-principle p {
+    margin: 0;
+    color: #d8d6e0;
+  }
+  .ai-principle .ai-principle-title {
+    font-size: var(--step-head);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--bg);
+    margin-bottom: 16px;
   }
   .ai-link {
     margin: clamp(56px, 6vw, 96px) 0 0;

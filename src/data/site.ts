@@ -79,51 +79,57 @@ export const work = [
 export const pipeline = [
   {
     stage: 'Brief',
-    ai: '',
-    me: 'Goals, constraints and success metrics with the stakeholders.',
-    out: 'Framed problem',
+    ai: 'Works from the brief docs, which I write so that AI can use them too.',
+    me: 'What has to be built, the requirements and the expected result. I clarify and ask the extra questions.',
+    out: 'Brief docs: scope, requirements, result',
   },
   {
     stage: 'Research',
-    ai: 'First customer journey map from my interview notes.',
-    me: 'Running the interviews; what to ask and which pain matters most.',
-    out: 'Journey map',
+    ai: 'Packs my findings into a structured research report.',
+    me: 'Business, market and competitor analysis, audit, interviews, surveys, analytics. The problem and hypotheses.',
+    out: 'Research report + hypotheses',
   },
   {
     stage: 'Model',
-    ai: 'Role matrix and status map drafts.',
-    me: 'The entity model and the status rules.',
-    out: 'Roles × statuses',
+    ai: 'Drafts the status map, role matrix and IA from the report.',
+    me: 'The entity model and status rules, agreed with the client.',
+    out: 'Status map, role matrix, IA',
   },
   {
     stage: 'Flows',
     ai: 'User flow drafts for each role.',
-    me: 'Information architecture and navigation.',
-    out: 'Flows and IA',
+    me: 'Flows after client sign-off; the design system and styles start in parallel.',
+    out: 'User flows + design system',
   },
   {
     stage: 'Design',
-    ai: 'Quick layout variants in Figma AI.',
-    me: 'The UI, the design system and every trade-off.',
-    out: 'UI in Figma',
+    ai: 'Clickable prototypes built with Claude for testing.',
+    me: 'The UI and every trade-off. Usability tests on wireframes or prototypes.',
+    out: 'Tested UI',
   },
   {
     stage: 'Hand off',
     ai: '',
-    me: 'Annotated screen maps and edge cases; what ships first and what waits.',
-    out: 'Dev-ready specs',
+    me: 'Client demo, developer documentation, screen map and next steps.',
+    out: 'Dev docs + screen map',
   },
   {
     stage: 'Deliver',
     ai: 'case-study-writer turns the finished project into a case study.',
-    me: 'Checking the result against the metrics, and the final word on the story.',
-    out: 'Shipped product + case study',
+    me: 'Measuring the result with the company’s analytics.',
+    out: 'Measured result + case study',
   },
 ] as const;
 
+// Shown under the pipeline: where the line between AI and me sits.
+export const aiPrinciple = {
+  title: 'AI never owns a decision.',
+  text: 'It helps me deliver and shape research results. It still can’t build a complex product on its own: it misses constraints and loses the whole picture. Holding that picture is my job.',
+};
+
 export const pipelineStats = [
   { value: 'up to −40%', label: 'UX process and review time' },
-  { value: '4', label: 'artefacts my skills draft: flows, CJM, roles, statuses' },
+  { value: '6', label: 'artefacts AI drafts: report, status map, roles, IA, flows, prototypes' },
   { value: '7', label: 'stages, from brief to delivery' },
 ] as const;
 
