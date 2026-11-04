@@ -91,7 +91,6 @@ const years = new Date().getFullYear() - firstYear;
         const Tag = href ? 'a' : 'div';
         return (
           <li class="item" style={`--i:${i}`} data-stack>
-            <p class="year" data-reveal>{w.year}</p>
             <Tag class="item-body" href={href ?? undefined}>
               <h3 class="h3" data-reveal>{w.title}</h3>
               <p class="item-text" data-reveal style="--i:1">{w.text}</p>
@@ -433,9 +432,7 @@ const years = new Date().getFullYear() - firstYear;
   .item {
     position: sticky;
     top: calc(96px + var(--i) * 18px);
-    display: grid;
-    grid-template-columns: minmax(120px, 2fr) 10fr;
-    gap: 24px;
+    display: block;
     padding: clamp(24px, 3vw, 48px);
     background: var(--surface);
     border-radius: calc(var(--radius) + 8px);
@@ -443,12 +440,6 @@ const years = new Date().getFullYear() - firstYear;
     scale: var(--s, 1);
     filter: brightness(var(--b, 1));
     box-shadow: 0 -12px 40px rgb(14 12 21 / 0.06); /* taste-skill-ignore: edge of the card sliding over */
-  }
-  .year {
-    margin: 0;
-    font-size: var(--step-lead);
-    font-weight: 800;
-    color: var(--muted);
   }
   .item-body {
     display: grid;
@@ -459,7 +450,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .item-body > .h3 {
     grid-column: 1 / -1;
-    font-size: var(--step-head);
+    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -467,6 +458,8 @@ const years = new Date().getFullYear() - firstYear;
   .item-text {
     margin: 0;
     max-width: 44ch;
+    font-size: var(--step-small);
+    line-height: 1.5;
   }
   .metrics {
     margin: 0;
@@ -481,7 +474,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .metrics dd {
     margin: 0;
-    font-size: var(--step-head);
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -754,12 +747,18 @@ const years = new Date().getFullYear() - firstYear;
     gap: clamp(32px, 6vw, 96px);
     align-items: start;
   }
+  /* The photo stays put while the About text scrolls past it. */
+  .about-photo {
+    position: sticky;
+    top: 110px;
+  }
   .about-photo :global(img) {
     border-radius: var(--radius);
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: 50% 30%;
     width: 100%;
+    max-height: min(calc(100vh - 150px), 520px);
   }
   .about-text .h2 {
     margin-bottom: 28px;
@@ -857,6 +856,7 @@ const years = new Date().getFullYear() - firstYear;
       grid-template-columns: 1fr;
     }
     .about-photo {
+      position: static;
       max-width: 420px;
     }
     .item {
