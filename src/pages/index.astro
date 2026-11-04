@@ -124,9 +124,12 @@ const years = new Date().getFullYear() - firstYear;
   <section id="ai" class="ai" aria-labelledby="ai-title">
     <div class="wrap section">
       <div class="ai-head" data-reveal>
-        <h2 id="ai-title" class="h2">How I work</h2>
+        <div>
+          <p class="ai-eyebrow">How I work · brief to delivery</p>
+          <h2 id="ai-title" class="h2">{aiPrinciple.title}</h2>
+        </div>
         <p class="lead">
-          My approach from brief to delivery. My own Claude skills take the slow parts: AI drafts, I decide.
+          My own Claude skills take the slow parts and draft. {aiPrinciple.text}
         </p>
       </div>
       <dl class="ai-stats" data-reveal>
@@ -156,10 +159,6 @@ const years = new Date().getFullYear() - firstYear;
           </li>
         ))}
       </ol>
-      <blockquote class="ai-principle" data-reveal>
-        <p class="ai-principle-title">{aiPrinciple.title}</p>
-        <p>{aiPrinciple.text}</p>
-      </blockquote>
       <p class="ai-link" data-reveal>
         <a class="btn btn-amber" href={person.links.skills}>Read my case-study-writer skill on GitHub</a>
       </p>
@@ -659,23 +658,12 @@ const years = new Date().getFullYear() - firstYear;
   .fstep-amber .farrow {
     stroke: #f6f3ea;
   }
-  .ai-principle {
-    margin: clamp(56px, 6vw, 96px) 0 0;
-    padding-left: clamp(20px, 2.5vw, 40px);
-    border-left: 4px solid var(--amber);
-    max-width: 60ch;
-  }
-  .ai-principle p {
-    margin: 0;
-    color: #d8d6e0;
-  }
-  .ai-principle .ai-principle-title {
-    font-size: var(--step-head);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    color: var(--bg);
-    margin-bottom: 16px;
+  .ai-eyebrow {
+    margin: 0 0 16px;
+    font-family: var(--hand);
+    font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
+    font-weight: 600;
+    color: var(--amber);
   }
   .ai-link {
     margin: clamp(56px, 6vw, 96px) 0 0;

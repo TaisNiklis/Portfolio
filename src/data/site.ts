@@ -89,7 +89,7 @@ export const pipeline = [
 // Shown under the pipeline: where the line between AI and me sits.
 export const aiPrinciple = {
   title: 'AI never owns a decision.',
-  text: 'It misses constraints and the whole picture. Holding that picture is my job.',
+  text: 'AI misses constraints and the whole picture. Holding that picture is my job.',
 };
 
 export const pipelineStats = [
