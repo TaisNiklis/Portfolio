@@ -38,10 +38,8 @@ const years = new Date().getFullYear() - firstYear;
   <section class="fan wrap" aria-label="Where to start">
     <a class="card tone-blue" href="#work" style="--r:-6deg" data-reveal>
       <span class="card-title">In numbers</span>
-      <dl class="card-stats">
-        <div><dt>years in B2B SaaS & AI</dt><dd>{years}+</dd></div>
-        <div><dt>projects across web, mobile, SaaS & AI</dt><dd>40+</dd></div>
-      </dl>
+      <span class="card-big">40+</span>
+      <span class="card-text">projects in {years}+ years across web, mobile, B2B SaaS and AI.</span>
       <span class="card-go">Read the cases →</span>
     </a>
     <div class="card card-photo" style="--r:3deg" data-reveal>
@@ -67,7 +65,8 @@ const years = new Date().getFullYear() - firstYear;
     </a>
     <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
       <span class="card-title">On the side</span>
-      <span class="card-text">Mobile apps, games and drawings I make for fun. One quiz app has 1,000+ downloads.</span>
+      <span class="card-big">1,000+</span>
+      <span class="card-text">downloads of my quiz app. Plus a pet app, games and drawings.</span>
       <span class="card-go">Go to the playground →</span>
     </a>
   </section>
@@ -209,7 +208,7 @@ const years = new Date().getFullYear() - firstYear;
           </li>
         ))}
       </ul>
-      <p class="facts small" data-reveal style="--i:5">
+      <p class="facts" data-reveal style="--i:5">
         Domains: B2B SaaS · AI products · FinTech · Healthcare · E-commerce · English B2
       </p>
       <p class="about-cta" data-reveal style="--i:6">
@@ -343,29 +342,12 @@ const years = new Date().getFullYear() - firstYear;
     margin-top: -6%;
     transform: translateY(var(--drift, 0));
   }
-  .card-stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-    gap: 14px 16px;
-    margin: 8px 0 0;
-  }
-  .card-stats div {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-  .card-stats dd,
   .card-big {
     margin: 0;
     font-size: var(--step-sub);
     font-weight: 800;
     letter-spacing: -0.05em;
     line-height: 0.95;
-  }
-  .card-stats dt {
-    font-size: var(--step-small);
-    font-weight: 600;
-    line-height: 1.3;
   }
   .card-photo :global(img),
   .card-photo video {
@@ -447,7 +429,7 @@ const years = new Date().getFullYear() - firstYear;
     color: var(--accent);
   }
   .metrics dt {
-    font-size: var(--step-small);
+    font-size: var(--step-body);
     color: var(--muted);
     max-width: 18ch;
     margin-top: 6px;
@@ -506,7 +488,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .ai-stats dt {
     color: #d8d6e0;
-    font-size: var(--step-small);
+    font-size: var(--step-body);
     max-width: 26ch;
   }
 
@@ -624,7 +606,7 @@ const years = new Date().getFullYear() - firstYear;
     position: absolute;
     background: var(--amber);
     padding: 18px 20px;
-    font-size: 1.05rem;
+    font-size: var(--step-body);
     font-weight: 600;
     line-height: 1.3;
     rotate: -5deg;
@@ -661,7 +643,7 @@ const years = new Date().getFullYear() - firstYear;
   .ptext {
     margin: 14px 4px 0;
     color: var(--muted);
-    font-size: var(--step-small);
+    font-size: var(--step-body);
     max-width: 34ch;
   }
 
@@ -818,9 +800,6 @@ const years = new Date().getFullYear() - firstYear;
     .card {
       aspect-ratio: 3 / 4;
       padding: 16px;
-    }
-    .card-text {
-      font-size: var(--step-small);
     }
     .sec-head,
     .ai-head {
