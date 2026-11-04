@@ -3,9 +3,11 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import WorkVisual from '../components/WorkVisual.astro';
 import portrait from '../assets/portrait.jpg';
-import { person, tags, work, aiSteps, playground, experience } from '../data/site';
+import { person, work, pipeline, pipelineStats, aiPrinciple, playground, experience, introVideo } from '../data/site';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const firstYear = Math.min(...experience.map((e) => Number(e.years.slice(0, 4))));
+const years = new Date().getFullYear() - firstYear;
 ---
 
 <Base
@@ -14,23 +16,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 >
   <!-- Hero -->
   <section class="hero wrap" aria-labelledby="hero-title">
-    <div class="tags" data-tags>
-      {tags.map((t) => (
-        <span
-          class={`tag tone-${t.tone}`}
-          data-tag
-          tabindex="0"
-          role="button"
-          aria-label={`${t.text}. Drag, or move with arrow keys.`}
-          style={`left:${t.x}%;top:${t.y}%;--r:${t.r}deg`}
-        >
-          {t.text}
-        </span>
-      ))}
-    </div>
     <p class="hello">
       Hi
-      <Image src={portrait} alt="" width={64} height={64} class="hello-face" loading="eager" />
+      <Image src={portrait} alt="" width={160} height={160} class="hello-face" loading="eager" />
       I’m {person.first}
     </p>
     <h1 id="hero-title" class="display">
@@ -38,8 +26,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <span class="line"><span>for B2B SaaS & AI</span></span>
     </h1>
     <p class="lead hero-sub">
-      I turn messy business logic into products people understand: roles, statuses and AI features. Most recently at
-      <span class="chip">ANODA</span>, before that at <span class="chip">Pinta Webware</span>.
+      I turn messy business logic into products people understand: roles, statuses and AI features.
     </p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#work">View work</a>
@@ -50,30 +37,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- Fan of cards -->
   <section class="fan wrap" aria-label="Where to start">
     <a class="card tone-blue" href="#work" style="--r:-6deg" data-reveal>
-      <span class="card-title">Selected work</span>
-      <span class="card-text">How I untangle complex B2B products, with the numbers.</span>
+      <span class="card-title">In numbers</span>
+      <span class="card-big">40+</span>
+      <span class="card-text">projects in {years}+ years across web, mobile, B2B SaaS and AI.</span>
       <span class="card-go">Read the cases →</span>
     </a>
     <div class="card card-photo" style="--r:3deg" data-reveal>
       <div class="photo-drift" data-drift>
-        <Image
-          src={portrait}
-          alt="Taisiia in a pink hoodie, lifting pixel-art sunglasses and smiling"
-          widths={[360, 540, 720]}
-          sizes="(max-width: 760px) 70vw, 280px"
-          loading="eager"
-        />
+        {introVideo ? (
+          <video src={`${base}/${introVideo}`} autoplay muted loop playsinline aria-label="Taisiia saying hi" />
+        ) : (
+          <Image
+            src={portrait}
+            alt="Taisiia in a pink hoodie, lifting pixel-art sunglasses and smiling"
+            widths={[360, 540, 720]}
+            sizes="(max-width: 760px) 70vw, 280px"
+            loading="eager"
+          />
+        )}
       </div>
     </div>
     <a class="card tone-amber" href="#ai" style="--r:-3deg" data-reveal>
-      <span class="card-title">How I work with AI</span>
-      <span class="card-text">My own Claude skills, and the decisions I keep.</span>
-      <span class="card-go">See the pipeline →</span>
+      <span class="card-title">Faster with AI</span>
+      <span class="card-big">−40%</span>
+      <span class="card-text">UX process and review time with my own Claude skills pipeline.</span>
+      <span class="card-go">See my approach →</span>
     </a>
     <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
-      <span class="card-title">Playground</span>
-      <span class="card-text">Side projects: an anime quiz, a pet app, drawings.</span>
-      <span class="card-go">Have a look →</span>
+      <span class="card-title">On the side</span>
+      <span class="card-big">1,000+</span>
+      <span class="card-text">downloads of my quiz app. Plus a pet app, games and drawings.</span>
+      <span class="card-go">Go to the playground →</span>
     </a>
   </section>
 
@@ -88,8 +82,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         const href = 'slug' in w && w.slug ? `${base}/work/${w.slug}/` : null;
         const Tag = href ? 'a' : 'div';
         return (
-          <li class="item">
-            <p class="year" data-reveal>{w.year}</p>
+          <li class="item" style={`--i:${i}`} data-stack>
             <Tag class="item-body" href={href ?? undefined}>
               <h3 class="h3" data-reveal>{w.title}</h3>
               <p class="item-text" data-reveal style="--i:1">{w.text}</p>
@@ -122,18 +115,34 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section id="ai" class="ai" aria-labelledby="ai-title">
     <div class="wrap section">
       <div class="ai-head" data-reveal>
-        <h2 id="ai-title" class="h2">How I work with AI</h2>
+        <h2 id="ai-title" class="h2">{aiPrinciple.title}</h2>
         <p class="lead">
-          I write my own Claude skills for the slow parts of product design. They give me a first draft; the decisions stay
-          mine.
+          How I work, from brief to delivery: my own Claude skills take the slow parts and draft. {aiPrinciple.text}
         </p>
       </div>
-      <ol class="steps">
-        {aiSteps.map((s, i) => (
-          <li class="step" data-reveal style={`--i:${i}`}>
-            <h3 class="verb">{s.verb}</h3>
-            <p>{s.text}</p>
-            <p class="human"><strong>Stays human:</strong> {s.human}</p>
+      <dl class="ai-stats" data-reveal>
+        {pipelineStats.map((st) => (
+          <div>
+            <dt>{st.label}</dt>
+            <dd>{st.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <ol class="flow">
+        {pipeline.map((p, i) => (
+          <li class={`fstep ${i % 2 ? 'fstep-paper' : 'fstep-amber'}`} style={`grid-row:${i + 1};--i:${i};--r:${[-1.2, 1, -0.6, 1.4, -1, 0.8, -0.4][i]}deg`} data-reveal>
+            <div class={`fpaper shape-${i % 3}`}>
+              <h3 class="ftitle">
+                <span class="fnum">{i + 1}.</span> {p.stage}
+              </h3>
+              <p class="fme">{p.me}</p>
+            </div>
+            {i < pipeline.length - 1 && (
+              <svg class="farrow" viewBox="0 0 124 92" aria-hidden="true">
+                <path d="M6 16 C 58 2, 102 26, 104 82" />
+                <path d="M90 68 L 104 84 L 117 66" />
+              </svg>
+            )}
           </li>
         ))}
       </ol>
@@ -151,7 +160,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <h2 id="play-title" class="h2">Playground</h2>
           <p class="lead">Side projects and things I make for fun.</p>
         </div>
-        <p class="sticky hand" style="left:29%;top:44%">
+        <p class="sticky" style="left:27%;top:45%">
           my rules for side projects: <br />no client, no brief, <br />just curiosity
         </p>
         {playground.map((p, i) => {
@@ -199,8 +208,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </li>
         ))}
       </ul>
-      <p class="facts small" data-reveal style="--i:5">
+      <p class="facts" data-reveal style="--i:5">
         Domains: B2B SaaS · AI products · FinTech · Healthcare · E-commerce · English B2
+      </p>
+      <p class="about-cta" data-reveal style="--i:6">
+        <a class="btn btn-primary" href={person.links.cv}>Open my full CV <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
@@ -210,54 +222,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   /* Hero */
   .hero {
     position: relative;
-    padding-top: clamp(24px, 3vw, 40px);
-    padding-bottom: clamp(56px, 6vw, 96px);
+    padding-top: clamp(48px, 6vw, 96px);
+    padding-bottom: clamp(72px, 8vw, 128px);
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .tags {
-    position: relative;
-    width: 100%;
-    height: clamp(200px, 20vw, 280px);
-    margin-bottom: 24px;
-    overflow: clip;
-    touch-action: none;
-  }
-  .tag {
-    position: absolute;
-    transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--r));
-    padding: 12px 22px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.2rem);
-    white-space: nowrap;
-    cursor: grab;
-    user-select: none;
-    touch-action: none;
-    transition: scale 0.2s var(--ease);
-  }
-  .tag:hover {
-    scale: 1.05;
-  }
-  .tag:global(.is-held) {
-    cursor: grabbing;
-    scale: 1.08;
-    box-shadow: 0 14px 30px rgb(14 12 21 / 0.2); /* taste-skill-ignore: tag lifted while dragged */
-  }
   .hello {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    font-size: var(--step-lead);
-    font-weight: 600;
-    margin: 0 0 16px;
+    gap: 0.22em;
+    font-size: var(--step-display);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+    margin: 0 0 0.12em;
+    animation: fade 0.8s var(--ease) both;
   }
   .hello :global(.hello-face) {
-    width: 44px;
-    height: 44px;
+    width: 0.82em;
+    height: 0.82em;
     border-radius: 50%;
     object-fit: cover;
     object-position: 50% 30%;
@@ -290,13 +276,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-width: 46ch;
     margin: 32px 0 0;
     animation: fade 0.8s 0.35s var(--ease) both;
-  }
-  .chip {
-    display: inline-block;
-    background: var(--surface);
-    border-radius: 999px;
-    padding: 0.05em 0.5em;
-    font-weight: 600;
   }
   .hero-actions {
     display: flex;
@@ -357,14 +336,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding: 0;
     overflow: hidden;
     position: relative;
-    z-index: 1;
   }
   .photo-drift {
     height: 112%;
     margin-top: -6%;
     transform: translateY(var(--drift, 0));
   }
-  .card-photo :global(img) {
+  .card-big {
+    margin: 0;
+    font-size: var(--step-sub);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+  }
+  .card-photo :global(img),
+  .card-photo video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -384,37 +370,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-width: 36ch;
     justify-self: end;
   }
+  /* Work cards stack: each card sticks under the header and the next one slides over it. */
   .timeline {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: clamp(88px, 10vw, 160px);
+    gap: clamp(32px, 4vw, 56px);
   }
   .item {
-    display: grid;
-    grid-template-columns: minmax(120px, 2fr) 10fr;
-    gap: 24px;
-  }
-  .year {
-    margin: 0;
-    font-size: var(--step-lead);
-    font-weight: 800;
-    color: var(--muted);
     position: sticky;
-    top: 100px;
-    align-self: start;
+    top: calc(96px + var(--i) * 18px);
+    display: block;
+    padding: clamp(24px, 3vw, 48px);
+    background: var(--surface);
+    border-radius: calc(var(--radius) + 8px);
+    transform-origin: 50% 0;
+    scale: var(--s, 1);
+    filter: brightness(var(--b, 1));
+    box-shadow: 0 -12px 40px rgb(14 12 21 / 0.06); /* taste-skill-ignore: edge of the card sliding over */
   }
   .item-body {
     display: grid;
     grid-template-columns: 5fr 7fr;
+    grid-template-rows: auto auto auto 1fr;
     gap: 20px 48px;
     text-decoration: none;
     align-items: start;
   }
   .item-body > .h3 {
     grid-column: 1 / -1;
-    font-size: var(--step-head);
+    font-size: var(--step-sub);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
@@ -436,14 +422,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
   .metrics dd {
     margin: 0;
-    font-size: var(--step-head);
+    font-size: var(--step-sub);
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
     color: var(--accent);
   }
   .metrics dt {
-    font-size: var(--step-small);
+    font-size: var(--step-body);
     color: var(--muted);
     max-width: 18ch;
     margin-top: 6px;
@@ -455,6 +441,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .item-go {
     margin: 0;
     grid-column: 1;
+    align-self: end;
   }
   .soon {
     color: var(--muted);
@@ -477,28 +464,105 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     margin: 0;
     max-width: 40ch;
   }
-  .steps {
+  .ai-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 48px;
+    margin: 0 0 clamp(48px, 6vw, 80px);
+  }
+  .ai-stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ai-stats dd {
+    order: -1;
+  }
+  .ai-stats dd {
+    margin: 0;
+    font-size: var(--step-head);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--amber);
+  }
+  .ai-stats dt {
+    color: #d8d6e0;
+    font-size: var(--step-body);
+    max-width: 26ch;
+  }
+
+  /* Approach flow: torn-paper blocks zigzag down the page, joined by hand-drawn arrows. */
+  .flow {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(48px, 5vw, 80px) clamp(32px, 5vw, 96px);
+    grid-template-columns: repeat(12, 1fr);
   }
-  .verb {
-    font-size: clamp(3rem, 1.5rem + 6vw, 7.5rem);
+  .fstep {
+    position: relative;
+    grid-column: 1 / span 6;
+    rotate: var(--r);
+    z-index: calc(10 - var(--i));
+  }
+  .fstep:nth-child(even) {
+    grid-column: 7 / span 6;
+  }
+  .fstep + .fstep {
+    margin-top: -72px;
+  }
+  /* torn-paper ground: the text sits on it, so contrast is measured against it */
+  .fpaper {
+    padding: clamp(28px, 3.2vw, 52px) clamp(28px, 3.6vw, 60px) clamp(32px, 3.6vw, 56px);
+    background: var(--amber);
+    color: var(--ink);
+    clip-path: polygon(0% 6%, 22% 0%, 64% 3%, 100% 0%, 98% 46%, 100% 100%, 58% 96%, 18% 100%, 1% 94%, 3% 50%);
+  }
+  .fpaper.shape-1 {
+    clip-path: polygon(2% 0%, 48% 4%, 97% 1%, 100% 38%, 97% 96%, 62% 100%, 24% 97%, 0% 100%, 2% 54%);
+  }
+  .fpaper.shape-2 {
+    clip-path: polygon(0% 2%, 36% 0%, 100% 5%, 98% 58%, 100% 97%, 70% 100%, 30% 95%, 3% 100%, 0% 40%);
+  }
+  .fstep-paper .fpaper {
+    background: #f6f3ea;
+  }
+  .ftitle {
+    margin: 0 0 14px;
+    font-size: var(--step-head);
     font-weight: 800;
-    letter-spacing: -0.055em;
-    line-height: 0.9;
-    margin: 0 0 20px;
-    color: var(--amber);
+    line-height: 1;
+    letter-spacing: -0.04em;
   }
-  .step p {
-    margin: 0 0 12px;
-    max-width: 44ch;
+  .fnum {
+    color: var(--accent);
   }
-  .human {
-    color: #d8d6e0;
+  .fme {
+    margin: 0;
+    font-size: var(--step-body);
+    line-height: 1.4;
+    max-width: 30ch;
+  }
+  .farrow {
+    position: absolute;
+    z-index: 2;
+    width: clamp(80px, 8vw, 124px);
+    left: calc(100% + 12px);
+    bottom: 76px;
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fstep:nth-child(even) .farrow {
+    left: auto;
+    right: calc(100% + 12px);
+    transform: scaleX(-1);
+  }
+  .fstep-amber .farrow {
+    stroke: #f6f3ea;
   }
   .ai-link {
     margin: clamp(56px, 6vw, 96px) 0 0;
@@ -524,8 +588,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
   .board {
     position: relative;
-    width: 150vw;
-    height: 1100px;
+    width: max(175vw, 2200px);
+    height: 1300px;
   }
   .play-center {
     position: absolute;
@@ -542,8 +606,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     position: absolute;
     background: var(--amber);
     padding: 18px 20px;
-    font-size: 1.6rem;
-    line-height: 1.05;
+    font-size: var(--step-body);
+    font-weight: 600;
+    line-height: 1.3;
     rotate: -5deg;
     border-radius: 6px;
     margin: 0;
@@ -578,7 +643,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .ptext {
     margin: 14px 4px 0;
     color: var(--muted);
-    font-size: var(--step-small);
+    font-size: var(--step-body);
     max-width: 34ch;
   }
 
@@ -589,12 +654,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     gap: clamp(32px, 6vw, 96px);
     align-items: start;
   }
+  /* The photo stays put while the About text scrolls past it. */
+  .about-photo {
+    position: sticky;
+    top: 110px;
+  }
   .about-photo :global(img) {
     border-radius: var(--radius);
     aspect-ratio: 4 / 5;
     object-fit: cover;
     object-position: 50% 30%;
     width: 100%;
+    max-height: min(calc(100vh - 150px), 520px);
   }
   .about-text .h2 {
     margin-bottom: 28px;
@@ -626,6 +697,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .exp-company {
     font-weight: 600;
   }
+  .about-cta {
+    margin: 32px 0 0;
+  }
   .facts {
     color: var(--muted);
     margin-top: 24px;
@@ -633,14 +707,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   @media (max-width: 1000px) {
     .fan {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 24px;
     }
     .card {
       margin-inline: 0;
+      rotate: calc(var(--r) * 0.35);
     }
-    .steps {
-      gap: 72px 48px;
+    .fstep,
+    .fstep:nth-child(even) {
+      grid-column: 1 / -1;
+      grid-row: auto !important;
+    }
+    .fstep + .fstep {
+      margin-top: 40px;
+    }
+    .farrow,
+    .fstep:nth-child(even) .farrow {
+      left: 50%;
+      right: auto;
+      bottom: -52px;
+      width: 64px;
+      transform: translateX(-50%) rotate(60deg);
     }
     .canvas {
       height: auto;
@@ -676,17 +764,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       grid-template-columns: 1fr;
     }
     .about-photo {
+      position: static;
       max-width: 420px;
     }
     .item {
       grid-template-columns: 1fr;
       gap: 8px;
     }
-    .year {
-      position: static;
-    }
     .item-body {
       grid-template-columns: 1fr;
+      grid-template-rows: none;
     }
     .item-body > div:has(.vis),
     .metrics,
@@ -696,21 +783,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
   }
   @media (max-width: 760px) {
-    .tags {
-      height: auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px 8px;
-      padding: 16px 0 8px;
-    }
-    .tag {
+    .item {
       position: relative;
-      left: auto !important;
-      top: auto !important;
-      padding: 9px 16px;
-      rotate: calc(var(--r) * 0.5);
-      transform: translate(var(--dx, 0), var(--dy, 0));
+      top: auto;
+      scale: none;
+      filter: none;
+      box-shadow: none; /* taste-skill-ignore: removes the stack shadow */
+    }
+    .hero {
+      padding-top: 24px;
+      padding-bottom: 56px;
     }
     .fan {
       gap: 16px;
@@ -719,9 +801,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       aspect-ratio: 3 / 4;
       padding: 16px;
     }
-    .card-text {
-      font-size: var(--step-small);
-    }
     .sec-head,
     .ai-head {
       grid-template-columns: 1fr;
@@ -729,13 +808,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     .sec-sub {
       justify-self: start;
     }
-    .steps {
+    .ai-stats {
       grid-template-columns: 1fr;
     }
     .board {
       grid-template-columns: 1fr;
-      gap: 48px;
-      padding: 72px calc(var(--margin) + 8px);
+      gap: 72px;
+      padding: 88px calc(var(--margin) + 8px);
     }
     .pcard {
       rotate: calc(var(--r) * 0.25);
