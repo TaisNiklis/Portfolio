@@ -1,0 +1,199 @@
+---
+import { playground } from '../data/site';
+
+interface Props {
+  as?: 'h1' | 'h2';
+  more?: boolean;
+}
+const { as: H = 'h2', more = false } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section id="playground" class:list={["play", { "play-page": H === "h1" }]} aria-labelledby="play-title">
+  <div class="canvas" data-canvas tabindex="0" aria-label="Playground canvas, drag or scroll to look around">
+    <div class="board">
+      <div class="play-center">
+        <H id="play-title" class="h2">Playground</H>
+        <p class="lead">Side projects and things I make for fun.</p>
+        {more && <a class="link-arrow sec-more" href={`${base}/playground/`}>Open the playground <span aria-hidden="true">→</span></a>}
+      </div>
+      <p class="sticky" style="left:27%;top:45%">
+        my rules for side projects: <br />no client, no brief, <br />just curiosity
+      </p>
+      {playground.map((p, i) => {
+        const Tag = 'href' in p && p.href ? 'a' : 'article';
+        return (
+          <Tag
+            class="pcard"
+            href={'href' in p ? p.href : undefined}
+            style={`left:${p.x}%;top:${p.y}%;--r:${p.r}deg`}
+          >
+            <div class={`pcover tone-${p.tone}`}>
+              <h3 class="ptitle">{p.title}</h3>
+            </div>
+            <p class="ptext">{p.text}</p>
+          </Tag>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Playground */
+  .play {
+    background: var(--surface);
+    margin-top: 0;
+  }
+  .canvas {
+    height: min(88vh, 860px);
+    overflow: auto;
+    cursor: grab;
+    scrollbar-width: none;
+  }
+  .canvas::-webkit-scrollbar {
+    display: none;
+  }
+  .canvas:global(.is-dragging) {
+    cursor: grabbing;
+    user-select: none;
+  }
+  .board {
+    position: relative;
+    width: max(175vw, 2200px);
+    height: 1300px;
+  }
+  .play-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    text-align: center;
+    width: 32ch;
+  }
+  .play-center .lead {
+    margin: 12px 0 0;
+  }
+  .sticky {
+    position: absolute;
+    background: var(--amber);
+    padding: 18px 20px;
+    font-size: var(--step-body);
+    font-weight: 600;
+    line-height: 1.3;
+    rotate: -5deg;
+    border-radius: 6px;
+    margin: 0;
+  }
+  .pcard {
+    position: absolute;
+    width: 340px;
+    rotate: var(--r);
+    text-decoration: none;
+    transition:
+      rotate 0.4s var(--ease),
+      translate 0.4s var(--ease);
+  }
+  .pcard:hover {
+    rotate: 0deg;
+    translate: 0 -8px;
+  }
+  .pcover {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+  .pcover .ptitle {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+  .ptext {
+    margin: 14px 4px 0;
+    color: var(--muted);
+    font-size: var(--step-body);
+    max-width: 34ch;
+  }
+
+  /* On its own page the playground is a calm grid: every project in view, no dragging. */
+  .play-page .canvas {
+    height: auto;
+    overflow: visible;
+    cursor: auto;
+  }
+  .play-page .board {
+    width: auto;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 72px 48px;
+    padding: clamp(48px, 6vw, 96px) var(--margin) clamp(96px, 10vw, 160px);
+    max-width: calc(var(--max) + 2 * var(--margin));
+    margin-inline: auto;
+  }
+  .play-page .play-center {
+    position: static;
+    translate: none;
+    text-align: left;
+    grid-column: 1 / -1;
+    width: auto;
+  }
+  .play-page .sticky {
+    display: none;
+  }
+  .play-page .pcard {
+    position: static;
+    width: auto;
+    rotate: calc(var(--r) * 0.5);
+  }
+
+  @media (max-width: 1000px) {
+    .play-page .board {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .canvas {
+      height: auto;
+      overflow: visible;
+      cursor: auto;
+    }
+    .board {
+      width: auto;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 56px 32px;
+      padding: 96px var(--margin);
+      max-width: calc(var(--max) + 2 * var(--margin));
+      margin-inline: auto;
+    }
+    .play-center {
+      position: static;
+      translate: none;
+      text-align: left;
+      grid-column: 1 / -1;
+      width: auto;
+    }
+    .sticky {
+      display: none;
+    }
+    .pcard {
+      position: static;
+      width: auto;
+      rotate: calc(var(--r) * 0.4);
+    }
+  }
+  @media (max-width: 760px) {
+    .board {
+      grid-template-columns: 1fr;
+      gap: 72px;
+      padding: 88px calc(var(--margin) + 8px);
+    }
+    .pcard {
+      rotate: calc(var(--r) * 0.25);
+    }
+  }
+</style>

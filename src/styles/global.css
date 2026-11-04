@@ -226,3 +226,32 @@ a {
     transform: none;
   }
 }
+
+/* Section head: title on the left, a short line (and a link to the full page) on the right */
+.sec-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: clamp(48px, 6vw, 96px);
+}
+.sec-sub {
+  max-width: 36ch;
+  justify-self: end;
+}
+.sec-sub .lead {
+  margin: 0;
+}
+.sec-more {
+  display: inline-flex;
+  margin-top: 16px;
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .sec-head {
+    grid-template-columns: 1fr;
+  }
+  .sec-sub {
+    justify-self: start;
+  }
+}

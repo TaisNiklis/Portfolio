@@ -1,0 +1,192 @@
+---
+import { pipeline, pipelineStats, aiPrinciple, person } from '../data/site';
+---
+
+<section id="ai" class="ai" aria-labelledby="ai-title">
+  <div class="wrap section">
+    <div class="ai-head" data-reveal>
+      <h2 id="ai-title" class="h2">{aiPrinciple.title}</h2>
+      <p class="lead">
+        How I work, from brief to delivery: my own Claude skills take the slow parts and draft. {aiPrinciple.text}
+      </p>
+    </div>
+    <dl class="ai-stats" data-reveal>
+      {pipelineStats.map((st) => (
+        <div>
+          <dt>{st.label}</dt>
+          <dd>{st.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <ol class="flow">
+      {pipeline.map((p, i) => (
+        <li class={`fstep ${i % 2 ? 'fstep-paper' : 'fstep-amber'}`} style={`grid-row:${i + 1};--i:${i};--r:${[-1.2, 1, -0.6, 1.4, -1, 0.8, -0.4][i]}deg`} data-reveal>
+          <div class={`fpaper shape-${i % 3}`}>
+            <h3 class="ftitle">
+              <span class="fnum">{i + 1}.</span> {p.stage}
+            </h3>
+            <p class="fme">{p.me}</p>
+          </div>
+          {i < pipeline.length - 1 && (
+            <svg class="farrow" viewBox="0 0 124 92" aria-hidden="true">
+              <path d="M6 16 C 58 2, 102 26, 104 82" />
+              <path d="M90 68 L 104 84 L 117 66" />
+            </svg>
+          )}
+        </li>
+      ))}
+    </ol>
+    <p class="ai-link" data-reveal>
+      <a class="btn btn-amber" href={person.links.skills}>Read my case-study-writer skill on GitHub</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* AI */
+  .ai {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .ai-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 48px;
+    align-items: end;
+    margin-bottom: clamp(48px, 6vw, 88px);
+  }
+  .ai-head .lead {
+    margin: 0;
+    max-width: 40ch;
+  }
+  .ai-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 48px;
+    margin: 0 0 clamp(48px, 6vw, 80px);
+  }
+  .ai-stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ai-stats dd {
+    order: -1;
+  }
+  .ai-stats dd {
+    margin: 0;
+    font-size: var(--step-head);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--amber);
+  }
+  .ai-stats dt {
+    color: #d8d6e0;
+    font-size: var(--step-body);
+    max-width: 26ch;
+  }
+
+  /* Approach flow: torn-paper blocks zigzag down the page, joined by hand-drawn arrows. */
+  .flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .fstep {
+    position: relative;
+    grid-column: 1 / span 6;
+    rotate: var(--r);
+    z-index: calc(10 - var(--i));
+  }
+  .fstep:nth-child(even) {
+    grid-column: 7 / span 6;
+  }
+  .fstep + .fstep {
+    margin-top: -72px;
+  }
+  /* torn-paper ground: the text sits on it, so contrast is measured against it */
+  .fpaper {
+    padding: clamp(28px, 3.2vw, 52px) clamp(28px, 3.6vw, 60px) clamp(32px, 3.6vw, 56px);
+    background: var(--amber);
+    color: var(--ink);
+    clip-path: polygon(0% 6%, 22% 0%, 64% 3%, 100% 0%, 98% 46%, 100% 100%, 58% 96%, 18% 100%, 1% 94%, 3% 50%);
+  }
+  .fpaper.shape-1 {
+    clip-path: polygon(2% 0%, 48% 4%, 97% 1%, 100% 38%, 97% 96%, 62% 100%, 24% 97%, 0% 100%, 2% 54%);
+  }
+  .fpaper.shape-2 {
+    clip-path: polygon(0% 2%, 36% 0%, 100% 5%, 98% 58%, 100% 97%, 70% 100%, 30% 95%, 3% 100%, 0% 40%);
+  }
+  .fstep-paper .fpaper {
+    background: #f6f3ea;
+  }
+  .ftitle {
+    margin: 0 0 14px;
+    font-size: var(--step-head);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .fnum {
+    color: var(--accent);
+  }
+  .fme {
+    margin: 0;
+    font-size: var(--step-body);
+    line-height: 1.4;
+    max-width: 30ch;
+  }
+  .farrow {
+    position: absolute;
+    z-index: 2;
+    width: clamp(80px, 8vw, 124px);
+    left: calc(100% + 12px);
+    bottom: 76px;
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .fstep:nth-child(even) .farrow {
+    left: auto;
+    right: calc(100% + 12px);
+    transform: scaleX(-1);
+  }
+  .fstep-amber .farrow {
+    stroke: #f6f3ea;
+  }
+  .ai-link {
+    margin: clamp(56px, 6vw, 96px) 0 0;
+  }
+
+  @media (max-width: 1000px) {
+    .fstep,
+    .fstep:nth-child(even) {
+      grid-column: 1 / -1;
+      grid-row: auto !important;
+    }
+    .fstep + .fstep {
+      margin-top: 40px;
+    }
+    .farrow,
+    .fstep:nth-child(even) .farrow {
+      left: 50%;
+      right: auto;
+      bottom: -52px;
+      width: 64px;
+      transform: translateX(-50%) rotate(60deg);
+    }
+  }
+  @media (max-width: 760px) {
+    .ai-head {
+      grid-template-columns: 1fr;
+    }
+    .ai-stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
