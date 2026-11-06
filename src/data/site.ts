@@ -1,5 +1,7 @@
 // Site copy and lists in one place, so text edits never touch layout code.
 
+import claudeSkillsCover from '../assets/playground/claude-skills/04-blocks.svg?url';
+
 export const person = {
   name: 'Taisiia Silkina',
   first: 'Taisiia',
@@ -90,7 +92,7 @@ export const playground = [
   { title: 'Alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'ink', x: 23, y: 64, r: 4 },
   { title: 'Recovery app', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'soft', x: 65, y: 63, r: -5 },
   { title: 'Drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'amber', x: 44, y: 67, r: -3 },
-  { title: 'Claude skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'blue', x: 44, y: 5, r: 3, href: person.links.skills },
+  { title: 'Claude skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'blue', x: 44, y: 5, r: 3, href: person.links.skills, cover: claudeSkillsCover },
 ] as const;
 
 export const experience = [
