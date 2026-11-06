@@ -19,23 +19,22 @@ export const person = {
 // Empty = the card shows the portrait instead.
 export const introVideo = '';
 
-// Selected work. `slug` set = a live case page; otherwise the card says the case is in progress.
+// Selected work. `slug` = a case page on this site; `href` = the case published elsewhere (Behance).
 export const work = [
   {
-    year: '2026',
     slug: 'connected-campaign-lifecycle-ai-platform',
-    title: 'Scattered tools into one workflow',
-    text: 'An AI advertising platform felt like separate tools. I rebuilt it around one Project entity, one guided flow and an AI assistant inside the work.',
+    title: 'AI-powered B2B advertising platform',
+    text: 'An AI ad platform covered the campaign cycle, but users saw separate tools. Reports were split, and the AI assistant was unnoticed. As UX lead, I audited users and rebuilt the product around one Project, a guided flow, and an AI assistant. We shipped in batches before a presentation, and the client continued with us.',
     metrics: [
-      { value: '12 × 8', label: 'statuses × roles in one model' },
-      { value: '≈½', label: 'of the estimated time for the full design scope' },
+      { value: '2× faster', label: 'of the estimated time for the full design scope' },
+      { value: '12 × 8', label: 'statuses × roles in one status model' },
     ],
     visual: 'entity',
   },
   {
-    year: '2026',
-    title: 'Design system: 35% faster development',
-    text: 'Figma variables, tokens and auto layout shared by designers and developers across client products at ANODA.',
+    href: person.links.behance,
+    title: 'Redesigning a service platform for beauty and healthcare',
+    text: 'Service connects customers with beauty and healthcare providers through a mobile app and a web platform. The provider platform supports professionals and businesses in managing services, specialists, branches, and profiles. I audited and redesigned the provider web platform to improve visual consistency and user experience.',
     metrics: [
       { value: '−35%', label: 'development time' },
       { value: '−15%', label: 'project budget' },
@@ -43,19 +42,16 @@ export const work = [
     visual: 'tokens',
   },
   {
-    year: '2026',
-    title: 'My AI pipeline of Claude skills',
-    text: 'Own Claude skills draft user flows, journey maps and role and status matrices from interview notes. The decisions stay mine.',
-    metrics: [
-      { value: 'up to −40%', label: 'UX process and review time' },
-      { value: '6', label: 'artefacts AI drafts: report, statuses, roles, IA, flows, prototypes' },
-    ],
-    visual: 'skills',
+    href: person.links.behance,
+    title: 'Real Estate Referral Platform',
+    text: 'Service connects property informants with real estate agents seeking opportunities. Contributors submit leads, track progress, and earn rewards on sales. The design structured a transparent process linking contributors, managers, and agents, respecting their roles and permissions.',
+    metrics: [{ value: '3 roles', label: 'One connected ecosystem' }],
+    visual: 'roles',
   },
   {
-    year: '2022–25',
-    title: 'Site redesign: +167% conversion',
-    text: 'A new information architecture and page structure for Pinta Webware’s own website.',
+    href: person.links.behance,
+    title: 'Complex HR Management Platform',
+    text: 'Remote Leverage manages distributed talent operations, supporting timesheets, payments, and document handling. I improved a prototype into a structured product, aligning business needs with user workflows, design, and a reusable system.',
     metrics: [{ value: '+167%', label: 'conversion' }],
     visual: 'conversion',
   },

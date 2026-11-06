@@ -1,5 +1,6 @@
 ---
 import WorkVisual from './WorkVisual.astro';
+import ArrowUpRight from './ArrowUpRight.astro';
 import { work } from '../data/site';
 
 interface Props {
@@ -14,15 +15,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <section id="work" class="section wrap" aria-labelledby="work-title">
   <div class="sec-head" data-reveal>
-    <H id="work-title" class="h2">Selected work</H>
+    <H id="work-title" class="h2">
+      {more ? (
+        <a class="head-link" href={`${base}/work/`}>Selected work <ArrowUpRight /></a>
+      ) : (
+        'Selected work'
+      )}
+    </H>
     <div class="sec-sub">
       <p class="lead">B2B SaaS and AI products, from discovery to developer handoff.</p>
-      {more && <a class="link-arrow sec-more" href={`${base}/work/`}>All work <span aria-hidden="true">→</span></a>}
     </div>
   </div>
   <ol class="timeline">
     {work.map((w, i) => {
-      const href = 'slug' in w && w.slug ? `${base}/work/${w.slug}/` : null;
+      const href = 'slug' in w && w.slug ? `${base}/work/${w.slug}/` : 'href' in w ? w.href : null;
       const Tag = href ? 'a' : 'div';
       return (
         <li class="item" style={`--i:${i}`} data-stack>
@@ -87,13 +93,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .item-body > .h3 {
     grid-column: 1 / -1;
     font-size: var(--step-sub);
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: -0.04em;
     line-height: 1;
   }
   .item-text {
     margin: 0;
     max-width: 44ch;
+    color: var(--muted);
   }
   .metrics {
     margin: 0;
@@ -109,7 +116,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .metrics dd {
     margin: 0;
     font-size: var(--step-sub);
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 1;
     color: var(--accent);
@@ -128,6 +135,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     margin: 0;
     grid-column: 1;
     align-self: end;
+    color: var(--accent);
   }
   .soon {
     color: var(--muted);

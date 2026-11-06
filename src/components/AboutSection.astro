@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import portrait from '../assets/portrait.jpg';
 import { person, experience } from '../data/site';
+import ArrowUpRight from './ArrowUpRight.astro';
 
 interface Props {
   as?: 'h1' | 'h2';
@@ -16,7 +17,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <Image src={portrait} alt="Portrait of Taisiia Silkina" widths={[420, 640, 840]} sizes="(max-width: 760px) 90vw, 420px" />
   </div>
   <div class="about-text">
-    <H id="about-title" class="h2" data-reveal>About me</H>
+    <H id="about-title" class="h2" data-reveal>
+      {more ? (
+        <a class="head-link" href={`${base}/about/`}>About me <ArrowUpRight /></a>
+      ) : (
+        'About me'
+      )}
+    </H>
     <p class="lead" data-reveal style="--i:1">
       I’m a product designer from Dnipro, Ukraine, with 4+ years and 40+ projects across web, mobile, B2B SaaS and AI. I
       like the messy part: interviews, role matrices, status maps. At ANODA I led client projects end to end and covered for
@@ -41,7 +48,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </p>
     <p class="about-cta" data-reveal style="--i:6">
       <a class="btn btn-primary" href={person.links.cv}>Open my full CV <span aria-hidden="true">→</span></a>
-      {more && <a class="link-arrow about-more" href={`${base}/about/`}>More about me <span aria-hidden="true">→</span></a>}
     </p>
   </div>
 </section>
