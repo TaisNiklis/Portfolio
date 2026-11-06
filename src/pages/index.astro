@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import WorkSection from '../components/WorkSection.astro';
-import DecisionsSection from '../components/DecisionsSection.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
 import PlaygroundSection from '../components/PlaygroundSection.astro';
 import AboutSection from '../components/AboutSection.astro';
 import portrait from '../assets/portrait.jpg';
@@ -60,11 +60,11 @@ const years = new Date().getFullYear() - firstYear;
         )}
       </div>
     </div>
-    <a class="card tone-amber" href="#approach" style="--r:-3deg" data-reveal>
+    <a class="card tone-amber" href={person.links.skills} style="--r:-3deg" data-reveal>
       <span class="card-title">Faster with AI</span>
       <span class="card-big">−38%</span>
       <span class="card-text">UX process and review time with my own pipeline.</span>
-      <span class="card-go">See my approach →</span>
+      <span class="card-go">See my Claude skills ↗</span>
     </a>
     <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
       <span class="card-title">On the side</span>
@@ -76,11 +76,11 @@ const years = new Date().getFullYear() - firstYear;
 
   <WorkSection more />
 
-  <DecisionsSection />
+  <AboutSection more />
 
   <PlaygroundSection more />
 
-  <AboutSection more />
+  <TestimonialsSection />
 </Base>
 
 <style>

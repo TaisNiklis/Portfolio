@@ -34,25 +34,37 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <li class="item" style={`--i:${i}`} data-stack>
           <Tag class="item-body" href={href ?? undefined}>
             <h3 class="h3" data-reveal>{w.title}</h3>
-            <p class="item-text" data-reveal style="--i:1">{w.text}</p>
-            <dl class="metrics" data-reveal style="--i:2">
-              {w.metrics.map((m) => (
-                <div>
-                  <dt>{m.label}</dt>
-                  <dd>{m.value}</dd>
-                </div>
-              ))}
-            </dl>
-            <div data-reveal style="--i:3">
+            <div class="info">
+              <p class="facts" data-reveal style="--i:1">
+                {w.facts.map((f, j) => (
+                  <span class:list={['fact', { role: j === 0 }]}>{f}</span>
+                ))}
+              </p>
+              <p class="item-text" data-reveal style="--i:1">{w.text}</p>
+              <ul class="highlights" data-reveal style="--i:2">
+                {w.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+              <dl class="metrics" data-reveal style="--i:2">
+                {w.metrics.map((m) => (
+                  <div>
+                    <dt>{m.label}</dt>
+                    <dd>{m.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p class="item-go" data-reveal style="--i:4">
+                {href ? (
+                  <span class="link-arrow">Read the case study <span aria-hidden="true">→</span></span>
+                ) : (
+                  <span class="soon">Case study in progress</span>
+                )}
+              </p>
+            </div>
+            <div class="visual" data-reveal style="--i:3">
               <WorkVisual kind={w.visual} />
             </div>
-            <p class="item-go" data-reveal style="--i:4">
-              {href ? (
-                <span class="link-arrow">Read the case study <span aria-hidden="true">→</span></span>
-              ) : (
-                <span class="soon">Case study in progress</span>
-              )}
-            </p>
           </Tag>
         </li>
       );
@@ -85,8 +97,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .item-body {
     display: grid;
     grid-template-columns: 5fr 7fr;
-    grid-template-rows: auto auto auto 1fr;
-    gap: 20px 48px;
+    gap: 24px 48px;
     text-decoration: none;
     align-items: start;
   }
@@ -97,17 +108,60 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     letter-spacing: -0.04em;
     line-height: 1;
   }
-  .item-text {
-    margin: 0;
-    max-width: 44ch;
-    color: var(--muted);
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: stretch;
   }
-  .metrics {
+  /* What a recruiter scans first: role, domain, platform, year */
+  .facts {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
+    gap: 4px 0;
+  }
+  .fact + .fact::before {
+    content: '·';
+    margin: 0 0.5em;
+    color: var(--muted);
+  }
+  .fact.role {
+    font-weight: 600;
+  }
+  .item-text {
+    margin: 0;
+    max-width: 48ch;
+    color: var(--muted);
+  }
+  .highlights {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .highlights li {
+    position: relative;
+    padding-left: 1.4em;
+    line-height: 1.4;
+  }
+  .highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0.15em;
+    top: 0.45em;
+    width: 0.55em;
+    height: 0.3em;
+    border-left: 2px solid var(--accent); /* taste-skill-ignore: tick mark, not a divider */
+    border-bottom: 2px solid var(--accent); /* taste-skill-ignore: tick mark, not a divider */
+    rotate: -45deg;
+  }
+  .metrics {
+    margin: 8px 0 0;
+    display: flex;
+    flex-wrap: wrap;
     gap: 24px 40px;
-    grid-column: 1;
   }
   .metrics div {
     display: flex;
@@ -127,14 +181,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-width: 18ch;
     margin-top: 6px;
   }
-  .item-body > div:has(.vis) {
-    grid-column: 2;
-    grid-row: 2 / span 3;
-  }
   .item-go {
-    margin: 0;
-    grid-column: 1;
-    align-self: end;
+    margin: auto 0 0;
+    padding-top: 8px;
     color: var(--accent);
   }
   .soon {
@@ -149,13 +198,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
     .item-body {
       grid-template-columns: 1fr;
-      grid-template-rows: none;
     }
-    .item-body > div:has(.vis),
-    .metrics,
-    .item-go {
-      grid-column: 1;
-      grid-row: auto;
+    .visual {
+      order: 3;
     }
   }
   @media (max-width: 760px) {
