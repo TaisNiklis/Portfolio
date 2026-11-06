@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Modular blocks clicking together, one amber block sliding in">
+  <rect width="800" height="600" fill="#0f29d2"/>
+  <g>
+    <rect x="420" y="60" width="120" height="120" rx="22" fill="#fff"/>
+    <rect x="560" y="60" width="120" height="120" rx="22" fill="#3d53e0"/>
+    <rect x="420" y="200" width="120" height="120" rx="22" fill="#0e0c15"/>
+    <rect x="560" y="200" width="120" height="120" rx="60" fill="#fff"/>
+    <rect x="280" y="200" width="120" height="120" rx="22" fill="#3d53e0"/>
+    <!-- glyphs -->
+    <path d="M455 100 h50 M455 120 h36 M455 140 h44" stroke="#0f29d2" stroke-width="10" stroke-linecap="round"/>
+    <path d="M458 244 l-16 16 16 16 M488 236 l-14 48 M502 244 l16 16 -16 16" fill="none" stroke-linejoin="round" stroke="#ffbf00" stroke-width="10" stroke-linecap="round"/>
+    <path d="M598 260 l14 14 26 -30" stroke="#0f29d2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <g transform="rotate(12 300 110)">
+    <rect x="240" y="50" width="120" height="120" rx="22" fill="#ffbf00"/>
+    <path d="M300 78 l10 22 22 10 -22 10 -10 22 -10 -22 -22 -10 22 -10z" fill="#0e0c15"/>
+  </g>
+  <path d="M160 100 h50 M130 130 h60 M175 160 h30" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+</svg>

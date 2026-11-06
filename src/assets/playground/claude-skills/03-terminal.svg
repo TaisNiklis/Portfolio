@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="A terminal running the case-study-writer skill">
+  <rect width="800" height="600" fill="#0f29d2"/>
+  <g transform="rotate(-4 450 220)">
+    <rect x="190" y="50" width="540" height="330" rx="22" fill="#0e0c15"/>
+    <circle cx="226" cy="86" r="9" fill="#ff5f57"/><circle cx="256" cy="86" r="9" fill="#ffbf00"/><circle cx="286" cy="86" r="9" fill="#3d53e0"/>
+    <g font-family="ui-monospace,Menlo,Consolas,monospace" font-size="26">
+      <text x="224" y="156" fill="#ffbf00">&gt;</text>
+      <text x="252" y="156" fill="#fff">/case-study-writer</text>
+      <text x="224" y="204" fill="#8f9bf0">reading references…</text>
+      <text x="224" y="244" fill="#8f9bf0">checking raw material…</text>
+      <text x="224" y="292" fill="#7be08f">✓</text>
+      <text x="254" y="292" fill="#fff">case.mdx is ready</text>
+      <text x="224" y="340" fill="#ffbf00">&gt;</text>
+    </g>
+    <rect x="254" y="318" width="16" height="28" fill="#ffbf00"/>
+  </g>
+</svg>
