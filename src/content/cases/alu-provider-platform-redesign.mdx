@@ -4,7 +4,7 @@ slug: "alu-provider-platform-redesign"
 summary: "ALU's provider platform looked inconsistent and had to serve very different businesses. I audited it, agreed a focused scope with the client, and delivered a new design system and six core flows that work for freelancers, salons and multi-location clinics."
 product: "ALU: a service-booking ecosystem for beauty and healthcare. Customer mobile app + provider web platform"
 role: "Product Designer: audit, UX analysis, UX/UI, design system, core flows"
-team: "[TODO: who else was on the project — PM, developers, other designers, client contacts]"
+team: "Design agency (ANODA) team [TODO: PM, developers, other designers, client contacts]"
 timeline: "[TODO: duration and year]"
 platform: "Web"
 tags: ["B2B SaaS", "Marketplace", "UX audit", "Design system", "Information architecture"]
@@ -15,9 +15,9 @@ metrics:
   - value: "6"
     label: "core flows redesigned on one design system"
     source: "project scope"
-  - value: "[TODO]"
-    label: "[TODO: e.g. audit issues found / recommendations delivered]"
-    source: "UX audit"
+  - value: "53"
+    label: "audit findings across 8 sections, each ranked by priority"
+    source: "UX audit report"
 cover: "./images/alu-provider-platform-redesign/cover.png"
 nda: false
 order: 2
@@ -37,7 +37,7 @@ Constraints:
 ## The problem
 **Business problem:** the provider platform is the supply side of the marketplace. If providers find it hard to set up services, specialists and branches, customers in the app see fewer and weaker listings. [TODO: did the client name a business reason — new providers, complaints, sales?]
 
-**User problem:** the interface **lacked visual consistency**, and similar tasks looked and worked differently across sections. The same structure also had to fit businesses of very different size. [TODO: 1–2 concrete examples from the audit]
+**User problem:** the interface **looked like a low-fidelity prototype**: shades of grey, generic icons, bold text everywhere. Similar tasks worked differently across sections: adding a service opened a new page, required-field asterisks appeared in one module only, and labels changed between the menu and the page ("Appointments" vs. "Schedule"). Some steps were dead ends, such as a verification screen with no "Back" and no "Resend code".
 
 **How might we give every type of provider one clear way to manage their business, within a budget that allows only a first phase?**
 
@@ -57,18 +57,19 @@ Constraints:
 - [TODO: who I worked with — client side, developers, other designers]
 
 ## Discovery & insights
-The audit combined several methods: [TODO: e.g. heuristic review, consistency review, flow walkthroughs, competitor review, stakeholder interviews]. I collected the findings into one list of recommendations, grouped by impact and cost.
+The audit was a **heuristic evaluation of the full provider journey**: sign-up, dashboard, profile, appointments, customers, services, specialists and branches. Each finding has a problem, a recommendation and a summary, and **each section ends with a priority matrix: critical, high, medium / low**. The result was a 62-page report with 53 findings. [TODO: did I run the audit alone or with other designers?]
 
-<Figure src="[TODO: audit-findings.png]" caption="Audit findings grouped by impact and cost. This grouping became the basis for the phase-one scope." />
+<Figure src="[TODO: audit-findings.png]" caption="One audit finding and a section priority matrix. The priorities became the basis for the phase-one scope." />
 
-1. **The interface had no shared visual system.** [TODO: evidence — e.g. N button styles, different input fields] → Build a design system first, then apply it to every flow.
-2. **One structure had to serve three business models.** A freelancer, a salon and a clinic chain manage the same entities, but at different scale. → Design the entity model before the screens.
-3. **Providers grow.** A freelancer can become a salon. → The structure must allow this change without a new setup.
-4. [TODO: one more insight from the audit — e.g. a flow where providers got stuck]
+1. **There was no shared visual system.** Text contrast was as low as **1.08:1** on the verification field and **2.29–2.81:1** on labels and inputs, against the 4.5:1 WCAG minimum. The CTA colour was used for selected options and secondary elements, so the main action did not stand out. → Build the palette, type scale and component states first, then apply them to every flow.
+2. **The same task worked differently in each section.** Services and specialists opened full pages for adding items, the service form had its own image uploader, and the language switcher appeared twice. → Reuse one set of patterns, such as the side drawer, across all management areas.
+3. **The structure did not support growth.** A specialist could not upgrade to a salon account and had to start a new one, **losing reviews, services and clients**. Business types at sign-up had no descriptions. → Design one entity model where a freelancer can grow into a salon or a chain.
+4. **New providers started from an empty screen.** The setup showed 3 steps but opened the product after step 1. The dashboard, customers and branches pages had no first action, and the branches page showed filters before any branch existed. → Every empty state explains the next step.
+5. **Entities were shown in isolation.** A specialist profile listed every salon service, not the ones they perform. Branches could only be compared through filters. → Show relationships: specialist ↔ services, branch ↔ specialists.
 
 ## Exploring options
 ### Focused phase one instead of a full redesign
-The audit showed more issues than the budget could cover. **I chose a focused first phase over a full UX overhaul**: a new visual layer, a design system and the core flows, without changing functionality. The deeper UX changes became **documented recommendations for future iterations**, so the client did not lose them. [TODO: how did the client react; was there a discussion about what to cut?]
+53 findings were more than the budget could cover, and many of them, such as notifications, financial widgets or a weekly calendar view, meant new functionality. **I chose a focused first phase over a full UX overhaul**: a new visual layer, a design system and the core flows, without new features. The functional recommendations stayed in the report as **a ready backlog for future iterations**. [TODO: confirm Appointments and Customers went to the backlog; how did the client react, was there a discussion about what to cut?]
 
 <Figure src="[TODO: scope-split.png]" caption="Scope split: what went into phase one and what went into the backlog, with the reason for each item." />
 
@@ -83,12 +84,12 @@ The model links four entities: **business profile → branches → specialists �
 
 ## The solution
 ### 1. Onboarding and account access
-Registration and sign-in are the entry point into the platform. [TODO: what changed — e.g. choice of business type at the start, fewer steps]
+**Before:** business types without descriptions, a 3-step indicator that opened the product after step 1, a verification screen with no way back, and a success message that disappeared before users could read it. [TODO: what changed in the new design]
 
 <Figure src="[TODO: onboarding-before-after.png]" caption="Registration before / after: [TODO: what changed]." />
 
 ### 2. Dashboard and navigation
-The main workspace gives access to every management area. [TODO: how navigation changed and why]
+**Before:** an empty dashboard with table headers but no data and no first action, profile access duplicated in the sidebar and header, and an internal scroll hiding branches. [TODO: how the new dashboard and navigation work]
 
 <Figure src="[TODO: dashboard-before-after.png]" caption="Dashboard before / after: [TODO: what changed]." />
 
