@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import WorkSection from '../components/WorkSection.astro';
-import AiSection from '../components/AiSection.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
 import PlaygroundSection from '../components/PlaygroundSection.astro';
 import AboutSection from '../components/AboutSection.astro';
 import portrait from '../assets/portrait.jpg';
@@ -60,11 +60,11 @@ const years = new Date().getFullYear() - firstYear;
         )}
       </div>
     </div>
-    <a class="card tone-amber" href="#ai" style="--r:-3deg" data-reveal>
+    <a class="card tone-amber" href={person.links.skills} style="--r:-3deg" data-reveal>
       <span class="card-title">Faster with AI</span>
-      <span class="card-big">−40%</span>
-      <span class="card-text">UX process and review time with my own Claude skills pipeline.</span>
-      <span class="card-go">See my approach →</span>
+      <span class="card-big">−38%</span>
+      <span class="card-text">UX process and review time with my own pipeline.</span>
+      <span class="card-go">See my Claude skills ↗</span>
     </a>
     <a class="card tone-ink" href="#playground" style="--r:5deg" data-reveal>
       <span class="card-title">On the side</span>
@@ -76,11 +76,11 @@ const years = new Date().getFullYear() - firstYear;
 
   <WorkSection more />
 
-  <AiSection />
+  <AboutSection more />
 
   <PlaygroundSection more />
 
-  <AboutSection more />
+  <TestimonialsSection />
 </Base>
 
 <style>
@@ -100,7 +100,7 @@ const years = new Date().getFullYear() - firstYear;
     align-items: center;
     gap: 0.22em;
     font-size: var(--step-display);
-    font-weight: 800;
+    font-weight: 700;
     line-height: 0.92;
     letter-spacing: -0.05em;
     margin: 0 0 0.12em;
@@ -115,7 +115,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .display {
     font-size: var(--step-display);
-    font-weight: 800;
+    font-weight: 700;
     line-height: 0.92;
     letter-spacing: -0.05em;
     margin: 0;
@@ -139,6 +139,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .hero-sub {
     max-width: 46ch;
+    color: var(--muted);
     margin: 32px 0 0;
     animation: fade 0.8s 0.35s var(--ease) both;
   }
@@ -185,7 +186,7 @@ const years = new Date().getFullYear() - firstYear;
   }
   .card-title {
     font-size: var(--step-lead);
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1.05;
   }
@@ -210,7 +211,7 @@ const years = new Date().getFullYear() - firstYear;
   .card-big {
     margin: 0;
     font-size: var(--step-sub);
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.05em;
     line-height: 0.95;
   }

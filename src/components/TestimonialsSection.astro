@@ -1,0 +1,208 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import { testimonials } from '../data/site';
+
+// Placeholders stay out of the live site: the section renders only when there is at least one real quote,
+// or when the build is a draft preview (PUBLIC_SHOW_DRAFTS=1).
+const showDrafts = import.meta.env.PUBLIC_SHOW_DRAFTS === '1';
+const items = testimonials.filter((t) => showDrafts || !('placeholder' in t && t.placeholder));
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((p) => p[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+---
+
+{items.length > 0 && (
+  <section id="kind-words" class="section wrap voices" aria-labelledby="voices-title">
+    <div class="voices-head" data-reveal>
+      <h2 id="voices-title" class="h2">What’s it like working with me?</h2>
+      <p class="lead">Words from the people I’ve worked with: teammates, leads, developers and clients.</p>
+    </div>
+    <div class="board">
+      <div class="me" aria-hidden="true">
+        <Image src={portrait} alt="" widths={[300, 600]} sizes="300px" />
+      </div>
+      {items.map((t, i) => (
+        <figure
+          class:list={['voice', `voice-${t.kind}`, `v-${t.tone}`, { draft: 'placeholder' in t && t.placeholder }]}
+          style={`--x:${t.x}%;--y:${t.y}px;--w:${t.w}px;--r:${t.r}deg;--i:${i}`}
+          data-reveal
+        >
+          {t.kind === 'message' ? (
+            <>
+              <figcaption class="who">
+                <span class="avatar" aria-hidden="true">{initials(t.name)}</span>
+                <span class="name">{t.name}</span>
+                <span class="meta">{t.meta}</span>
+              </figcaption>
+              <blockquote>{t.quote}</blockquote>
+            </>
+          ) : (
+            <>
+              <blockquote>{t.quote}</blockquote>
+              <figcaption class="who-note">
+                {t.name}, {t.meta}
+              </figcaption>
+            </>
+          )}
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .voices-head {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto clamp(40px, 5vw, 72px);
+  }
+  .voices-head .h2 {
+    max-width: 16ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+  .voices-head .lead {
+    margin: 16px auto 0;
+    color: var(--muted);
+    max-width: 46ch;
+  }
+  /* Desktop: quotes pinned around the portrait like notes on a wall */
+  .board {
+    position: relative;
+    height: 800px;
+  }
+  .me {
+    position: absolute;
+    left: 50%;
+    top: 230px;
+    width: 300px;
+    translate: -50% 0;
+    z-index: 0;
+  }
+  .me :global(img) {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border-radius: 999px 999px var(--radius) var(--radius);
+  }
+  .voice {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: min(var(--w), 100%);
+    margin: 0;
+    rotate: var(--r);
+    z-index: 1;
+    transition:
+      rotate 0.4s var(--ease),
+      translate 0.4s var(--ease);
+  }
+  .voice:hover {
+    rotate: 0deg;
+    translate: 0 -6px;
+    z-index: 3;
+  }
+  .voice blockquote {
+    margin: 0;
+  }
+  .voice-message {
+    background: #fff;
+    border: 3px solid var(--tone); /* taste-skill-ignore: coloured frame of a message card */
+    border-radius: 18px;
+    padding: 18px 22px 22px;
+  }
+  .voice-message.v-blue {
+    --tone: var(--accent);
+  }
+  .voice-message.v-amber {
+    --tone: var(--amber);
+  }
+  .voice-message.v-ink {
+    --tone: var(--ink);
+  }
+  .who {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .avatar {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .name {
+    font-weight: 600;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: var(--step-small);
+  }
+  .voice-note {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: 28px;
+    text-align: center;
+    font-weight: 600;
+    font-size: var(--step-lead);
+    line-height: 1.25;
+  }
+  .voice-note.v-amber {
+    background: var(--amber);
+  }
+  .voice-note.v-paper {
+    background: #f6f3ea;
+  }
+  .who-note {
+    font-size: var(--step-small);
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .draft blockquote {
+    font-style: italic;
+  }
+
+  @media (max-width: 1000px) {
+    .board {
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 24px;
+      align-items: start;
+    }
+    .me {
+      display: none;
+    }
+    .voice {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: auto;
+      rotate: calc(var(--r) * 0.4);
+    }
+    .voice-note {
+      aspect-ratio: auto;
+    }
+  }
+  @media (max-width: 760px) {
+    .board {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
