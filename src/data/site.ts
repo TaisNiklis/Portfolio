@@ -57,28 +57,39 @@ export const work = [
   },
 ] as const;
 
-// How I work, brief to delivery: one short line per stage.
-export const pipeline = [
-  { stage: 'Brief', me: 'Requirements, goals and the expected result, written as AI-ready docs.' },
-  { stage: 'Research', me: 'Market, competitors, users and analytics. AI packs it into a report.' },
-  { stage: 'Model', me: 'Status map, roles and IA: AI drafts, the client signs off.' },
-  { stage: 'Flows', me: 'User flows after sign-off; the design system starts in parallel.' },
-  { stage: 'Design', me: 'UI tested on wireframes or clickable prototypes built with Claude.' },
-  { stage: 'Hand off', me: 'Client demo, developer docs and a screen map.' },
-  { stage: 'Deliver', me: 'Results measured with analytics; AI drafts the case study.' },
+// Decisions behind the work: problem → my call → what it changed. Each one is taken from a published case.
+export const decisions = [
+  {
+    value: '1 Project',
+    valueLabel: 'from the brief onward',
+    title: 'One Project instead of separate tools',
+    problem: 'Users could explain each tool but not the campaign lifecycle, and reports lived in two places.',
+    call: 'I made one Project that exists from the brief onward and holds the media plan, research, reports, log and files.',
+    from: 'AI-powered B2B advertising platform',
+    slug: 'connected-campaign-lifecycle-ai-platform',
+  },
+  {
+    value: '12 × 8',
+    valueLabel: 'statuses × roles in one model',
+    title: 'One real status, a label for each role',
+    problem: 'Clients, managers and admins saw the same internal states, so a client could see “Rejected”.',
+    call: 'Each project has one real status, and each role sees its own label. A client sees “Needs Revision” and never an internal draft.',
+    from: 'AI-powered B2B advertising platform',
+    slug: 'connected-campaign-lifecycle-ai-platform',
+  },
+  {
+    value: '2 modes',
+    valueLabel: 'Projects to do, Tools to see',
+    title: 'I argued against a flat menu',
+    problem: 'The client’s team wanted Campaigns, Research, Plan and AI side by side at one level.',
+    call: 'Clients must tell where they do things from where they only see reports. The VP of Product agreed, and we kept Projects and Tools.',
+    from: 'AI-powered B2B advertising platform',
+    slug: 'connected-campaign-lifecycle-ai-platform',
+  },
 ] as const;
 
-// Shown under the pipeline: where the line between AI and me sits.
-export const aiPrinciple = {
-  title: 'AI never owns a decision.',
-  text: 'AI misses constraints and the whole picture. Holding that picture is my job.',
-};
-
-export const pipelineStats = [
-  { value: '−40%', label: 'UX process and review time' },
-  { value: '6', label: 'artefacts AI drafts for me' },
-  { value: '7', label: 'stages, brief to delivery' },
-] as const;
+// One line under the decisions: where AI sits in my work.
+export const aiNote = 'AI never owns a decision. My own Claude skills draft research reports, status maps and flows; I make the calls.';
 
 // Playground items. Copy is a draft for Taisiia to confirm; covers come later.
 export const playground = [
