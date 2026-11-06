@@ -1,0 +1,131 @@
+---
+title: "One platform for freelancers, salons and multi-branch clinics: an audit-led redesign on a fixed budget"
+slug: "alu-provider-platform-redesign"
+summary: "ALU's provider platform looked inconsistent and had to serve very different businesses. I audited it, agreed a focused scope with the client, and delivered a new design system and six core flows that work for freelancers, salons and multi-location clinics."
+product: "ALU: a service-booking ecosystem for beauty and healthcare. Customer mobile app + provider web platform"
+role: "Product Designer: audit, UX analysis, UX/UI, design system, core flows"
+team: "[TODO: who else was on the project — PM, developers, other designers, client contacts]"
+timeline: "[TODO: duration and year]"
+platform: "Web"
+tags: ["B2B SaaS", "Marketplace", "UX audit", "Design system", "Information architecture"]
+metrics:
+  - value: "3"
+    label: "provider business models in one interface"
+    source: "project scope"
+  - value: "6"
+    label: "core flows redesigned on one design system"
+    source: "project scope"
+  - value: "[TODO]"
+    label: "[TODO: e.g. audit issues found / recommendations delivered]"
+    source: "UX audit"
+cover: "./images/alu-provider-platform-redesign/cover.png"
+nda: false
+order: 2
+---
+
+## TL;DR
+ALU connects customers with beauty and healthcare providers. Its provider web platform **looked inconsistent and had to work for very different businesses**: a freelancer, a salon and a clinic chain with several branches. The client had a limited budget and wanted to keep the existing functionality. I audited the platform, agreed a focused first phase with the client, and delivered **a new visual direction, a design system and six core flows**. Broader UX changes went into a documented backlog. The design was handed to development and is partially implemented.
+
+## Context
+ALU has two products: a **mobile app** where customers discover and book services, and a **web platform** where providers run their business. Providers manage services, specialists, branches and their business profile.
+
+Constraints:
+- **A limited client budget.** We could not fix everything the audit found.
+- **Functionality stays as it is.** The redesign changes how the product looks and is organised, not what it does.
+- [TODO: deadline, tech stack, existing design assets]
+
+## The problem
+**Business problem:** the provider platform is the supply side of the marketplace. If providers find it hard to set up services, specialists and branches, customers in the app see fewer and weaker listings. [TODO: did the client name a business reason — new providers, complaints, sales?]
+
+**User problem:** the interface **lacked visual consistency**, and similar tasks looked and worked differently across sections. The same structure also had to fit businesses of very different size. [TODO: 1–2 concrete examples from the audit]
+
+**How might we give every type of provider one clear way to manage their business, within a budget that allows only a first phase?**
+
+## Goals
+- A new visual direction and a design system that make the platform consistent.
+- Clear flows for the core entities: services, specialists, branches, business profile.
+- **One structure that works for a freelancer, a salon and a multi-location business**, including growth from one model to another.
+- A clear split: what goes into this phase and what goes into a backlog.
+- [TODO: how did the client judge success?]
+
+## My role
+- **Ran the product audit** and turned findings into design recommendations.
+- **Proposed the scope of phase one** and aligned it with the client against the budget.
+- Designed the entity relationships and the six core flows.
+- **Created the new visual direction and the design system.**
+- Prepared design specifications and assets for development.
+- [TODO: who I worked with — client side, developers, other designers]
+
+## Discovery & insights
+The audit combined several methods: [TODO: e.g. heuristic review, consistency review, flow walkthroughs, competitor review, stakeholder interviews]. I collected the findings into one list of recommendations, grouped by impact and cost.
+
+<Figure src="[TODO: audit-findings.png]" caption="Audit findings grouped by impact and cost. This grouping became the basis for the phase-one scope." />
+
+1. **The interface had no shared visual system.** [TODO: evidence — e.g. N button styles, different input fields] → Build a design system first, then apply it to every flow.
+2. **One structure had to serve three business models.** A freelancer, a salon and a clinic chain manage the same entities, but at different scale. → Design the entity model before the screens.
+3. **Providers grow.** A freelancer can become a salon. → The structure must allow this change without a new setup.
+4. [TODO: one more insight from the audit — e.g. a flow where providers got stuck]
+
+## Exploring options
+### Focused phase one instead of a full redesign
+The audit showed more issues than the budget could cover. **I chose a focused first phase over a full UX overhaul**: a new visual layer, a design system and the core flows, without changing functionality. The deeper UX changes became **documented recommendations for future iterations**, so the client did not lose them. [TODO: how did the client react; was there a discussion about what to cut?]
+
+<Figure src="[TODO: scope-split.png]" caption="Scope split: what went into phase one and what went into the backlog, with the reason for each item." />
+
+### One entity model for three provider types
+[TODO: what options did you consider? For example, separate interfaces for each provider type vs. one interface where sections appear as the business grows. Which did you choose and why?]
+
+The model links four entities: **business profile → branches → specialists → services**. A freelancer is a business with one person and no extra branches. A salon or clinic adds specialists. A multi-location business adds branches, each with its own specialists and services.
+
+<Figure src="[TODO: entity-model.png]" caption="Entity model: business profile, branches, specialists and services. The same model covers a freelancer, a salon and a clinic chain." />
+
+<Figure src="[TODO: provider-types.png]" caption="How the model looks for each provider type, and how a freelancer grows into a salon." />
+
+## The solution
+### 1. Onboarding and account access
+Registration and sign-in are the entry point into the platform. [TODO: what changed — e.g. choice of business type at the start, fewer steps]
+
+<Figure src="[TODO: onboarding-before-after.png]" caption="Registration before / after: [TODO: what changed]." />
+
+### 2. Dashboard and navigation
+The main workspace gives access to every management area. [TODO: how navigation changed and why]
+
+<Figure src="[TODO: dashboard-before-after.png]" caption="Dashboard before / after: [TODO: what changed]." />
+
+### 3. Services, specialists and branches
+**The three management areas now share one layout and one set of patterns**, so a provider who learns one section knows the others. Specialists link to the services they offer. Branches hold their description, photos and assigned specialists.
+
+<Figure src="[TODO: services-before-after.png]" caption="Service management before / after: [TODO: what changed]." />
+
+<Figure src="[TODO: specialist-profile.png]" caption="Specialist profile with linked services: the relationship between two entities on one screen." />
+
+<Figure src="[TODO: branch-profile.png]" caption="Branch profile: description, photos and assigned specialists." />
+
+### 4. Business profile for each provider type
+The business profile adapts to the provider: an independent professional, a single salon or clinic, or a multi-location business. [TODO: what exactly differs between the three]
+
+<Figure src="[TODO: business-profiles.png]" caption="Business profile for a freelancer, a salon and a multi-location business." />
+
+## Delivery
+- **A new design system:** colour palette, typography, buttons, input fields and other interactive elements, with their states and variations, and consistent layout patterns.
+- **The system was applied across all six redesigned flows.**
+- Design specifications and assets prepared for development. [TODO: how handoff worked — annotations, prototype, meetings with developers]
+- **Status:** delivered for development; partially implemented. [TODO: which parts are live]
+
+<Figure src="[TODO: design-system.png]" caption="Design system: palette, type scale, components and their states." />
+
+## Impact
+- **The client received a full product audit, a new visual direction, a design system and six core flows**, ready for development.
+- **Broader UX recommendations stayed in a documented backlog**, so the next phase can start from them.
+- Part of the design is already implemented. [TODO: which part]
+- [TODO: any number or proxy — e.g. iterations until sign-off, developer feedback]
+- Impact on provider activity or bookings was not measured.
+
+> "[TODO: client or developer quote]" — [TODO: role]
+
+## What I learned
+- **A clear scope protects the budget and the quality.** Fixing the core flows well was better than touching everything a little.
+- **Model the entities before the screens** when one product serves different business types.
+- **Next:** [TODO: what to test or measure first — e.g. setup time for a new salon, the freelancer-to-salon transition]
+
+> **AI in my process:** [TODO: did you use Claude or Figma AI here — audit synthesis, flows, copy? Which decisions stayed yours?]
