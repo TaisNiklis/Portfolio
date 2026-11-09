@@ -85,12 +85,12 @@ export const work = [
 
 // Playground items. Copy is a draft for Taisiia to confirm; covers come later.
 export const playground = [
-  { title: 'Anime quiz', image: 'anime-quiz', text: 'My own mobile quiz app. 1,000+ downloads, no paid ads.', tone: 'blue', x: 24, y: 8, r: -3 },
-  { title: 'Pet owners app', image: 'pet-owners', text: 'An app for people who look after pets.', tone: 'none', x: 44, y: 5, r: 2.5 },
-  { title: 'Alias', image: 'alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'none', x: 64, y: 9, r: 2 },
-  { title: 'Claude skills', image: 'claude-skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'none', x: 23, y: 64, r: -2.5, href: person.links.skills },
-  { title: 'Drawings', image: 'drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'none', x: 44, y: 67, r: -1.5 },
-  { title: 'SAM, a recovery app', image: 'recovery', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'none', x: 65, y: 63, r: 1.5 },
+  { title: 'Anime quiz', image: 'anime-quiz', text: 'My own mobile quiz app. 1,000+ downloads, no paid ads.', tone: 'blue', x: 2.4, y: 13.2, r: -3 },
+  { title: 'Pet owners app', image: 'pet-owners', text: 'An app for people who look after pets.', tone: 'none', x: 36.8, y: 7.6, r: 2.5 },
+  { title: 'Alias', image: 'alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'none', x: 71.3, y: 15.4, r: 2 },
+  { title: 'Claude skills', image: 'claude-skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'none', x: 2.4, y: 51.5, r: -2.5, href: person.links.skills },
+  { title: 'Drawings', image: 'drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'none', x: 36.6, y: 63.6, r: -1.5 },
+  { title: 'SAM, a recovery app', image: 'recovery', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'none', x: 70.1, y: 53.9, r: 1.5 },
 ] as const;
 
 export const experience = [

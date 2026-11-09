@@ -47,42 +47,6 @@ if (stack.length > 1 && !reduce) {
   update();
 }
 
-// Playground: the canvas opens centred on its title; with a mouse it can be dragged to look around.
-const canvas = document.querySelector<HTMLElement>('[data-canvas]');
-if (canvas) {
-  let touched = false;
-  const centre = () => {
-    if (touched) return;
-    canvas.scrollLeft = (canvas.scrollWidth - canvas.clientWidth) / 2;
-    canvas.scrollTop = (canvas.scrollHeight - canvas.clientHeight) / 2;
-  };
-  centre();
-  new ResizeObserver(centre).observe(canvas);
-  canvas.addEventListener('wheel', () => (touched = true), { passive: true });
-  canvas.addEventListener('touchstart', () => (touched = true), { passive: true });
-
-  if (window.matchMedia('(pointer: fine)').matches) {
-    let down = false, sx = 0, sy = 0, sl = 0, st = 0, moved = false;
-    canvas.addEventListener('pointerdown', (e) => {
-      if ((e.target as HTMLElement).closest('a, button')) return;
-      touched = true; down = true; moved = false;
-      sx = e.clientX; sy = e.clientY; sl = canvas.scrollLeft; st = canvas.scrollTop;
-      canvas.classList.add('is-dragging');
-    });
-    window.addEventListener('pointermove', (e) => {
-      if (!down) return;
-      if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) > 4) moved = true;
-      canvas.scrollLeft = sl - (e.clientX - sx);
-      canvas.scrollTop = st - (e.clientY - sy);
-    });
-    window.addEventListener('pointerup', () => {
-      down = false;
-      canvas.classList.remove('is-dragging');
-    });
-    canvas.addEventListener('click', (e) => { if (moved) e.preventDefault(); }, true);
-  }
-}
-
 // One moving picture: the portrait drifts slowly with the scroll.
 const drift = document.querySelector<HTMLElement>('[data-drift]');
 if (drift && !reduce) {
