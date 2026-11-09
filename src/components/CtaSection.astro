@@ -9,16 +9,16 @@ type Sticker =
 const stickers: Sticker[] = [
   { kind: 'dot', icon: 'smile', tone: 'blue', x: 0, y: 8, r: -8 },
   { kind: 'pill', text: 'say hi', tone: 'ink', x: 5, y: 48, r: 32, w: 13 },
-  { kind: 'dot', icon: 'chat', tone: 'white', x: 15, y: 2, r: 10 },
+  { kind: 'dot', icon: 'chat', tone: 'amber', x: 15, y: 2, r: 10 },
   { kind: 'dot', icon: 'smile', tone: 'ink', x: 13, y: 70, r: 6 },
   { kind: 'pill', text: 'let’s talk', tone: 'blue', x: 23, y: 26, r: -6, w: 15 },
   { kind: 'dot', icon: 'mail', tone: 'ink', x: 26, y: 72, r: -10 },
-  { kind: 'pill', text: 'open to work', tone: 'white', x: 35, y: 52, r: 4, w: 19 },
+  { kind: 'pill', text: 'open to work', tone: 'amber', x: 35, y: 52, r: 4, w: 19 },
   { kind: 'dot', icon: 'globe', tone: 'blue', x: 43, y: 6, r: 0 },
-  { kind: 'dot', icon: 'smile', tone: 'white', x: 55, y: 18, r: -12 },
+  { kind: 'dot', icon: 'smile', tone: 'amber', x: 55, y: 18, r: -12 },
   { kind: 'pill', text: 'remote', tone: 'ink', x: 58, y: 56, r: -14, w: 13 },
   { kind: 'pill', text: 'B2B SaaS & AI', tone: 'blue', x: 66, y: 20, r: 18, w: 19 },
-  { kind: 'dot', icon: 'mail', tone: 'white', x: 72, y: 68, r: 8 },
+  { kind: 'dot', icon: 'mail', tone: 'amber', x: 72, y: 68, r: 8 },
   { kind: 'dot', icon: 'chat', tone: 'blue', x: 84, y: 54, r: -6 },
   { kind: 'dot', icon: 'smile', tone: 'ink', x: 89, y: 8, r: 12 },
 ];
@@ -28,11 +28,14 @@ const stickers: Sticker[] = [
 <section class="wrap cta-wrap" aria-labelledby="cta-title">
   <div class="cta">
     <div class="cta-copyblock">
-      <h2 id="cta-title" class="cta-title">Looking for a designer who takes ownership?</h2>
-      <p class="cta-text">
-        I’d love to join a product-driven, collaborative team that values thoughtful design, open communication and
-        growth. I like solving complex UX challenges and owning solutions that work for both users and the business.
-      </p>
+      <div class="cta-pitch">
+        <h2 id="cta-title" class="cta-title">Looking for a designer who takes ownership?</h2>
+        <p class="cta-text">
+          I’d love to join a product-driven, collaborative team that values thoughtful design, open communication and
+          growth. I like solving complex UX challenges and owning solutions that work for both users and the business.
+        </p>
+      </div>
+      <div class="cta-contact">
       <div class="cta-email-row">
         <a class="cta-email" href={`mailto:${person.email}?subject=Hi%20Taisiia`}>{person.email}</a>
         <button class="cta-copy" type="button" data-copy={person.email} aria-label="Copy email address">
@@ -48,6 +51,7 @@ const stickers: Sticker[] = [
         <li><a class="link-arrow" href={person.links.cv}>CV <span aria-hidden="true">↗</span></a></li>
         <li><a class="link-arrow" href={person.links.behance}>Behance <span aria-hidden="true">↗</span></a></li>
       </ul>
+      </div>
     </div>
 
     <div class="pile" aria-hidden="true">
@@ -100,19 +104,28 @@ const stickers: Sticker[] = [
     position: relative;
     overflow: hidden;
     border-radius: calc(var(--radius) + 8px);
-    background: var(--amber);
+    background: var(--surface);
     color: var(--ink);
-    padding: clamp(48px, 6vw, 96px) clamp(20px, 4vw, 56px) 0;
-    text-align: center;
+    padding: clamp(40px, 4vw, 56px) clamp(20px, 4vw, 56px) 0;
   }
+  /* Light card: pitch on the left, email and links on the right (Figma: Sticker/CTA, Tone=Light) */
   .cta-copyblock {
     position: relative;
     z-index: 1;
-    max-width: 760px;
-    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px 48px;
+  }
+  .cta-pitch {
+    flex: 0 1 680px;
+  }
+  .cta-contact {
+    flex: 0 0 auto;
   }
   .cta-title {
-    margin: 0 auto;
+    margin: 0;
     max-width: 18ch;
     font-size: var(--step-head);
     font-weight: 700;
@@ -121,14 +134,14 @@ const stickers: Sticker[] = [
     text-wrap: balance;
   }
   .cta-text {
-    margin: 20px auto 0;
+    margin: 20px 0 0;
     max-width: 58ch;
   }
   .cta-email-row {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    margin-top: clamp(28px, 3vw, 40px);
+    margin-top: 0;
   }
   .cta-email {
     font-size: clamp(1.25rem, 0.9rem + 1.8vw, 2.5rem);
@@ -174,8 +187,7 @@ const stickers: Sticker[] = [
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px 40px;
+    gap: 12px clamp(20px, 3vw, 40px);
     font-size: var(--step-lead);
     font-weight: 600;
   }
@@ -229,8 +241,8 @@ const stickers: Sticker[] = [
     background: var(--ink);
     color: var(--bg);
   }
-  .t-white {
-    background: #fff;
+  .t-amber {
+    background: var(--amber);
     color: var(--ink);
   }
   /* The pile drops in when the card enters (site.ts adds .is-in) */
