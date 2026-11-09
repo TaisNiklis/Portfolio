@@ -16,17 +16,35 @@ document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
 
 // Copy email
 document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+  // A button may keep an icon: then only its [data-copy-label] text changes.
+  const target = btn.querySelector<HTMLElement>('[data-copy-label]') ?? btn;
   btn.addEventListener('click', async () => {
-    const label = btn.textContent;
+    const label = target.textContent;
     try {
       await navigator.clipboard.writeText(btn.dataset.copy ?? '');
-      btn.textContent = 'Copied';
+      target.textContent = 'Copied';
     } catch {
       window.location.href = `mailto:${btn.dataset.copy}`;
     }
-    setTimeout(() => (btn.textContent = label), 1600);
+    setTimeout(() => (target.textContent = label), 1600);
   });
 });
+
+// CTA statement: the words darken one by one as the block scrolls up the screen.
+const fill = document.querySelector<HTMLElement>('[data-fill]');
+if (fill && !reduce) {
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const r = fill.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // 0 when the statement enters at the bottom, 1 once it reaches the upper third
+    const p = Math.min(Math.max((vh - r.top) / (vh * 0.6), 0), 1);
+    fill.style.setProperty('--p', p.toFixed(3));
+  };
+  window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+}
 
 // Work cards stack: as the next card slides over, the one beneath shrinks and dims a little.
 const stack = [...document.querySelectorAll<HTMLElement>('[data-stack]')];
