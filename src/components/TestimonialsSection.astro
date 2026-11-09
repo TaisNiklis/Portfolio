@@ -3,10 +3,7 @@ import { Image } from 'astro:assets';
 import cutout from '../assets/photos/cutout.png';
 import { testimonials } from '../data/site';
 
-// Placeholders stay out of the live site: the section renders only when there is at least one real quote,
-// or when the build is a draft preview (PUBLIC_SHOW_DRAFTS=1).
-const showDrafts = import.meta.env.PUBLIC_SHOW_DRAFTS === '1';
-const items = testimonials.filter((t) => showDrafts || !('placeholder' in t && t.placeholder));
+const items = testimonials;
 const initials = (name: string) =>
   name
     .split(' ')

@@ -100,8 +100,7 @@ export const experience = [
 ] as const;
 
 // Kind words. Replace every `placeholder: true` item with a real quote (LinkedIn recommendation, Slack kudos,
-// client email) and delete the flag. While any placeholders remain, the section is hidden on the live site
-// unless the build runs with PUBLIC_SHOW_DRAFTS=1.
+// client email) and delete the flag. Placeholder quotes are shown in italics.
 // kind: 'message' = a chat or LinkedIn-style card, 'note' = a sticky note. x/y place it on the desktop board.
 export const testimonials = [
   { kind: 'message', tone: 'blue', name: 'Colleague name', meta: 'Role, Company · Slack', quote: 'Paste a real kudos message here: what Taisiia did, for whom, and what changed. 30–60 words work best.', x: 0, y: 22, w: 500, r: -2.5, placeholder: true },
