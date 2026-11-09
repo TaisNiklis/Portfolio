@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import logo from '../assets/logo.svg?raw';
 import { person } from '../data/site';
+import CtaSection from '../components/CtaSection.astro';
 
 interface Props {
   title: string;
@@ -56,6 +57,8 @@ const isCurrent = (href: string) => href.startsWith(base) && path.startsWith(hre
       <slot />
     </main>
 
+    <CtaSection />
+
     <footer class="foot" id="contact">
       <div class="wrap foot-top">
         <div>
@@ -74,7 +77,11 @@ const isCurrent = (href: string) => href.startsWith(base) && path.startsWith(hre
       </div>
       <div class="wrap foot-legal small">
         <span>{person.name} · Product designer · {person.location}</span>
-        <span>Designed in Figma, built with Astro and Claude</span>
+        <span class="foot-legal-links">
+          <a href={`${base}/privacy/`}>Privacy Policy</a>
+          <a href={`${base}/terms/`}>Terms of Use</a>
+          <span>Designed in Figma, built with Astro and Claude</span>
+        </span>
       </div>
       <div class="foot-name" aria-hidden="true" set:html={logo} />
     </footer>
@@ -228,6 +235,14 @@ const isCurrent = (href: string) => href.startsWith(base) && path.startsWith(hre
     display: grid;
     gap: 14px;
     font-size: var(--step-body);
+  }
+  .foot-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+  .foot-legal-links a {
+    color: inherit;
   }
   .foot-legal {
     display: flex;

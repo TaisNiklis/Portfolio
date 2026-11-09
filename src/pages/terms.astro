@@ -1,0 +1,64 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { person } from '../data/site';
+---
+
+<LegalPage
+  title="Terms of Use"
+  description="Terms for using this portfolio site and the work shown on it."
+  updated="9 November 2026"
+>
+  <p>
+    By using this site you agree to these terms. If you do not agree, please do not use the site. Questions are welcome at{" "}
+    <a href={`mailto:${person.email}`}>{person.email}</a>.
+  </p>
+
+  <h2>What the site is for</h2>
+  <p>
+    This is the personal portfolio of {person.name}. It shows my work and how I approach product design, so that people
+    can decide whether to work with me. It is not a shop and offers no services online.
+  </p>
+
+  <h2>Ownership of the content</h2>
+  <p>
+    The site design, texts, illustrations and case studies are mine unless stated otherwise. You may share links to any
+    page. Please do not copy, republish or reuse the content, images or case studies without my written permission.
+  </p>
+
+  <h2>Client work and NDAs</h2>
+  <p>
+    Some projects are covered by non-disclosure agreements. In those case studies I hide or change client names, people,
+    data and screens. Product names, logos and trademarks of other companies belong to their owners, and showing them
+    here does not mean those companies endorse me.
+  </p>
+
+  <h2>Claude skills on GitHub</h2>
+  <p>
+    The Claude skills I link to are published on GitHub. Their use is governed by the terms in that repository, not by
+    this page.
+  </p>
+
+  <h2>Accuracy</h2>
+  <p>
+    I describe my work and its results as accurately as I can.
+    The site is provided as it is, without any warranty, and may change at any time.
+  </p>
+
+  <h2>Links to other sites</h2>
+  <p>
+    The site links to other services such as LinkedIn, Behance, Dribbble and GitHub. I am not responsible for their
+    content or their terms.
+  </p>
+
+  <h2>Liability</h2>
+  <p>
+    To the extent the law allows, I am not liable for any loss that comes from using this site or relying on its
+    content.
+  </p>
+
+  <h2>Governing law</h2>
+  <p>These terms are governed by the laws of Ukraine.</p>
+
+  <h2>Changes</h2>
+  <p>I may update these terms. The date at the top shows the latest version.</p>
+</LegalPage>
