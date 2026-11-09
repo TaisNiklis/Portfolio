@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import portrait from '../assets/portrait.jpg';
+import cutout from '../assets/photos/cutout.png';
 import { testimonials } from '../data/site';
 
 // Placeholders stay out of the live site: the section renders only when there is at least one real quote,
@@ -24,7 +24,7 @@ const initials = (name: string) =>
     </div>
     <div class="board">
       <div class="me" aria-hidden="true">
-        <Image src={portrait} alt="" widths={[300, 600]} sizes="300px" />
+        <Image src={cutout} alt="" widths={[520, 1040]} sizes="514px" />
       </div>
       {items.map((t, i) => (
         <figure
@@ -74,22 +74,20 @@ const initials = (name: string) =>
   /* Desktop: quotes pinned around the portrait like notes on a wall */
   .board {
     position: relative;
-    height: 800px;
+    height: 720px;
   }
+  /* Cut-out portrait standing in the middle of the board */
   .me {
     position: absolute;
-    left: 50%;
-    top: 230px;
-    width: 300px;
-    translate: -50% 0;
+    left: 29.65%;
+    top: 0;
+    width: 37.4%;
     z-index: 0;
   }
   .me :global(img) {
     width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    object-position: 50% 30%;
-    border-radius: 999px 999px var(--radius) var(--radius);
+    height: auto;
+    display: block;
   }
   .voice {
     position: absolute;

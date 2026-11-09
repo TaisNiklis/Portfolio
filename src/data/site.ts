@@ -85,12 +85,12 @@ export const work = [
 
 // Playground items. Copy is a draft for Taisiia to confirm; covers come later.
 export const playground = [
-  { title: 'Anime quiz', text: 'My own mobile quiz app. 1,000+ downloads, no paid ads.', tone: 'blue', x: 24, y: 8, r: -6 },
-  { title: 'Pet owners app', text: 'An app for people who look after pets.', tone: 'amber', x: 64, y: 9, r: 5 },
-  { title: 'Alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'ink', x: 23, y: 64, r: 4 },
-  { title: 'Recovery app', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'soft', x: 65, y: 63, r: -5 },
-  { title: 'Drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'amber', x: 44, y: 67, r: -3 },
-  { title: 'Claude skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'blue', x: 44, y: 5, r: 3, href: person.links.skills },
+  { title: 'Anime quiz', image: 'anime-quiz', text: 'My own mobile quiz app. 1,000+ downloads, no paid ads.', tone: 'blue', x: 24, y: 8, r: -3 },
+  { title: 'Pet owners app', image: 'pet-owners', text: 'An app for people who look after pets.', tone: 'none', x: 44, y: 5, r: 2.5 },
+  { title: 'Alias', image: 'alias', text: 'A word-guessing party game, designed for one phone passed around.', tone: 'none', x: 64, y: 9, r: 2 },
+  { title: 'Claude skills', image: 'claude-skills', text: 'The skills behind my design pipeline, open on GitHub.', tone: 'none', x: 23, y: 64, r: -2.5, href: person.links.skills },
+  { title: 'Drawings', image: 'drawings', text: 'Sketches and illustrations, mostly by hand.', tone: 'none', x: 44, y: 67, r: -1.5 },
+  { title: 'SAM, a recovery app', image: 'recovery', text: 'Getting mobility back after surgery and injuries, one exercise at a time.', tone: 'none', x: 65, y: 63, r: 1.5 },
 ] as const;
 
 export const experience = [
@@ -104,10 +104,10 @@ export const experience = [
 // unless the build runs with PUBLIC_SHOW_DRAFTS=1.
 // kind: 'message' = a chat or LinkedIn-style card, 'note' = a sticky note. x/y place it on the desktop board.
 export const testimonials = [
-  { kind: 'message', tone: 'blue', name: 'Colleague name', meta: 'Role, Company · Slack', quote: 'Paste a real kudos message here: what Taisiia did, for whom, and what changed. 30–60 words work best.', x: 0, y: 40, w: 500, r: -2.5, placeholder: true },
-  { kind: 'note', tone: 'amber', name: 'Colleague name', meta: 'Role, Company', quote: 'Paste the strongest line from a recommendation here.', x: 2, y: 470, w: 290, r: -4, placeholder: true },
-  { kind: 'message', tone: 'ink', name: 'Client name', meta: 'Role, Company · Email', quote: 'Paste client feedback here: how the work helped their team or product.', x: 25, y: 560, w: 440, r: 2.5, placeholder: true },
-  { kind: 'message', tone: 'amber', name: 'Lead or manager', meta: 'Role, Company · LinkedIn', quote: 'Paste a LinkedIn recommendation from a lead or manager here.', x: 64, y: 0, w: 460, r: 2, placeholder: true },
-  { kind: 'message', tone: 'blue', name: 'Developer name', meta: 'Role, Company · Slack', quote: 'Paste a note from a developer about working together on handoff.', x: 60, y: 250, w: 430, r: -2, placeholder: true },
-  { kind: 'note', tone: 'paper', name: 'Colleague name', meta: 'Role, Company', quote: 'Paste a short line about how it feels to work together.', x: 74, y: 520, w: 280, r: 4, placeholder: true },
+  { kind: 'message', tone: 'blue', name: 'Colleague name', meta: 'Role, Company · Slack', quote: 'Paste a real kudos message here: what Taisiia did, for whom, and what changed. 30–60 words work best.', x: 0, y: 22, w: 500, r: -2.5, placeholder: true },
+  { kind: 'note', tone: 'amber', name: 'Colleague name', meta: 'Role, Company', quote: 'Paste the strongest line from a recommendation here.', x: 7.9, y: 274, w: 290, r: -4, placeholder: true },
+  { kind: 'message', tone: 'ink', name: 'Client name', meta: 'Role, Company · Email', quote: 'Paste client feedback here: how the work helped their team or product.', x: 25, y: 542, w: 440, r: 2.5, placeholder: true },
+  { kind: 'message', tone: 'amber', name: 'Lead or manager', meta: 'Role, Company · LinkedIn', quote: 'Paste a LinkedIn recommendation from a lead or manager here.', x: 58.6, y: 9, w: 460, r: 2, placeholder: true },
+  { kind: 'message', tone: 'blue', name: 'Developer name', meta: 'Role, Company · Slack', quote: 'Paste a note from a developer about working together on handoff.', x: 67, y: 234, w: 430, r: -2, placeholder: true },
+  { kind: 'note', tone: 'paper', name: 'Colleague name', meta: 'Role, Company', quote: 'Paste a short line about how it feels to work together.', x: 65, y: 402, w: 280, r: 4, placeholder: true },
 ] as const;

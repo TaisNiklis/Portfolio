@@ -5,7 +5,8 @@ import WorkSection from '../components/WorkSection.astro';
 import TestimonialsSection from '../components/TestimonialsSection.astro';
 import PlaygroundSection from '../components/PlaygroundSection.astro';
 import AboutSection from '../components/AboutSection.astro';
-import portrait from '../assets/portrait.jpg';
+import heroAvatar from '../assets/photos/hero-avatar.jpg';
+import cardPhoto from '../assets/photos/card.jpg';
 import { person, experience, introVideo } from '../data/site';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -21,7 +22,7 @@ const years = new Date().getFullYear() - firstYear;
   <section class="hero wrap" aria-labelledby="hero-title">
     <p class="hello">
       Hi
-      <Image src={portrait} alt="" width={160} height={160} class="hello-face" loading="eager" />
+      <Image src={heroAvatar} alt="" width={160} height={160} class="hello-face" loading="eager" />
       I’m {person.first}
     </p>
     <h1 id="hero-title" class="display">
@@ -51,7 +52,7 @@ const years = new Date().getFullYear() - firstYear;
           <video src={`${base}/${introVideo}`} autoplay muted loop playsinline aria-label="Taisiia saying hi" />
         ) : (
           <Image
-            src={portrait}
+            src={cardPhoto}
             alt="Taisiia in a pink hoodie, lifting pixel-art sunglasses and smiling"
             widths={[360, 540, 720]}
             sizes="(max-width: 760px) 70vw, 280px"
