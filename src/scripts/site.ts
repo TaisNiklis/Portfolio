@@ -39,6 +39,24 @@ if (pile) {
   pio.observe(pile);
 }
 
+// Case study: the table of contents marks the section being read.
+const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+if (tocLinks.length) {
+  const byId = new Map(tocLinks.map((a) => [a.dataset.toc!, a]));
+  const sections = tocLinks.map((a) => document.getElementById(a.dataset.toc!)).filter(Boolean) as HTMLElement[];
+  const mark = () => {
+    let current = sections[0];
+    for (const s of sections) if (s.getBoundingClientRect().top < window.innerHeight * 0.35) current = s;
+    tocLinks.forEach((a) => a.classList.toggle('is-current', a.dataset.toc === current?.id));
+    const link = current && byId.get(current.id);
+    if (link) link.setAttribute('aria-current', 'location');
+    tocLinks.forEach((a) => a !== link && a.removeAttribute('aria-current'));
+  };
+  let queued = false;
+  window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; mark(); }); } }, { passive: true });
+  mark();
+}
+
 // Work cards stack: as the next card slides over, the one beneath shrinks and dims a little.
 const stack = [...document.querySelectorAll<HTMLElement>('[data-stack]')];
 if (stack.length > 1 && !reduce) {

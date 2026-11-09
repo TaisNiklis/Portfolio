@@ -1,0 +1,95 @@
+---
+// Interface fragment for the "One status, many views" decision: the same real status, labelled per role.
+// Only the two statuses the case describes are shown; the full map has 12 statuses × 8 roles.
+const rows = [
+  { status: 'Draft', manager: 'Draft', client: 'Not shown' },
+  { status: 'Rejected', manager: 'Rejected', client: 'Needs Revision' },
+];
+---
+
+<figure class="sv" data-ui data-reveal>
+  <div class="sv-panel">
+    <p class="sv-title">Status map, part of it</p>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Real status</th>
+          <th scope="col">Manager sees</th>
+          <th scope="col">Client sees</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr>
+            <th scope="row">{r.status}</th>
+            <td><span class="chip">{r.manager}</span></td>
+            <td>
+              <span class:list={['chip', { muted: r.client === 'Not shown', soft: r.client === 'Needs Revision' }]}>
+                {r.client}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <figcaption>One real state, different labels per role. A client never sees an internal draft.</figcaption>
+</figure>
+
+<style>
+  .sv {
+    margin: 40px 0;
+  }
+  .sv-panel {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 36px);
+    overflow-x: auto;
+  }
+  .sv-title {
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    min-width: 420px;
+    border-collapse: collapse;
+    font-size: var(--step-small);
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 12px 12px 12px 0;
+    border-top: 1px solid rgb(255 255 255 / 0.14);
+  }
+  thead th {
+    border-top: 0;
+    color: #a9a6b6;
+    font-weight: 600;
+  }
+  tbody th {
+    font-weight: 600;
+  }
+  .chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.1);
+  }
+  .chip.soft {
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .chip.muted {
+    background: none;
+    color: #a9a6b6;
+    padding-inline: 0;
+  }
+  figcaption {
+    margin-top: 12px;
+    font-size: var(--step-small);
+    color: var(--muted);
+  }
+</style>

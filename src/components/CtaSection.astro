@@ -54,11 +54,11 @@ const stickers: Sticker[] = [
       </div>
     </div>
 
-    <div class="pile" aria-hidden="true">
+    <div class="pile" aria-hidden="true" data-ui>
       {stickers.map((s, i) =>
         s.kind === 'pill' ? (
           <span class={`st pill t-${s.tone}`} style={`--x:${s.x}%;--y:${s.y}%;--r:${s.r}deg;--w:${s.w}em;--i:${i}`}>
-            <span class="pill-text">{s.text}</span>
+            <span class="pill-text" data-label={s.text}></span>
           </span>
         ) : (
           <span class={`st dot t-${s.tone}`} style={`--x:${s.x}%;--y:${s.y}%;--r:${s.r}deg;--i:${i}`}>
@@ -221,7 +221,9 @@ const stickers: Sticker[] = [
     line-height: 1;
     white-space: nowrap;
   }
-  .pill-text {
+  /* The words are drawn with CSS: they are decoration, not text to read */
+  .pill-text::after {
+    content: attr(data-label);
     font-size: 1.8em;
   }
   .dot {
@@ -257,6 +259,12 @@ const stickers: Sticker[] = [
       opacity 0.4s var(--ease) calc(var(--i) * 45ms),
       translate 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 45ms),
       rotate 0.4s var(--ease);
+  }
+  @media (max-width: 760px) {
+    .cta-title {
+      font-size: 1.75rem;
+      max-width: none;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     :global(.js) .pile .st {

@@ -2,6 +2,10 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Figure from '../../components/Figure.astro';
+import StatusView from '../../components/StatusView.astro';
+import WorkVisual from '../../components/WorkVisual.astro';
+import ArrowUpRight from '../../components/ArrowUpRight.astro';
+import { work } from '../../data/site';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -9,38 +13,37 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const d = entry.data;
 // Long titles carry a subtitle after the colon; the h1 keeps the first part.
 const [headline, ...rest] = d.title.split(': ');
 const subtitle = rest.join(': ');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const meta = [
-  ['Product', d.product],
+const facts = [
   ['My role', d.role],
   ['Team', d.team],
   ['Timeline', d.timeline],
   ['Platform', d.platform],
+  ['Product', d.product],
 ];
+// The table of contents follows the case's own sections (h2).
+const toc = headings.filter((h) => h.depth === 2);
+// Other work to read next: everything except this case.
+const next = work.filter((w) => !('slug' in w) || w.slug !== d.slug);
+const visual = work.find((w) => 'slug' in w && w.slug === d.slug)?.visual ?? 'entity';
 ---
 
 <Base title={`${d.title} · Taisiia Silkina`} description={d.summary}>
   <article class="case">
-    <header class="wrap col case-head">
-      <a class="link-arrow back" href={`${base}/work/`}><span aria-hidden="true">←</span> All work</a>
-      <h1 class="case-title">{headline}</h1>
-      {subtitle && <p class="case-subtitle">{subtitle.charAt(0).toUpperCase() + subtitle.slice(1)}</p>}
-      <p class="lead case-sum">{d.summary}</p>
-      <dl class="case-metrics">
-        {d.metrics.map((m) => (
-          <div>
-            <dt>{m.label} <span class="src">({m.source})</span></dt>
-            <dd>{m.value}</dd>
-          </div>
-        ))}
-      </dl>
-      <dl class="case-meta">
-        {meta.map(([k, v]) => (
+    <header class="wrap case-head">
+      <div class="head-main">
+        <a class="link-arrow back" href={`${base}/work/`}><span aria-hidden="true">←</span> All work</a>
+        <h1 class="case-title">{headline}</h1>
+        {subtitle && <p class="case-subtitle">{subtitle.charAt(0).toUpperCase() + subtitle.slice(1)}</p>}
+        <p class="case-sum">{d.summary}</p>
+      </div>
+      <dl class="facts">
+        {facts.map(([k, v]) => (
           <div>
             <dt>{k}</dt>
             <dd>{v}</dd>
@@ -48,18 +51,67 @@ const meta = [
         ))}
       </dl>
     </header>
-    <div class="wrap col">
+
+    <div class="wrap">
+      <div class="case-visual">
+        <WorkVisual kind={visual} />
+      </div>
+      <dl class="case-metrics" aria-label="Key numbers">
+        {d.metrics.map((m) => (
+          <div data-reveal>
+            <dd>{m.value}</dd>
+            <dt>
+              {m.label} <span class="src">({m.source})</span>
+            </dt>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="wrap case-body">
+      <nav class="toc" aria-label="Case study sections">
+        <p class="toc-title">On this page</p>
+        <ol>
+          {toc.map((h) => (
+            <li>
+              <a href={`#${h.slug}`} data-toc={h.slug}>{h.text}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
       <div class="prose">
-        <Content components={{ Figure }} />
+        <Content components={{ Figure, StatusView }} />
       </div>
     </div>
+
+    <section class="wrap next" aria-labelledby="next-title">
+      <h2 id="next-title" class="h2">
+        <a class="head-link" href={`${base}/work/`}>More work <ArrowUpRight /></a>
+      </h2>
+      <ul class="next-list">
+        {next.map((w) => (
+          <li>
+            <a href={'slug' in w ? `${base}/work/${w.slug}/` : w.href}>
+              <span class="next-name">{w.title}</span>
+              <span class="next-facts">{w.facts.join(' · ')}</span>
+              <span class="next-go" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   </article>
 </Base>
 
 <style>
+  /* Head: title and summary on the left, the facts a recruiter scans on the right */
   .case-head {
+    display: grid;
+    grid-template-columns: 7fr 4fr;
+    gap: 40px clamp(40px, 6vw, 112px);
+    align-items: end;
     padding-top: clamp(32px, 5vw, 72px);
-    padding-bottom: clamp(48px, 6vw, 96px);
+    padding-bottom: clamp(32px, 4vw, 56px);
   }
   .back {
     text-decoration: none;
@@ -68,15 +120,12 @@ const meta = [
     transform: translateX(-4px);
   }
   .case-title {
-    font-size: clamp(1.625rem, 0.9rem + 4vw, 4.25rem);
+    font-size: clamp(1.75rem, 0.9rem + 3.6vw, 4.25rem);
     font-weight: 700;
     letter-spacing: -0.045em;
     line-height: 0.98;
     margin: 32px 0 16px;
     text-wrap: balance;
-  }
-  .col {
-    max-width: calc(820px + 2 * var(--margin));
   }
   .case-subtitle {
     font-size: var(--step-lead);
@@ -88,21 +137,42 @@ const meta = [
     max-width: 52ch;
     margin: 0;
   }
+  .facts {
+    margin: 0;
+    padding: clamp(20px, 2.4vw, 32px);
+    border-radius: var(--radius);
+    background: var(--surface);
+    display: grid;
+    gap: 16px;
+  }
+  .facts dt {
+    font-size: var(--step-small);
+    color: var(--muted);
+  }
+  .facts dd {
+    margin: 2px 0 0;
+    line-height: 1.4;
+  }
+
+  /* Hero visual: the case's own interface fragment, wide */
+  .case-visual :global(.vis) {
+    aspect-ratio: 16 / 7;
+  }
+
+  /* Key numbers: three big figures, no boxes */
   .case-metrics {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px clamp(24px, 4vw, 64px);
     margin: clamp(40px, 5vw, 72px) 0 0;
   }
   .case-metrics div {
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 24px;
+    flex-direction: column;
+    gap: 8px;
   }
   .case-metrics dd {
+    order: -1;
     margin: 0;
     font-size: var(--step-head);
     font-weight: 700;
@@ -111,36 +181,67 @@ const meta = [
     line-height: 1;
   }
   .case-metrics dt {
-    margin-top: 10px;
-    font-size: var(--step-small);
+    max-width: 30ch;
   }
-  .src {
+  .case-metrics .src {
     color: var(--muted);
   }
-  .case-meta {
+
+  /* Body: a sticky table of contents beside the story */
+  .case-body {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin: 40px 0 0;
-    font-size: var(--step-small);
+    grid-template-columns: 3fr 8fr;
+    gap: clamp(32px, 5vw, 96px);
+    padding-top: clamp(56px, 7vw, 120px);
   }
-  .case-meta dt {
+  .toc {
+    position: sticky;
+    top: 110px;
+    align-self: start;
+  }
+  .toc-title {
+    margin: 0 0 12px;
     font-weight: 600;
-    margin-bottom: 4px;
   }
-  .case-meta dd {
+  .toc ol {
+    list-style: none;
     margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+  }
+  .toc a {
+    display: block;
+    padding: 6px 12px;
+    margin-left: -12px;
+    border-radius: 10px;
     color: var(--muted);
+    text-decoration: none;
+    transition:
+      color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+  .toc a:hover {
+    color: var(--ink);
+  }
+  .toc a:global(.is-current) {
+    color: var(--ink);
+    font-weight: 600;
+    background: var(--surface);
   }
   .prose {
-    max-width: 100%;
+    min-width: 0;
+  }
+  .prose > :global(h2:first-child) {
+    margin-top: 0;
   }
   .prose :global(h2) {
     font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
     font-weight: 600;
     letter-spacing: -0.035em;
     line-height: 1.05;
-    margin: 88px 0 20px;
+    margin: 96px 0 20px;
+    scroll-margin-top: 110px;
   }
   .prose :global(h3) {
     font-size: var(--step-lead);
@@ -152,28 +253,111 @@ const meta = [
   .prose :global(li) {
     max-width: 66ch;
   }
-  .prose :global(ul),
-  .prose :global(ol) {
+  .prose :global(ul) {
+    list-style: disc;
     padding-left: 1.2em;
   }
+  .prose :global(ol) {
+    list-style: decimal;
+    padding-left: 1.4em;
+  }
   .prose :global(li) {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+  .prose :global(li::marker) {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  /* TL;DR reads as a statement */
+  .prose > :global(h2:first-child + p) {
+    font-size: var(--step-lead);
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    max-width: 40ch;
   }
   .prose :global(blockquote) {
-    margin: 40px 0;
-    padding: 24px 28px;
-    background: var(--surface);
+    margin: 48px 0;
+    padding: clamp(24px, 3vw, 40px);
+    background: var(--amber);
     border-radius: var(--radius);
     font-size: var(--step-lead);
     line-height: 1.35;
+    font-weight: 600;
   }
   .prose :global(blockquote p) {
     margin: 0;
+    max-width: none;
   }
-  @media (max-width: 900px) {
-    .case-metrics,
-    .case-meta {
+
+  /* Next: the other cases as one list */
+  .next {
+    padding-top: clamp(96px, 10vw, 180px);
+  }
+  .next .h2 {
+    margin: 0 0 32px;
+  }
+  .next-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .next-list a {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: baseline;
+    gap: 8px 32px;
+    padding: 24px 28px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-decoration: none;
+    transition: background-color 0.2s var(--ease);
+  }
+  .next-list a:hover {
+    background: var(--surface-2);
+  }
+  .next-name {
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .next-facts {
+    color: var(--muted);
+  }
+  .next-go {
+    color: var(--accent);
+    font-weight: 600;
+    transition: transform 0.25s var(--ease);
+  }
+  .next-list a:hover .next-go {
+    transform: translate(3px, -3px);
+  }
+
+  @media (max-width: 1000px) {
+    .case-head {
       grid-template-columns: 1fr;
+    }
+    .case-body {
+      grid-template-columns: 1fr;
+    }
+    .toc {
+      display: none;
+    }
+    .case-visual :global(.vis) {
+      aspect-ratio: 16 / 9;
+    }
+  }
+  @media (max-width: 760px) {
+    .case-metrics {
+      grid-template-columns: 1fr;
+    }
+    .next-list a {
+      grid-template-columns: 1fr auto;
+    }
+    .next-facts {
+      grid-column: 1;
     }
   }
 </style>
