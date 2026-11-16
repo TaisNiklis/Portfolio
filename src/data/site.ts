@@ -1,4 +1,5 @@
 // Site copy and lists in one place, so text edits never touch layout code.
+import aiPlatformCover from '../assets/cases/ai-platform-cover.png';
 
 export const person = {
   name: 'Taisiia Silkina',
@@ -24,6 +25,8 @@ export const work = [
   {
     slug: 'connected-campaign-lifecycle-ai-platform',
     title: 'AI-powered B2B advertising platform',
+    // Cover from Figma (Case · AI ad platform); cards without one show an interface fragment
+    cover: aiPlatformCover,
     facts: ['UX lead', 'AI · AdTech', 'Web', '2026'],
     highlights: [
       'Audit and 9 interviews: 5 users, then 4 department leads',

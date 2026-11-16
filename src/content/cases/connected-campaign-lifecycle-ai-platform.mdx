@@ -3,8 +3,8 @@ title: "From scattered tools to one campaign workflow: redesigning an AI marketi
 slug: "connected-campaign-lifecycle-ai-platform"
 summary: "Users of an AI marketing platform saw separate tools, not a product. As UX lead, I rebuilt it around one Project entity, one campaign flow and an AI assistant inside the work, and shipped it to dev in agile batches."
 product: "AI-powered B2B advertising platform: research, media planning, launch and reporting (NDA)"
-role: "UX lead at a design agency: research, IA, flows, client presentations"
-team: "Design manager, 1–2 UI designers (second added mid-project); client VP of Product, commercial lead, project coordinator, in-house developers"
+role: "Product design lead at a design agency: research, IA, flows, client presentations"
+team: "1–2 UI designers (second added mid-project); client VP of Product, commercial lead, project coordinator, in-house developers"
 timeline: "Jun – Aug 2026"
 platform: "Web"
 tags: ["B2B SaaS", "AI", "Information architecture", "Roles & statuses", "Design system"]
@@ -18,13 +18,13 @@ metrics:
   - value: "≈1 of 2"
     label: "months: full post-audit design scope delivered in about half the estimate"
     source: "internal project retrospective"
-cover: "./images/connected-campaign-lifecycle-ai-platform/cover.png"
+cover: "../../assets/cases/ai-platform-cover.png"
 nda: true
 order: 1
 project: "AIMarketingService"
 ---
 
-## TL;DR
+## Description
 An AI advertising platform covered the full campaign cycle, but **users saw separate tools, not one product**. Reports sat in two places, "Create campaign" opened an unexpected planning tool, and the AI assistant went unnoticed. As UX lead, I ran an audit and 9 interviews, then rebuilt the product around **one Project entity, one guided campaign flow and an AI assistant inside the work**. We shipped it to developers in batches before a product presentation, and the client went on to work with our team on other projects.
 
 ## Context
@@ -56,12 +56,15 @@ Constraints:
 - **Designed the core model:** lifecycle map, roles and access, entity tree, status map.
 - **Defined IA, navigation and the campaign flow, and presented each stage** to the client's VP of Product and commercial team.
 - **Designed the AI assistant:** draft user flow, UI, client presentation and revisions after review.
-- Designed the homepage, Audience Personas and two Pro reports, and prepared the dev handoff batches. I worked with a design manager on scope and reviewed UI from 1–2 designers.
+- **Built the estimate and the project timeline:** split the scope into tasks, set what runs in parallel and when each part goes to dev, so the client could plan their developers around it.
+- Designed the homepage, Audience Personas and two Pro reports, and prepared the dev handoff batches. I worked with a design manager on planning and reviewed UI from 1–2 designers.
 
 ## Discovery & insights
-I audited heuristics, consistency, analytics, flows and loading performance, and collected the findings into one prioritised report. Then I mapped departments to modules and lifecycle stages from the interviews.
+I audited heuristics, consistency, analytics, flows and loading performance. **The audit logged 64 issues in 6 areas: navigation, naming, loading, usability heuristics, visual hierarchy and consistency.** Each one had a screenshot, a priority and its user impact. Then I mapped departments to modules and lifecycle stages from the interviews.
 
-<Figure src="[TODO: audit-report.png]" caption="UX audit: issues grouped by heuristic and priority. The duplicated reports in the menu became the main structural finding." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/audit-report.png" caption="UX audit: issues grouped by area and priority. The duplicated reports in the menu became the main structural finding." />
+
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/audit-top-issues.png" caption="Top findings, from a blocking save error to a 1.83:1 contrast ratio. They showed the problem went deeper than visuals." />
 
 1. **Users saw tools, not a process.** In interviews, users explained each tool but not the lifecycle. → Build the product around a campaign entity.
 2. **Reports lived in two places.** The audit found them in the main menu and inside campaigns. → Nest every report under its project.
@@ -69,18 +72,18 @@ I audited heuristics, consistency, analytics, flows and loading performance, and
 4. **An empty dashboard looks broken.** Interviews showed data arrives on day 3 and is complete by day 7. → Onboarding explains the timeline instead of showing empty charts.
 5. **AI value was invisible.** Users didn't know what the chat could do. → Put AI inside tasks, with ready-made actions.
 
-<Figure src="[TODO: lifecycle-map.png]" caption="Lifecycle map from interviews: departments, modules and stages. It became the base for the new IA." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/lifecycle-map.svg" caption="Lifecycle map from interviews: departments, modules and stages. It became the base for the new IA." />
 
 ## Exploring options
 ### One Project entity instead of separate features
 I proposed a **Project** (formerly "Campaign") that exists **from the brief onward** and holds the media plan, research, reporting, activity log and files. I chose "Project" over "Campaign" because the entity has to exist before a campaign goes live. The client approved it as the base structure.
 
-<Figure src="[TODO: entity-tree.png]" caption="Entity tree: staff → clients → projects. Each project holds its plan, research, reports, log and files." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/entity-tree.svg" caption="Entity tree: staff → clients → projects. Each project holds its plan, research, reports, log and files." />
 
 ### One status, many views
 The status map covers **12 statuses and 8 roles**. A project has one real status, but each role sees its own label. A client never sees an internal draft, and sees **"Needs Revision" instead of "Rejected"**.
 
-<Figure src="[TODO: status-map.png]" caption="Status map: 12 statuses × 8 roles. One real state, different views per role." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/status-map.svg" caption="Status map: 12 statuses × 8 roles. One real state, different views per role." />
 
 ### Two modes, not a flat menu
 The client's team proposed a flat menu: Campaigns, Research, Plan and AI at one level, like SEMrush. **I argued against it:** clients must easily tell where they *do* things from where they only *see* reports. The VP of Product agreed. **We kept two modes, Projects and Tools.** Tool results can be saved into a project or a client-level Brand Hub.
