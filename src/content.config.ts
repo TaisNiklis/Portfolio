@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 
 const cases = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/cases' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     slug: z.string(),
     summary: z.string(),
@@ -14,7 +14,7 @@ const cases = defineCollection({
     platform: z.string(),
     tags: z.array(z.string()),
     metrics: z.array(z.object({ value: z.string(), label: z.string(), source: z.string() })),
-    cover: z.string().optional(),
+    cover: image().optional(),
     nda: z.boolean().default(false),
     order: z.number(),
     project: z.string().optional(),

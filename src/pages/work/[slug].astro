@@ -1,7 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Figure from '../../components/Figure.astro';
+import ArrowUpRight from '../../components/ArrowUpRight.astro';
+import { work } from '../../data/site';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -9,36 +12,35 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const d = entry.data;
 // Long titles carry a subtitle after the colon; the h1 keeps the first part.
 const [headline, ...rest] = d.title.split(': ');
 const subtitle = rest.join(': ');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const meta = [
-  ['Product', d.product],
   ['My role', d.role],
   ['Team', d.team],
   ['Timeline', d.timeline],
   ['Platform', d.platform],
+  ['Product', d.product],
 ];
+// "On this page": every h2 of the case
+const sections = headings.filter((h) => h.depth === 2);
+// "More work": the other cases from the Selected work list
+const more = work.filter((w) => !('slug' in w && w.slug === d.slug));
 ---
 
 <Base title={`${d.title} · Taisiia Silkina`} description={d.summary}>
   <article class="case">
-    <header class="wrap col case-head">
-      <a class="link-arrow back" href={`${base}/work/`}><span aria-hidden="true">←</span> All work</a>
-      <h1 class="case-title">{headline}</h1>
-      {subtitle && <p class="case-subtitle">{subtitle.charAt(0).toUpperCase() + subtitle.slice(1)}</p>}
-      <p class="lead case-sum">{d.summary}</p>
-      <dl class="case-metrics">
-        {d.metrics.map((m) => (
-          <div>
-            <dt>{m.label} <span class="src">({m.source})</span></dt>
-            <dd>{m.value}</dd>
-          </div>
-        ))}
-      </dl>
+    <!-- Figma: Header — title column + facts card -->
+    <header class="wrap case-head">
+      <div class="head-text">
+        <a class="link-arrow back" href={`${base}/work/`}><span aria-hidden="true">←</span> All work</a>
+        <h1 class="case-title">{headline}</h1>
+        {subtitle && <p class="case-subtitle">{subtitle.charAt(0).toUpperCase() + subtitle.slice(1)}</p>}
+        <p class="case-sum">{d.summary}</p>
+      </div>
       <dl class="case-meta">
         {meta.map(([k, v]) => (
           <div>
@@ -48,132 +50,383 @@ const meta = [
         ))}
       </dl>
     </header>
-    <div class="wrap col">
+
+    <!-- Figma: cover + key numbers -->
+    <div class="wrap">
+      {d.cover && (
+        <Image
+          class="cover"
+          src={d.cover}
+          alt="Screens of the redesigned platform: homepage, AI assistant, campaigns and the new campaign flow"
+          widths={[640, 1224, 1840, 2448]}
+          sizes="(max-width: 1280px) calc(100vw - 2 * var(--margin)), 1224px"
+          loading="eager"
+        />
+      )}
+      <dl class="key-numbers" aria-label="Key numbers">
+        {d.metrics.map((m) => (
+          <div>
+            <dt>{m.label}</dt>
+            <dd>{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <!-- Figma: sections nav + case text -->
+    <div class="wrap case-body">
+      <nav class="toc" aria-label="Case study sections">
+        <p class="toc-title">On this page</p>
+        <ol>
+          {sections.map((h) => (
+            <li>
+              <a href={`#${h.slug}`} data-toc={h.slug}>{h.text}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
       <div class="prose">
         <Content components={{ Figure }} />
       </div>
     </div>
+
+    <!-- Figma: More work -->
+    {more.length > 0 && (
+      <section class="wrap more" aria-labelledby="more-title">
+        <h2 id="more-title" class="more-title">
+          <a href={`${base}/work/`}>More work <ArrowUpRight /></a>
+        </h2>
+        <ul class="more-list">
+          {more.map((w) => {
+            const href = 'slug' in w && w.slug ? `${base}/work/${w.slug}/` : 'href' in w ? w.href : `${base}/work/`;
+            return (
+              <li>
+                <a class="more-row" href={href}>
+                  <span class="more-name">{w.title}</span>
+                  <span class="more-facts">{w.facts.filter((f) => !/^\d{4}$/.test(f)).join(' · ')}</span>
+                  <span class="more-arrow"><ArrowUpRight /></span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    )}
   </article>
 </Base>
 
+<script>
+  // Highlight the section in "On this page" that is currently being read.
+  const links = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('[data-toc]').forEach((a) => links.set(a.dataset.toc!, a));
+  const heads = [...links.keys()].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+  const setActive = () => {
+    const line = window.innerHeight * 0.3;
+    let current = heads[0];
+    for (const h of heads) if (h.getBoundingClientRect().top <= line) current = h;
+    links.forEach((a, id) => a.toggleAttribute('aria-current', id === current?.id));
+  };
+  setActive();
+  window.addEventListener('scroll', setActive, { passive: true });
+</script>
+
 <style>
+  /* Header: 730 / 417 columns, 77px gap (Figma 58:27) */
   .case-head {
-    padding-top: clamp(32px, 5vw, 72px);
-    padding-bottom: clamp(48px, 6vw, 96px);
+    display: grid;
+    grid-template-columns: minmax(0, 730fr) minmax(0, 417fr);
+    gap: 40px clamp(32px, 6vw, 77px);
+    padding-top: 64px;
+    padding-bottom: 51px;
+  }
+  .head-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
   }
   .back {
     text-decoration: none;
+    font-weight: 600;
   }
   .back:hover span {
     transform: translateX(-4px);
   }
   .case-title {
-    font-size: clamp(1.625rem, 0.9rem + 4vw, 4.25rem);
+    font-size: var(--step-head);
     font-weight: 700;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.04em;
     line-height: 0.98;
-    margin: 32px 0 16px;
+    margin: 32px 0 0;
     text-wrap: balance;
-  }
-  .col {
-    max-width: calc(820px + 2 * var(--margin));
   }
   .case-subtitle {
     font-size: var(--step-lead);
-    font-weight: 600;
-    margin: 0 0 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
     color: var(--muted);
+    margin: 16px 0 0;
   }
   .case-sum {
-    max-width: 52ch;
+    max-width: 604px;
+    margin: 24px 0 0;
+  }
+  .case-meta {
     margin: 0;
-  }
-  .case-metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin: clamp(40px, 5vw, 72px) 0 0;
-  }
-  .case-metrics div {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: flex-end;
+    align-self: end;
     background: var(--surface);
     border-radius: var(--radius);
-    padding: 24px;
+    padding: 30px;
+    display: grid;
+    gap: 16px;
   }
-  .case-metrics dd {
+  .case-meta dt {
+    font-size: var(--step-small);
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  .case-meta dd {
+    margin: 2px 0 0;
+    line-height: 1.5;
+  }
+
+  /* Cover + key numbers (Figma 58:80) */
+  .case :global(.cover) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+  }
+  .key-numbers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px clamp(24px, 6vw, 102px);
+    margin: 64px 0 0;
+  }
+  .key-numbers div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .key-numbers dd {
+    order: -1;
     margin: 0;
     font-size: var(--step-head);
     font-weight: 700;
     letter-spacing: -0.04em;
-    color: var(--accent);
     line-height: 1;
+    color: var(--accent);
   }
-  .case-metrics dt {
-    margin-top: 10px;
-    font-size: var(--step-small);
+  .key-numbers dt {
+    max-width: 30ch;
   }
-  .src {
-    color: var(--muted);
-  }
-  .case-meta {
+
+  /* Body: sticky section nav 316 + text 843 (Figma 58:140) */
+  .case-body {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin: 40px 0 0;
-    font-size: var(--step-small);
+    grid-template-columns: minmax(0, 316fr) minmax(0, 843fr);
+    gap: clamp(32px, 5vw, 65px);
+    padding-top: 90px;
+    align-items: start;
   }
-  .case-meta dt {
-    font-weight: 600;
-    margin-bottom: 4px;
+  .toc {
+    position: sticky;
+    top: 100px;
   }
-  .case-meta dd {
+  .toc-title {
     margin: 0;
-    color: var(--muted);
+    font-weight: 600;
   }
+  .toc ol {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+  }
+  .toc a {
+    display: block;
+    padding: 6px 0;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
+  }
+  .toc a:hover,
+  .toc a[aria-current] {
+    color: var(--ink);
+  }
+  .toc a[aria-current] {
+    font-weight: 600;
+  }
+
   .prose {
-    max-width: 100%;
+    min-width: 0;
   }
   .prose :global(h2) {
-    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+    font-size: var(--step-sub);
     font-weight: 600;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    margin: 88px 0 20px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 96px 0 20px;
+    scroll-margin-top: 100px;
+  }
+  .prose :global(h2:first-child) {
+    margin-top: 0;
   }
   .prose :global(h3) {
     font-size: var(--step-lead);
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: -0.02em;
+    line-height: 1.4;
     margin: 48px 0 12px;
   }
   .prose :global(p),
   .prose :global(li) {
-    max-width: 66ch;
+    max-width: 767px;
+  }
+  .prose :global(p) {
+    margin: 20px 0 0;
+  }
+  .prose :global(h2 + p),
+  .prose :global(h3 + p) {
+    margin-top: 0;
   }
   .prose :global(ul),
   .prose :global(ol) {
-    padding-left: 1.2em;
+    margin: 20px 0 0;
+    padding-left: 1.4em;
+  }
+  .prose :global(ul) {
+    list-style: disc;
+  }
+  .prose :global(ol) {
+    list-style: decimal;
   }
   .prose :global(li) {
-    margin-bottom: 8px;
+    padding-left: 4px;
+    margin-bottom: 10px;
+  }
+  .prose :global(li::marker) {
+    color: var(--muted);
   }
   .prose :global(blockquote) {
-    margin: 40px 0;
-    padding: 24px 28px;
+    margin: 48px 0 0;
+    padding: 38px;
     background: var(--surface);
     border-radius: var(--radius);
-    font-size: var(--step-lead);
-    line-height: 1.35;
   }
   .prose :global(blockquote p) {
     margin: 0;
   }
-  @media (max-width: 900px) {
-    .case-metrics,
-    .case-meta {
+
+  /* More work (Figma 58:635) */
+  .more {
+    padding-top: 128px;
+  }
+  .more-title {
+    margin: 0 0 32px;
+    font-size: var(--step-head);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .more-title a {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+  }
+  .more-title :global(.arrow-up-right) {
+    width: 0.6em;
+    height: 0.6em;
+    color: var(--accent);
+    transition: transform 0.25s var(--ease);
+  }
+  .more-title a:hover :global(.arrow-up-right) {
+    transform: translate(3px, -3px);
+  }
+  .more-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .more-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 16px 32px;
+    align-items: start;
+    padding: 28px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background-color 0.25s var(--ease);
+  }
+  .more-row:hover {
+    background: var(--surface-2);
+  }
+  .more-name {
+    font-size: var(--step-lead);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+    max-width: 22em;
+  }
+  .more-facts {
+    color: var(--muted);
+    padding-top: 0.25em;
+    text-align: right;
+  }
+  .more-arrow {
+    padding-top: 0.35em;
+    color: var(--accent);
+  }
+  .more-arrow :global(.arrow-up-right) {
+    width: 16px;
+    height: 16px;
+    display: block;
+    transition: transform 0.25s var(--ease);
+  }
+  .more-row:hover .more-arrow :global(.arrow-up-right) {
+    transform: translate(2px, -2px);
+  }
+
+  @media (max-width: 1000px) {
+    .case-head,
+    .case-body {
       grid-template-columns: 1fr;
+    }
+    .case-meta {
+      align-self: start;
+    }
+    .toc {
+      display: none;
+    }
+    .case-body {
+      padding-top: 64px;
+    }
+  }
+  @media (max-width: 760px) {
+    .key-numbers {
+      grid-template-columns: 1fr;
+      margin-top: 40px;
+    }
+    .more {
+      padding-top: 96px;
+    }
+    .more-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      padding: 20px;
+    }
+    .more-facts {
+      grid-column: 1;
+      text-align: left;
+      padding-top: 0;
+    }
+    .more-arrow {
+      grid-column: 2;
+      grid-row: 1;
     }
   }
 </style>
