@@ -1,7 +1,7 @@
 ---
 title: "From scattered tools to one campaign workflow: redesigning an AI marketing intelligence platform"
 slug: "connected-campaign-lifecycle-ai-platform"
-summary: "Users of an AI marketing platform saw separate tools, not a product. As UX lead, I rebuilt it around one Project entity, one campaign flow and an AI assistant inside the work, and shipped it to dev in agile batches."
+summary: "Users of an AI marketing platform saw separate tools, not a product. As product design lead, I rebuilt it around one Project entity, one campaign flow and an AI assistant inside the work, and shipped it to dev in agile batches."
 product: "AI-powered B2B advertising platform: research, media planning, launch and reporting (NDA)"
 role: "Product design lead at a design agency: research, IA, flows, client presentations"
 team: "1–2 UI designers (second added mid-project); client VP of Product, commercial lead, project coordinator, in-house developers"
@@ -25,7 +25,7 @@ project: "AIMarketingService"
 ---
 
 ## Description
-An AI advertising platform covered the full campaign cycle, but **users saw separate tools, not one product**. Reports sat in two places, "Create campaign" opened an unexpected planning tool, and the AI assistant went unnoticed. As UX lead, I ran an audit and 9 interviews, then rebuilt the product around **one Project entity, one guided campaign flow and an AI assistant inside the work**. We shipped it to developers in batches before a product presentation, and the client went on to work with our team on other projects.
+An AI advertising platform covered the full campaign cycle, but **users saw separate tools, not one product**. Reports sat in two places, "Create campaign" opened an unexpected planning tool, and the AI assistant went unnoticed. As product design lead, I ran an audit and 9 interviews, then rebuilt the product around **one Project entity, one guided campaign flow and an AI assistant inside the work**. We shipped it to developers in batches before a product presentation, and the client went on to work with our team on other projects.
 
 ## Context
 The platform helps brands research audiences and competitors, plan media, launch campaigns and track results. It serves brand clients, internal managers and admins.
@@ -91,37 +91,37 @@ The client's team proposed a flat menu: Campaigns, Research, Plan and AI at one 
 ### Light sidebar over dark rail
 I showed a dark icon rail and a light sidebar with a top bar. The commercial lead found the rail too heavy. **I reframed the choice:** we needed a clear hierarchy, not a dark colour. The merged option, a **light collapsible sidebar with search and profile in the header**, met every point of feedback.
 
-<Figure src="[TODO: navigation-options.png]" caption="Option A (dark rail) vs. Option B (top header) for client, manager and admin. The merged option kept A's hierarchy and B's familiar utilities." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/navigation-options.png" caption="Option A (dark rail) vs. Option B (top header) for client, manager and admin. The merged option kept A's hierarchy and B's familiar utilities." />
 
 ## The solution
 ### 1. One button, one guided flow
 **"Create New Campaign"** lives on the homepage and the Campaigns page. Advanced Planning is now step 1, not a separate tool. **Research is optional:** users can attach saved research or click "Continue without research". Unfinished plans save as drafts.
 
-<Figure src="[TODO: campaign-flow-before-after.png]" caption="Before: 'Create campaign' redirected to a separate planning tool. After: one guided flow with an optional research step." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/campaign-flow-before-after.png" caption="Before: 'Create campaign' redirected to a separate planning tool. After: one guided flow with an optional research step." />
 
 ### 2. An AI assistant inside the work
 I drafted the flow and designed the assistant as a **persistent element, not a menu item**, with contextual entry points, a side panel that expands to full screen, and AI insights on the homepage. After the client review, I replaced the "Try asking" prompts with **quick-action tags that pre-fill an editable prompt**, and moved 6 specialised agents into a dropdown in the input field.
 
-<Figure src="[TODO: ai-before-after.png]" caption="AI assistant before / after: a hidden chat vs. quick actions, an agent picker and contextual entry points." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/ai-before-after.png" caption="AI assistant before / after: a hidden chat vs. quick actions, an agent picker and contextual entry points." />
 
-<Figure src="[TODO: ai-layouts.png]" caption="Side panel and full workspace: quick questions stay next to the task, longer analysis gets full space." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/ai-layouts.png" caption="Side panel and full workspace: quick questions stay next to the task, longer analysis gets full space." />
 
 ### 3. A homepage with two jobs
 The homepage is now a **daily dashboard and a full-cycle showcase**: Brand Hub, latest campaigns, tool widgets and AI insights. **Premium modules stay visible but locked, with a "Contact Us" button,** because upsell always goes through sales reps.
 
-<Figure src="[TODO: homepage-before-after.png]" caption="Homepage before / after: from low-value overview to live data, saved research and AI insights." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/homepage-before-after.png" caption="Homepage before / after: from low-value overview to live data, saved research and AI insights." />
 
 ### 4. Onboarding that never starts empty
 New clients arrive with one active campaign. We combined a short tour, a video knowledge base, contextual AI tips and a **day 3 / day 7 data timeline**. On day 3, the assistant offers to explain the first numbers.
 
-<Figure src="[TODO: onboarding.png]" caption="Onboarding: tour, data timeline and the first AI explanation on day 3." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/onboarding.png" caption="Onboarding: tour, data timeline and the first AI explanation on day 3." />
 
 ### 5. Design system and brand
 The audit found **contrast problems, an undefined palette structure and too few type styles**. I proposed a palette template that maps each colour to its use, and a wider type scale. Lime was hard to use on interactive elements, so it became an accent and blue the base. For charts, the client chose a colourful / all-blue theme toggle.
 
-<Figure src="[TODO: visual-directions.png]" caption="Visual directions: why lime became an accent and blue the base." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/visual-directions.png" caption="Visual directions: why lime became an accent and blue the base." />
 
-<Figure src="[TODO: reporting-charts.png]" caption="Reporting interfaces and chart states, with the colourful / all-blue chart theme." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/reporting-charts.png" caption="Reporting interfaces and chart states, with the colourful / all-blue chart theme." />
 
 ## Delivery
 **I agreed the delivery approach with the client:** critical pages went to dev as soon as they were ready. I sent a task-level scope plan so the client could plan their developers around dependencies. We cut deeper analysis of lower-priority report metrics.
@@ -131,7 +131,7 @@ The audit found **contrast problems, an undefined palette structure and too few 
 - **Final handoff:** prototype, files moved to the client's Figma workspace, variables JSON export.
 - **About 90% of client comments** were closed in the last review round.
 
-<Figure src="[TODO: design-system.png]" caption="Updated components and the palette template: each colour mapped to where it is used." />
+<Figure src="./images/connected-campaign-lifecycle-ai-platform/design-system.png" caption="Delivery timeline: interviews in early June, structure approved in mid-July, two dev handoff batches in August, then UI module by module until the files moved to the client." />
 
 ## Impact
 - **The client approved the Project entity, two-mode navigation and the guided campaign flow** as the new base of the product. Their commercial lead called the Projects vs Tools structure an upgrade.

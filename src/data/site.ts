@@ -27,14 +27,14 @@ export const work = [
     title: 'AI-powered B2B advertising platform',
     // Cover from Figma (Case · AI ad platform); cards without one show an interface fragment
     cover: aiPlatformCover,
-    facts: ['UX lead', 'AI · AdTech', 'Web', '2026'],
+    facts: ['Product design lead', 'AI · AdTech', 'Web', '2026'],
     highlights: [
       'Audit and 9 interviews: 5 users, then 4 department leads',
       'New IA around one Project, with Projects and Tools as two modes',
       'Status model for 12 statuses and 8 roles',
       'Shipped to developers in batches; the client kept working with us',
     ],
-    text: 'An AI ad platform covered the campaign cycle, but users saw separate tools. Reports were split, and the AI assistant was unnoticed. As UX lead, I audited users and rebuilt the product around one Project, a guided flow, and an AI assistant. We shipped in batches before a presentation, and the client continued with us.',
+    text: 'An AI ad platform covered the campaign cycle, but users saw separate tools. Reports were split, and the AI assistant was unnoticed. As product design lead, I audited users and rebuilt the product around one Project, a guided flow, and an AI assistant. We shipped in batches before a presentation, and the client continued with us.',
     metrics: [
       { value: '2× faster', label: 'of the estimated time for the full design scope' },
       { value: '12 × 8', label: 'statuses × roles in one status model' },
