@@ -18,7 +18,7 @@ metrics:
   - value: "53"
     label: "audit findings across 8 sections, each ranked by priority"
     source: "UX audit report"
-cover: "./images/beauty-provider-platform-redesign/cover.png"
+cover: "images/beauty-provider-platform-redesign/cover.png"
 nda: true
 order: 2
 ---
@@ -57,7 +57,7 @@ The ecosystem has a **customer mobile app** for booking and a **provider web pla
 ## Discovery & insights
 The audit was a **heuristic evaluation of the full provider journey**, from sign-up to branches. **Each of its 8 sections ends with a priority matrix: critical, high, medium / low.** The result: a 62-page report with 53 findings.
 
-<Figure src="[TODO: audit-findings.png]" caption="One audit finding and a section priority matrix. The priorities became the basis for the redesign order." />
+<Figure src="images/beauty-provider-platform-redesign/audit-finding.png" caption="One of 53 audit findings: the old dashboard opened as a cold empty state with no first action. Each finding has a problem, a recommendation and a summary." />
 
 1. **There was no visual system.** Text contrast fell to **1.08:1** on the verification field and **2.29–2.81:1** on labels, against the 4.5:1 WCAG minimum. → Build the palette, type scale and component states first.
 2. **The same task worked differently in each section.** Some sections added items on full pages, others had their own uploaders. → One set of patterns for all management areas.
@@ -77,16 +77,16 @@ The client came with a limited budget, not a redesign plan. **The audit made the
 - **Monetisation.** The client wanted it, but **the core logic had to be agreed first**, with paid flows on top later.
 
 ### A visual direction close to the brand
-I proposed **two directions**. *Original-Aligned* kept the light, thin-line SaaS look with blue and green accents. *Soft Brand Expansion* took the shades from the client's brand materials, **lowered their saturation** and paired them with a dark sidebar, soft pastel cards and rounded shapes. **The second one became the base**: it felt closer to the beauty industry, and I kept illustrations to a minimum so the screens stay clear for users with little software experience. [TODO: who made the final choice, me or the client?]
+I proposed **two directions**. *Original-Aligned* kept the light, thin-line SaaS look with blue and green accents. *Soft Brand Expansion* took the shades from the client's brand materials, **lowered their saturation** and paired them with a dark sidebar, soft pastel cards and rounded shapes. **The client chose the second one**: it felt closer to the beauty industry. I kept illustrations to a minimum so the screens stay clear for users with little software experience.
 
-<Figure src="[TODO: style-directions.png]" caption="Two visual directions: Original-Aligned vs. Soft Brand Expansion. The second one became the base of the design system." />
+<Figure src="images/beauty-provider-platform-redesign/style-directions.png" caption="Two visual directions: Original-Aligned vs. Soft Brand Expansion. The second one became the base of the design system." />
 
 ### Hide what a provider does not need
 Before, **business types were neither different in the interface nor verified**. I compared two options: one full interface with hints and empty states, or one interface that hides what a type does not need. **I chose hiding**, because most providers have little experience with complex software. A freelancer has no Specialists or Branches; instead, **the profile explains what to do when the business grows** and lets them switch to a salon or clinic.
 
 Two things stayed simple on purpose: **specialists are linked to services manually** (the client's choice, to keep development cheaper), and **a full specialist-to-salon transfer went to the backlog**, because specialists have no platform access in version one.
 
-<Figure src="[TODO: provider-types.png]" caption="Navigation for a freelancer vs. a salon: pages a freelancer does not need are hidden, not empty." />
+<Figure src="images/beauty-provider-platform-redesign/dashboard-freelancer.png" caption="A freelancer's dashboard: no Branches or Specialists in the menu, and a booking-rate card in their place. Pages a freelancer does not need are hidden, not empty." />
 
 ## The solution
 ### 1. Sign-up that knows the business type
@@ -94,16 +94,18 @@ Two things stayed simple on purpose: **specialists are linked to services manual
 
 **After:** the provider picks **Salon, Clinic or Freelancer, then in-salon, home service or both**. The documents asked for depend on the type; a clinic must add a healthcare license. Recovery got a **60-second resend timer** and password rules that turn green as they are met, and a pop-up explains the review status after sign-up.
 
-<Figure src="[TODO: signup-business-type.png]" caption="Business type and service location in one step. The answer sets the documents and the navigation the provider gets." />
+<Figure src="images/beauty-provider-platform-redesign/signup-business-type.png" caption="Business type and service location in one step. The answer sets the documents and the navigation the provider gets." />
 
 ### 2. A dashboard that is never empty
 **Before:** table headers without data and no first action.
 
 **After:** four stat cards with a direct action each, filters, today's appointments, top services and specialists' workload. **In the empty state, every block says what will appear and offers the next step.** A freelancer's dashboard drops branches and specialists.
 
-<Figure src="[TODO: dashboard-before-after.png]" caption="Dashboard before / after: from empty tables to stat cards, filters and today's work." />
+<Figure src="images/beauty-provider-platform-redesign/dashboard-before.png" caption="Before: a grey dashboard with empty tables, scrolling inside a card and no first action (red frames from the audit)." />
 
-<Figure src="[TODO: dashboard-empty-freelancer.png]" caption="Empty state with a next step in every block, and the freelancer version." />
+<Figure src="images/beauty-provider-platform-redesign/cover.png" caption="After: stat cards with a direct action, filters, today's appointments, top services and specialists' workload." />
+
+<Figure src="images/beauty-provider-platform-redesign/dashboard-empty.png" caption="Empty state: every block says what will appear there and offers the next step, from Add Service to Add Specialist." />
 
 ### 3. One pattern for services, specialists and branches
 **I chose a side drawer over full pages** for every add and edit form: the list stays visible, multi-step forms get space and a sticky footer, and the pattern scales across the product. All three sections share search, filters, bulk actions and a context menu.
@@ -112,14 +114,16 @@ Two things stayed simple on purpose: **specialists are linked to services manual
 - **Specialists:** services assigned in a pop-up, and a share link that books this specialist.
 - **Branches:** a 3-step drawer, cards for the top branch by bookings and the highest-rated one. **"Delete" became "Archive"**, as the audit recommended.
 
-<Figure src="[TODO: services-before-after.png]" caption="Services before / after: categories, search, filters and bulk actions on one screen." />
+<Figure src="images/beauty-provider-platform-redesign/services-before.png" caption="Before: a duplicated logo, low-contrast category tabs, no search or filters (red frames from the audit)." />
 
-<Figure src="[TODO: branch-drawer.png]" caption="Add Branch in a side drawer: the list stays in view, the form gets 3 clear steps." />
+<Figure src="images/beauty-provider-platform-redesign/services.png" caption="After: categories with counters, subcategories, search, sorting, filters and an empty state with a clear action." />
+
+<Figure src="images/beauty-provider-platform-redesign/branch-drawer.png" caption="Add Branch in a side drawer: the list stays in view, the form gets 3 clear steps." />
 
 ### 4. A profile that grows with the business
 Two tabs: **Business & Account** (documents with a verification status) and **Public Profile** (what customers see). **The profile cannot go public until services, schedule, location and specialists are set**, and every missing part has an alert icon. A banner warns three days before a document expires. **A freelancer can change the business type** in a pop-up that lists the licenses each type needs.
 
-<Figure src="[TODO: profile-change-type.png]" caption="Change Business Type: a freelancer grows into a salon or clinic without a new account." />
+<Figure src="images/beauty-provider-platform-redesign/profile-change-type.png" caption="Change Business Type: a freelancer grows into a salon or clinic without a new account." />
 
 ## Delivery
 - **Design system:** one typeface (Poppins) with a 7-level type scale, colour tokens grouped by use (backgrounds, buttons, text, icons, inputs, badges, charts), and **375 components and variants**: buttons, inputs, dropdowns, date range picker, tooltips, badges, pop-ups, upload area, side menu, icons.
@@ -128,7 +132,7 @@ Two tabs: **Business & Account** (documents with a verification status) and **Pu
 - **Motion:** Lottie animations for loading, the drawer, toasts, photo upload and the success pop-up.
 - After the main month, I continue with revisions as they come up.
 
-<Figure src="[TODO: design-system.png]" caption="Design system: colour tokens grouped by use, the Poppins type scale and core components with their states." />
+<Figure src="images/beauty-provider-platform-redesign/design-system.png" caption="Design system: button types, sizes and states. The same documentation covers colours, type, inputs, pop-ups and icons." />
 
 ## Impact
 - **The audit turned a limited budget into a funded redesign.**
