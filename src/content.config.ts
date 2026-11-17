@@ -15,6 +15,7 @@ const cases = defineCollection({
     tags: z.array(z.string()),
     metrics: z.array(z.object({ value: z.string(), label: z.string(), source: z.string() })),
     cover: image().optional(),
+    coverAlt: z.string().optional(),
     nda: z.boolean().default(false),
     order: z.number(),
     project: z.string().optional(),
