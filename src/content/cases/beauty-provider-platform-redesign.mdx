@@ -4,7 +4,7 @@ slug: "beauty-provider-platform-redesign"
 summary: "A beauty and healthcare booking platform's provider side looked inconsistent and had to serve very different businesses. I audited it, agreed a focused scope with the client, and delivered a new design system and six core flows that work for freelancers, salons and multi-location clinics."
 product: "Service-booking ecosystem for beauty and healthcare: customer mobile app + provider web platform (NDA)"
 role: "Product Designer: audit, UX analysis, UX/UI, design system, core flows"
-team: "2 designers at a design agency (ANODA); I was the main contact with the client; client-side developers"
+team: "Me + a second designer at ANODA (joint audit, then design review); client-side developers"
 timeline: "1 month + ongoing revisions, 2026"
 platform: "Web"
 tags: ["B2B SaaS", "Marketplace", "UX audit", "Design system", "Information architecture"]
@@ -12,9 +12,9 @@ metrics:
   - value: "3"
     label: "provider business models in one interface"
     source: "project scope"
-  - value: "6"
-    label: "core flows redesigned on one design system"
-    source: "project scope"
+  - value: "375"
+    label: "components and variants in the new design system"
+    source: "Figma design system file"
   - value: "53"
     label: "audit findings across 8 sections, each ranked by priority"
     source: "UX audit report"
@@ -24,7 +24,7 @@ order: 2
 ---
 
 ## TL;DR
-The provider side of a beauty and healthcare booking platform **looked like a prototype and treated a freelancer and a clinic chain the same way**. The client had a limited budget. Our audit of 53 findings **convinced them to fund a redesign**, which we split into flows delivered in parts. I delivered **a new design system and six core flows** where each provider type gets only what it needs. The client's developers are now finishing the first scope.
+The provider side of a beauty and healthcare booking platform **looked like a prototype and treated a freelancer and a clinic chain the same way**. The client had a limited budget. Our audit of 53 findings **convinced them to fund a redesign**, which we split into flows delivered in parts. I delivered **a new visual direction, a design system and six core flows** where each provider type gets only what it needs. The client's developers are now finishing the first scope.
 
 ## Context
 The ecosystem has a **customer mobile app** for booking and a **provider web platform** for managing services, specialists, branches and the business profile.
@@ -48,10 +48,10 @@ The ecosystem has a **customer mobile app** for booking and a **provider web pla
 - **One structure for a freelancer, a salon and a multi-location business**, with room to grow.
 
 ## My role
-- **Ran the audit with another designer**; we reviewed each other's findings.
+- **Ran the audit with another designer**; we reviewed each other's findings. **After the audit, I designed everything myself**, and the second designer reviewed my work.
 - **Presented the audit**, which became the main reason the client agreed to the redesign.
 - **Split the redesign into flows** and ordered them by the client's priorities and budget.
-- **Designed the provider-type model, six core flows and the design system.**
+- **Designed the visual direction, the provider-type model, six core flows, the design system and the animations.**
 - **Was the client's main contact**: presented designs, argued for extra features, handled revisions.
 
 ## Discovery & insights
@@ -75,6 +75,11 @@ The client came with a limited budget, not a redesign plan. **The audit made the
 - **Financial tracking.** I recommended it as the data providers care about most. It needed extra backend work, so **the client declined it for now**.
 - **Payments between provider and customer.** I proposed the logic; the client decided it was not a priority yet.
 - **Monetisation.** The client wanted it, but **the core logic had to be agreed first**, with paid flows on top later.
+
+### A visual direction close to the brand
+I proposed **two directions**. *Original-Aligned* kept the light, thin-line SaaS look with blue and green accents. *Soft Brand Expansion* took the shades from the client's brand materials, **lowered their saturation** and paired them with a dark sidebar, soft pastel cards and rounded shapes. **The second one became the base**: it felt closer to the beauty industry, and I kept illustrations to a minimum so the screens stay clear for users with little software experience. [TODO: who made the final choice, me or the client?]
+
+<Figure src="[TODO: style-directions.png]" caption="Two visual directions: Original-Aligned vs. Soft Brand Expansion. The second one became the base of the design system." />
 
 ### Hide what a provider does not need
 Before, **business types were neither different in the interface nor verified**. I compared two options: one full interface with hints and empty states, or one interface that hides what a type does not need. **I chose hiding**, because most providers have little experience with complex software. A freelancer has no Specialists or Branches; instead, **the profile explains what to do when the business grows** and lets them switch to a salon or clinic.
@@ -117,12 +122,13 @@ Two tabs: **Business & Account** (documents with a verification status) and **Pu
 <Figure src="[TODO: profile-change-type.png]" caption="Change Business Type: a freelancer grows into a salon or clinic without a new account." />
 
 ## Delivery
-- **Design system:** dark sidebar, warm light workspace, black primary buttons, one coral accent, pastel colours for stats and statuses, components with all states. [TODO: font pair]
+- **Design system:** one typeface (Poppins) with a 7-level type scale, colour tokens grouped by use (backgrounds, buttons, text, icons, inputs, badges, charts), and **375 components and variants**: buttons, inputs, dropdowns, date range picker, tooltips, badges, pop-ups, upload area, side menu, icons.
 - **English and Arabic** interface.
 - **Annotations for developers** on every flow: validation, tooltip copy, empty states, edge cases.
+- **Motion:** Lottie animations for loading, the drawer, toasts, photo upload and the success pop-up.
 - After the main month, I continue with revisions as they come up.
 
-<Figure src="[TODO: design-system.png]" caption="Design system: palette, type scale, components and their states." />
+<Figure src="[TODO: design-system.png]" caption="Design system: colour tokens grouped by use, the Poppins type scale and core components with their states." />
 
 ## Impact
 - **The audit turned a limited budget into a funded redesign.**
