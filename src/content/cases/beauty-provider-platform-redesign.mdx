@@ -24,14 +24,14 @@ order: 2
 ---
 
 ## TL;DR
-A service-booking ecosystem connects customers with beauty and healthcare providers. Its provider web platform **looked inconsistent and had to work for very different businesses**: a freelancer, a salon and a clinic chain with several branches. The client had a limited budget and wanted to keep the existing functionality. I audited the platform, agreed a focused first phase with the client, and delivered **a new visual direction, a design system and six core flows**. Broader UX changes went into a documented backlog. The client's developers are now finishing the first scope.
+A service-booking ecosystem connects customers with beauty and healthcare providers. Its provider web platform **looked inconsistent and had to work for very different businesses**: a freelancer, a salon and a clinic chain with several branches. The client had a limited budget. Our audit of 53 findings **convinced the client to commit to a redesign**. We split it into flows delivered in parts, and I delivered **a new visual direction, a design system and six core flows**. The client's developers are now finishing the first scope.
 
 ## Context
-The ecosystem has two products: a **mobile app** where customers discover and book services, and a **web platform** where providers run their business. Providers manage services, specialists, branches and their business profile.
+The ecosystem has a **customer mobile app** for booking and a **provider web platform** for managing services, specialists, branches and the business profile.
 
 Constraints:
 - **A limited client budget.** We could not fix everything the audit found.
-- **Functionality stays as it is.** The redesign changes how the product looks and is organised, not what it does.
+- **No extra development cost.** The redesign changes how the product looks and is organised; new features need extra backend work and wait for later phases.
 - [TODO: deadline, tech stack, existing design assets]
 
 *The client name is hidden under NDA.*
@@ -39,51 +39,66 @@ Constraints:
 ## The problem
 **Business problem:** the provider platform is the supply side of the marketplace. If providers find it hard to set up services, specialists and branches, customers in the app see fewer and weaker listings. [TODO: did the client name a business reason — new providers, complaints, sales?]
 
-**User problem:** the interface **looked like a low-fidelity prototype**: shades of grey, generic icons, bold text everywhere. Similar tasks worked differently across sections: adding a service opened a new page, required-field asterisks appeared in one module only, and labels changed between the menu and the page ("Appointments" vs. "Schedule"). Some steps were dead ends, such as a verification screen with no "Back" and no "Resend code".
+**User problem:** the interface **looked like a low-fidelity prototype**: grey, generic icons, bold text everywhere. Similar tasks worked differently across sections, labels changed between the menu and the page ("Appointments" vs. "Schedule"), and some steps were dead ends, such as a verification screen with no "Back" or "Resend code".
 
 **How might we give every type of provider one clear way to manage their business, within a budget that allows only a first phase?**
 
 ## Goals
-- A new visual direction and a design system that make the platform consistent.
-- Clear flows for the core entities: services, specialists, branches, business profile.
-- **One structure that works for a freelancer, a salon and a multi-location business**, including growth from one model to another.
-- A clear split: what goes into this phase and what goes into a backlog.
+- A design system that makes the platform consistent.
+- Clear flows for services, specialists, branches and the business profile.
+- **One structure for a freelancer, a salon and a multi-location business**, with room to grow.
+- A clear split between this phase and the backlog.
 - [TODO: how did the client judge success?]
 
 ## My role
 - **Ran the product audit together with another designer.** We reviewed each other's findings.
-- **Proposed the scope of phase one** and aligned it with the client against the budget.
-- Designed the entity relationships and the six core flows.
-- **Created the new visual direction and the design system.**
-- Prepared design specifications and assets for development.
-- **Communicated with the client directly**: presented the audit, the scope and the designs, and handled revisions.
-- Worked in a team of 2 designers; the client's own developers build the product.
+- **Presented the audit**, which became the main reason the client agreed to the redesign.
+- **Split the redesign into flows** and aligned their order with the client's priorities and budget.
+- **Designed the entity model, the six core flows and the design system**, and prepared specs for development.
+- **Was the client's main contact**: presented designs, argued for extra features, handled revisions. A team of 2 designers; the client's developers build the product.
 
 ## Discovery & insights
-The audit was a **heuristic evaluation of the full provider journey**: sign-up, dashboard, profile, appointments, customers, services, specialists and branches. Each finding has a problem, a recommendation and a summary, and **each section ends with a priority matrix: critical, high, medium / low**. I worked on it with another designer; we reviewed each other's findings before the report went to the client. The result was a 62-page report with 53 findings.
+The audit was a **heuristic evaluation of the full provider journey**: sign-up, dashboard, profile, appointments, customers, services, specialists and branches. **Each section ends with a priority matrix: critical, high, medium / low.** Another designer and I reviewed each other's findings. The result: a 62-page report with 53 findings.
 
 <Figure src="[TODO: audit-findings.png]" caption="One audit finding and a section priority matrix. The priorities became the basis for the phase-one scope." />
 
-1. **There was no shared visual system.** Text contrast was as low as **1.08:1** on the verification field and **2.29–2.81:1** on labels and inputs, against the 4.5:1 WCAG minimum. The CTA colour was used for selected options and secondary elements, so the main action did not stand out. → Build the palette, type scale and component states first, then apply them to every flow.
-2. **The same task worked differently in each section.** Services and specialists opened full pages for adding items, the service form had its own image uploader, and the language switcher appeared twice. → Reuse one set of patterns, such as the side drawer, across all management areas.
+1. **There was no shared visual system.** Text contrast was as low as **1.08:1** on the verification field and **2.29–2.81:1** on labels and inputs, against the 4.5:1 WCAG minimum. The CTA colour was also used on secondary elements. → Build the palette, type scale and component states first.
+2. **The same task worked differently in each section.** Services and specialists opened full pages for adding items, and the service form had its own image uploader. → Reuse one set of patterns across all management areas.
 3. **The structure did not support growth.** A specialist could not upgrade to a salon account and had to start a new one, **losing reviews, services and clients**. Business types at sign-up had no descriptions. → Design one entity model where a freelancer can grow into a salon or a chain.
-4. **New providers started from an empty screen.** The setup showed 3 steps but opened the product after step 1. The dashboard, customers and branches pages had no first action, and the branches page showed filters before any branch existed. → Every empty state explains the next step.
-5. **Entities were shown in isolation.** A specialist profile listed every salon service, not the ones they perform. Branches could only be compared through filters. → Show relationships: specialist ↔ services, branch ↔ specialists.
+4. **New providers started from an empty screen.** The setup showed 3 steps but opened the product after step 1. Dashboard, customers and branches had no first action. → Every empty state explains the next step.
+5. **Entities were shown in isolation.** A specialist profile listed every salon service, not their own. → Show relationships: specialist ↔ services, branch ↔ specialists.
 
 ## Exploring options
-### Focused phase one instead of a full redesign
-53 findings were more than the budget could cover, and many of them, such as notifications, financial widgets or a weekly calendar view, meant new functionality. **I chose a focused first phase over a full UX overhaul**: a new visual layer, a design system and the core flows, without new features. The functional recommendations, **including the full Appointments and Customers sections**, stayed in the report as **a ready backlog for future iterations**. [TODO: how did the client react; was there a discussion about what to cut?]
+### The audit as the case for a redesign
+The client came with a limited budget, not a redesign plan. **The audit made the case:** the client reacted positively, and it became the critical factor in their decision to fund the redesign.
+
+### Delivering by flow, not all at once
+53 findings were more than the budget could cover. Instead of one big release, **we split the redesign into flows and delivered them in parts**. The order followed the client's priorities, and for each budget part I looked for the way to cover **the largest number of flows**. The rest of the audit, **including the full Appointments and Customers sections**, stayed as a ready backlog.
+
+### Where I pushed for more, and what we cut
+- **Financial tracking.** I recommended adding financial data to the dashboard, because revenue is the number providers care about most. It needed extra backend work, so **the client declined it for now**.
+- **Payments between provider and customer.** I proposed the payment logic; the client decided it was not a priority yet.
+- **Monetisation.** The client wanted it, but it had to wait: **first finish the redesign and agree the core logic**, then add paid flows on top.
 
 <Figure src="[TODO: scope-split.png]" caption="Scope split: what went into phase one and what went into the backlog, with the reason for each item." />
 
 ### One entity model for three provider types
-[TODO: what options did you consider? For example, separate interfaces for each provider type vs. one interface where sections appear as the business grows. Which did you choose and why?]
+Before the redesign, **business types were neither different in the interface nor verified**: a freelancer and a clinic chain saw the same product. I compared two options:
 
-The model links four entities: **business profile → branches → specialists → services**. A freelancer is a business with one person and no extra branches. A salon or clinic adds specialists. A multi-location business adds branches, each with its own specialists and services.
+- **One full interface for everyone**, with hints and empty states. A freelancer would see sections like "Specialists" that make no sense for one person.
+- **One interface that hides what a provider type does not need.**
+
+**I chose to hide extra pages over showing everything with hints**, because most providers have little experience with complex software. A freelancer has no "Specialists" section. Instead, **the profile shows a hint on what to do when the business grows**, and the freelancer can switch the profile type to a salon or clinic.
+
+The model links four entities: **business profile → branches → specialists → services**. A salon or clinic adds specialists; a multi-location business adds branches, each with its own specialists and services.
+
+Two decisions stayed simple on purpose:
+- **Specialists are linked to services manually.** The audit suggested filtering services by profession; the client chose manual linking to keep development cheaper.
+- **A full specialist-to-salon transfer went to the backlog.** In the first version specialists have no access to the platform, so only the profile type switch was needed.
 
 <Figure src="[TODO: entity-model.png]" caption="Entity model: business profile, branches, specialists and services. The same model covers a freelancer, a salon and a clinic chain." />
 
-<Figure src="[TODO: provider-types.png]" caption="How the model looks for each provider type, and how a freelancer grows into a salon." />
+<Figure src="[TODO: provider-types.png]" caption="Navigation for a freelancer vs. a salon: pages a freelancer does not need are hidden, not empty." />
 
 ## The solution
 ### 1. Onboarding and account access
@@ -97,7 +112,7 @@ The model links four entities: **business profile → branches → specialists �
 <Figure src="[TODO: dashboard-before-after.png]" caption="Dashboard before / after: [TODO: what changed]." />
 
 ### 3. Services, specialists and branches
-**The three management areas now share one layout and one set of patterns**, so a provider who learns one section knows the others. Specialists link to the services they offer. Branches hold their description, photos and assigned specialists.
+**The three management areas now share one layout and one set of patterns**, so a provider who learns one section knows the others.
 
 <Figure src="[TODO: services-before-after.png]" caption="Service management before / after: [TODO: what changed]." />
 
@@ -106,21 +121,20 @@ The model links four entities: **business profile → branches → specialists �
 <Figure src="[TODO: branch-profile.png]" caption="Branch profile: description, photos and assigned specialists." />
 
 ### 4. Business profile for each provider type
-The business profile adapts to the provider: an independent professional, a single salon or clinic, or a multi-location business. [TODO: what exactly differs between the three]
+The business profile adapts to the provider: an independent professional, a single salon or clinic, or a multi-location business. **A freelancer's profile includes a hint for a growing business and the option to switch to a salon or clinic.** [TODO: what else differs between the three]
 
 <Figure src="[TODO: business-profiles.png]" caption="Business profile for a freelancer, a salon and a multi-location business." />
 
 ## Delivery
-- **A new design system:** colour palette, typography, buttons, input fields and other interactive elements, with their states and variations, and consistent layout patterns.
-- **The system was applied across all six redesigned flows.**
+- **A new design system:** palette, typography, buttons, inputs and other components with their states, applied across all six flows.
 - Design specifications and assets prepared for development. [TODO: how handoff worked — annotations, prototype, meetings with developers]
-- **Status:** the client's developers are finishing the first scope. After the main month of work, I continue with revisions as they come up.
+- After the main month of work, I continue with revisions as they come up.
 
 <Figure src="[TODO: design-system.png]" caption="Design system: palette, type scale, components and their states." />
 
 ## Impact
-- **The client received a full product audit, a new visual direction, a design system and six core flows**, ready for development.
-- **Broader UX recommendations stayed in a documented backlog**, so the next phase can start from them.
+- **The audit turned a limited budget into a funded redesign.**
+- The client received a design system and six core flows; **the rest of the audit is a ready backlog** for the next phase.
 - **The client's developers are finishing the first scope** of the redesign.
 - [TODO: any number or proxy — e.g. iterations until sign-off, developer feedback]
 - Impact on provider activity or bookings was not measured.
@@ -128,8 +142,9 @@ The business profile adapts to the provider: an independent professional, a sing
 > "[TODO: client or developer quote]" — [TODO: role]
 
 ## What I learned
-- **A clear scope protects the budget and the quality.** Fixing the core flows well was better than touching everything a little.
+- **An audit can sell the project.** A clear, prioritised report turned a limited budget into a funded redesign.
+- **Delivering by flow protects the budget.** The client always knew what the next part would cost and bring.
 - **Model the entities before the screens** when one product serves different business types.
-- **Next:** [TODO: what to test or measure first — e.g. setup time for a new salon, the freelancer-to-salon transition]
+- **Next:** I would bring the financial overview and provider payments back as the first items for phase two, and measure how many freelancers switch to a salon profile.
 
 > **AI in my process:** I used AI to search for visual style references, to draft user flows, and to format the audit text into a consistent report. The findings, the priorities, the scope and the final design decisions stayed with us.
