@@ -60,9 +60,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                   class="cover"
                   src={w.cover}
                   alt={`${w.title}: key screens`}
-                  widths={[480, 728, 1100, 1456, 2184]}
-                  quality={90}
-                  sizes="(max-width: 1000px) calc(100vw - 4 * var(--margin)), 728px"
+                  widths={[728, 1100, 1456, 2200, 3200]}
+                  quality={100}
+                  sizes="(max-width: 1000px) 100vw, 1100px"
                 />
               ) : (
                 <WorkVisual kind={w.visual} />
