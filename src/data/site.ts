@@ -1,5 +1,6 @@
 // Site copy and lists in one place, so text edits never touch layout code.
 import aiPlatformCover from '../assets/cases/ai-platform-cover.png';
+import providerPlatformCover from '../assets/cases/provider-platform-cover.png';
 
 export const person = {
   name: 'Taisiia Silkina',
@@ -42,9 +43,10 @@ export const work = [
     visual: 'entity',
   },
   {
-    href: person.links.behance,
+    slug: 'one-platform-freelancers-salons-clinics',
     title: 'Redesigning a service platform for beauty and healthcare',
-    facts: ['Product designer', 'Beauty · Healthcare', 'Web platform'],
+    cover: providerPlatformCover,
+    facts: ['Product designer', 'Beauty · Healthcare', 'Web', '2026'],
     highlights: [
       'UX audit of the provider web platform',
       'Redesign of services, specialists, branches and profiles',

@@ -1,0 +1,141 @@
+---
+title: "One platform for freelancers, salons, and clinics: an audit-led redesign on a fixed budget"
+slug: "one-platform-freelancers-salons-clinics"
+summary: "A beauty and healthcare booking platform's provider side looked inconsistent and had to serve very different businesses. I audited it, agreed a focused scope with the client, and delivered a new design system and six core flows that work for freelancers, salons and multi-location clinics."
+product: "Service-booking ecosystem for beauty and healthcare: customer mobile app + provider web platform (NDA)"
+role: "Product Designer: audit, UX analysis, UX/UI, design system, core flows"
+team: "Me + a second designer at ANODA (joint audit, then design review); client-side developers"
+timeline: "1 month + ongoing revisions, 2026"
+platform: "Web"
+tags: ["B2B SaaS", "Marketplace", "UX audit", "Design system", "Beauty & healthcare"]
+metrics:
+  - value: "3"
+    label: "provider business models in one interface"
+    source: "provider-type model"
+  - value: "375"
+    label: "components and variants in the new design system"
+    source: "design system"
+  - value: "53"
+    label: "audit findings across 8 sections, each ranked by priority"
+    source: "UX audit"
+cover: "../../assets/cases/provider-platform-cover.png"
+nda: true
+order: 2
+project: "ProviderPlatform"
+---
+
+## Description
+The provider side of a beauty and healthcare booking platform **looked like a prototype and treated a freelancer and a clinic chain the same way**. The client had a limited budget. Our audit of 53 findings **convinced them to fund a redesign**, which we split into flows delivered in parts. I delivered **a new visual direction, a design system and six core flows** where each provider type gets only what it needs. The client’s developers are now finishing the first scope.
+
+## Context
+The ecosystem has a **customer mobile app** for booking and a **provider web platform** for managing services, specialists, branches and the business profile.
+
+- **A limited budget.** We could not fix everything the audit found.
+- **No extra development cost.** Features that need new backend work wait for later phases.
+
+*The client name is hidden under NDA.*
+
+## The problem
+**Business problem:** providers are the supply side of the marketplace. If setting up services, specialists and branches is hard, customers in the app see fewer and weaker listings.
+
+**User problem:** the interface **looked like a low-fidelity prototype**: grey, generic icons, bold text everywhere. Labels changed between the menu and the page (“Appointments” vs. “Schedule”), and some steps were dead ends, such as a verification screen with no “Back” or “Resend code”.
+
+**How might we give every type of provider one clear way to manage their business, within a budget that allows only a first phase?**
+
+## Goals
+- A design system that makes the platform consistent.
+- Clear flows for services, specialists, branches and the business profile.
+- **One structure for a freelancer, a salon and a multi-location business**, with room to grow.
+
+## My role
+- **Ran the audit with another designer**; we reviewed each other’s findings. **After the audit, I designed everything myself**, and the second designer reviewed my work.
+- **Presented the audit**, which became the main reason the client agreed to the redesign.
+- **Split the redesign into flows** and ordered them by the client’s priorities and budget.
+- **Designed the visual direction, the provider-type model, six core flows, the design system and the animations.**
+- **Was the client’s main contact**: presented designs, argued for extra features, handled revisions.
+
+## Discovery & insights
+The audit was a **heuristic evaluation of the full provider journey**, from sign-up to branches. **Each of its 8 sections ends with a priority matrix: critical, high, medium / low.** The result: a 62-page report with 53 findings.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/audit-pages.png" caption="Two of the 62 audit pages: a dashboard finding with a problem, a recommendation and a summary, and the priority matrix that closes the section." />
+
+1. **There was no visual system.** Text contrast fell to **1.08:1** on the verification field and **2.29–2.81:1** on labels, against the 4.5:1 WCAG minimum. → Build the palette, type scale and component states first.
+2. **The same task worked differently in each section.** Some sections added items on full pages, others had their own uploaders. → One set of patterns for all management areas.
+3. **The structure did not support growth.** A specialist could not become a salon without a new account, **losing reviews and clients**. → A model where a freelancer can grow into a salon or clinic.
+4. **New providers started from an empty screen** with no first action. → Every empty state explains the next step.
+
+## Exploring options
+### The audit as the case for a redesign
+The client came with a limited budget, not a redesign plan. **The audit made the case**: the client reacted positively, and it became the critical factor in their decision.
+
+### Delivering by flow
+53 findings were more than the budget could cover. **We split the redesign into flows and delivered them in parts.** The order followed the client’s priorities, and for each budget part I looked for the way to cover **the largest number of flows**. Appointments and Customers stayed in the backlog.
+
+### Where I pushed for more, and what we cut
+- **Financial tracking.** I recommended it as the data providers care about most. It needed extra backend work, so **the client declined it for now**.
+- **Payments between provider and customer.** I proposed the logic; the client decided it was not a priority yet.
+- **Monetisation.** The client wanted it, but **the core logic had to be agreed first**, with paid flows on top later.
+
+### A visual direction close to the brand
+I proposed **two directions**. *Original-Aligned* kept the light, thin-line SaaS look with blue and green accents. *Soft Brand Expansion* took the shades from the client’s brand materials, **lowered their saturation** and paired them with a dark sidebar, soft pastel cards and rounded shapes. **The client chose the second one**: it felt closer to the beauty industry. I kept illustrations to a minimum so the screens stay clear for users with little software experience.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/visual-directions.png" caption="Two visual directions: Original-Aligned vs. Soft Brand Expansion. The client chose the second one as the base of the design system." />
+
+### Hide what a provider does not need
+Before, **business types were neither different in the interface nor verified**. I compared two options: one full interface with hints and empty states, or one interface that hides what a type does not need. **I chose hiding**, because most providers have little experience with complex software. A freelancer has no Specialists or Branches; instead, **the profile explains what to do when the business grows** and lets them switch to a salon or clinic.
+
+Two things stayed simple on purpose: **specialists are linked to services manually** (the client’s choice, to keep development cheaper), and **a full specialist-to-salon transfer went to the backlog**, because specialists have no platform access in version one.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/salon-vs-freelancer.png" caption="Salon vs. freelancer: the freelancer has no Branches or Specialists in the menu, and a booking-rate card takes their place. Pages a freelancer does not need are hidden, not empty." />
+
+## The solution
+### 1. Sign-up that knows the business type
+**Before:** types without descriptions, a 3-step indicator that opened the product after step 1, a verification dead end.
+
+**After:** the provider picks **Salon, Clinic or Freelancer, then in-salon, home service or both**. The documents asked for depend on the type; a clinic must add a healthcare license. Recovery got a **60-second resend timer** and password rules that turn green as they are met, and a pop-up explains the review status after sign-up.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/sign-up-business-type.png" caption="Business type and service location in one step. The answer sets the documents and the navigation the provider gets." />
+
+### 2. A dashboard that is never empty
+**Before:** table headers without data and no first action.
+
+**After:** four stat cards with a direct action each, filters, today’s appointments, top services and specialists’ workload. **In the empty state, every block says what will appear and offers the next step.** A freelancer’s dashboard drops branches and specialists.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/dashboard-before-after.png" caption="Before: Empty grey tables with no clear starting point. After: An actionable dashboard with key stats, filters, today's appointments, specialists' workload, and guided empty states with clear next steps." />
+
+### 3. One pattern for services, specialists and branches
+**I chose a side drawer over full pages** for every add and edit form: the list stays visible, multi-step forms get space and a sticky footer, and the pattern scales across the product. All three sections share search, filters, bulk actions and a context menu.
+
+- **Services:** fixed categories with counters, own subcategories with drag-and-drop. A service no specialist can perform is hidden, with an icon that says why.
+- **Specialists:** services assigned in a pop-up, and a share link that books this specialist.
+- **Branches:** a 3-step drawer, cards for the top branch by bookings and the highest-rated one. **“Delete” became “Archive”**, as the audit recommended.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/services-before-after.png" caption="Services before / after: a duplicated logo and low-contrast tabs with no search, vs. categories with counters, search, filters and an empty state with a clear action." />
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/add-branch-drawer.png" caption="Add Branch in a side drawer, and the branch details page behind it: the list stays in view, the form gets 3 clear steps." />
+
+### 4. A profile that grows with the business
+Two tabs: **Business & Account** (documents with a verification status) and **Public Profile** (what customers see). **The profile cannot go public until services, schedule, location and specialists are set**, and every missing part has an alert icon. A banner warns three days before a document expires. **A freelancer can change the business type** in a pop-up that lists the licenses each type needs.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/profile-business-type.png" caption="Profile with documents and their status, and the Change Business Type pop-up: a freelancer grows into a salon or clinic without a new account." />
+
+## Delivery
+- **Design system:** one typeface (Poppins) with a 7-level type scale, colour tokens grouped by use (backgrounds, buttons, text, icons, inputs, badges, charts), and **375 components and variants**: buttons, inputs, dropdowns, date range picker, tooltips, badges, pop-ups, upload area, side menu, icons.
+- **English and Arabic** interface.
+- **Annotations for developers** on every flow: validation, tooltip copy, empty states, edge cases.
+- **Motion:** Lottie animations for loading, the drawer, toasts, photo upload and the success pop-up.
+- After the main month, I continue with revisions as they come up.
+
+<Figure src="./images/one-platform-freelancers-salons-clinics/design-system.png" caption="Design system: colour tokens grouped by use, and button types with all their states." />
+
+## Impact
+- **The audit turned a limited budget into a funded redesign.**
+- **The client’s developers are finishing the first scope**; the rest of the audit is a ready backlog.
+- Impact on provider activity or bookings is not measured yet.
+
+## What I learned
+- **An audit can sell the project.** A prioritised report turned a limited budget into a funded redesign.
+- **Delivering by flow protects the budget.** The client always knew what the next part would bring.
+- **Next:** the Appointments and Customers flows from the backlog.
+
+> **AI in my process:** I used AI to search for visual style references, draft user flows and format the audit text. The findings, priorities, scope and design decisions stayed with us.
