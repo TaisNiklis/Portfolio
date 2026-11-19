@@ -1,0 +1,139 @@
+---
+title: "Three roles, one property lead: the workflow logic behind a launched real estate referral app"
+slug: "three-roles-one-property-lead"
+summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the mobile app for contributors and agents. The product launched."
+product: "iModial One: a real estate referral platform (mobile app + marketing website)"
+role: "Product Designer: product structure, IA, user flows, role matrix, status map, UX/UI, handoff, landing pages"
+team: "[TODO: e.g. me as the only designer, client founder, N developers]"
+timeline: "[TODO: e.g. 3 months, 2024]"
+platform: "iOS / Android, Web (landing pages)"
+tags: ["Marketplace", "Complex logic", "Roles & permissions", "Real estate", "Mobile"]
+metrics:
+  - value: "3"
+    label: "roles, each with its own status labels and access"
+    source: "role matrix"
+  - value: "3"
+    label: "verification checkpoints before a lead reaches a sale"
+    source: "verification flow"
+  - value: "4"
+    label: "edge cases with a defined outcome: reassign, cancel, block or review"
+    source: "status map"
+cover: "[TODO: ./images/three-roles-one-property-lead/cover.png]"
+nda: false
+order: 3
+project: "iModial One"
+---
+
+## Description
+iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the mobile app for contributors and agents**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. The product launched.
+
+## Context
+iModial One is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property.
+
+- **An early-stage startup.** Limited budget and team, so **no complex third-party integrations** at the start.
+- **Third-party data.** Every lead comes from someone who is not the owner, so it has to be checked.
+- [TODO: deadline, tech stack, how the client worked with you]
+
+## The problem
+**Business problem:** the business earns only if leads turn into sales. **A lead that gets stuck, is fake, or reaches the wrong agent** costs the contributor's trust and the agent's time.
+
+**User problem:** three roles touch the same lead but need different things. **A contributor wants to know the lead is moving. A manager needs to know what to review. An agent should only see leads that are ready to work on.**
+
+**How might we move one property lead through three roles so that each one always knows its next step, without exposing internal workflow?**
+
+## Goals
+- **One shared model** for roles, permissions and statuses, used by the client and developers.
+- **A clear status for every role** at every stage of the lead.
+- A verification process that **makes each responsibility explicit**.
+- A workflow the startup can run **without heavy automation**.
+
+## My role
+- **Defined the product structure on my own**: information architecture, user flows, role matrix and status map.
+- **Found the missing lead-assignment step** and agreed the model with the client.
+- **Structured the verification process** and the edge cases.
+- **Designed the mobile app** for Contributors and Agents, the design system components and the handoff.
+- **Designed two landing page concepts** for the marketing website.
+- [TODO: who else was on the project: PM, developers, other designers]
+
+## Discovery & insights
+I started from the business requirements and **mapped every role against every stage of a lead**. [TODO: other inputs, e.g. client workshops, competitor review, talks with agents]
+
+1. **Same lead, different questions.** The contributor asks "Is it moving?", the manager "Do I need to act?", the agent "Can I take it?". → **Role-specific statuses instead of one shared list.**
+2. **Leads come from people who are not the owner.** → **Verification with owner consent** before an agent gets the lead.
+3. **The flow had a gap between "approved" and "agent".** No rule said who picks the agent. → **An assignment model, agreed with the client.**
+4. **Not every rejection means the same thing.** A wrong agent, a fake property and a missing consent need different outcomes. → **Separate exception paths in the status map.**
+
+<Figure src="[TODO: role-matrix.png]" caption="Role matrix: what Contributors, Managers and Agents can see and do at each stage. The shared reference for the client and developers." />
+
+## Exploring options
+### Role-specific statuses over one shared status
+One status list for everyone would be simpler to build, but it would **show agents leads they cannot use yet and show contributors internal steps**. **I chose to separate the internal status from the label each role sees.** Right after a contributor submits a lead:
+
+- **Contributor** sees **"Under Review"**: the lead was received.
+- **Manager** sees **"Pending Review"**: it needs their action.
+- **Agent** sees nothing: the lead has not passed review yet.
+
+<Figure src="[TODO: status-map.png]" caption="Status map: one internal status, three role labels, and the actions that move a lead to the next stage." />
+
+### Manual status updates over integrations
+A fully automated flow with listing-service and CRM integrations **was not realistic for an early-stage startup**. **I designed the process around manual updates**: agents update the status of their leads, and managers **get an alert when a status has not changed for too long**. This kept the first version buildable and split the work clearly: **agents handle the property, managers watch the process**.
+
+### Who picks the agent
+While I mapped the flow, **I saw that the system did not say how an approved lead reaches an agent**. I raised it with the client, and **we agreed on a model**: the contributor chooses the agent, each agent sets their own referral reward percentage, and the chosen agent gets the lead. **This gave contributors control and made the reward clear before they commit.** [TODO: other options discussed, e.g. manager assigns or automatic matching, and why they were dropped]
+
+## The solution
+### 1. Verification in three checkpoints
+- **Cross-source check.** The lead is compared with other listing services. **A match approves it automatically** at this step.
+- **Owner consent.** A request goes to the owner's contact. If the owner declines or does not answer, **the contributor is asked to contact the owner or fix the contact details**. Without consent, the lead does not move.
+- **On-site check.** After assignment, **the agent visits the property** and confirms the data.
+
+<Figure src="[TODO: verification-flow.png]" caption="Verification flow: cross-source check, owner consent and on-site visit, with the person responsible for each step." />
+
+### 2. Edge cases with clear outcomes
+- **Agent mismatch:** the property is outside the agent's specialisation → **back to reassignment**.
+- **Fake or invalid property** → **cancelled**, not reassigned.
+- **No owner consent** → **blocked** until the consent issue is solved.
+- **Not found on listing services** → **manual review stayed an open product decision**.
+
+<Figure src="[TODO: edge-cases.png]" caption="Exception paths in the status map: reassign, cancel, block or review, so a rejection always has a defined next step." />
+
+### 3. A contributor app that answers "Is it moving?"
+[TODO: describe the key contributor screens: submit a lead, choose an agent and see their reward %, track status, reward]
+
+<Figure src="[TODO: contributor-submit.png]" caption="Submitting a property and choosing an agent: the reward percentage is visible before the contributor sends the lead." />
+
+<Figure src="[TODO: contributor-tracking.png]" caption="Lead tracking for contributors: the status says what is happening now, without internal steps." />
+
+### 4. An agent app built around status updates
+[TODO: describe the key agent screens: incoming leads, accept / decline with a reason, on-site check, status update]
+
+<Figure src="[TODO: agent-leads.png]" caption="Agent's leads: only approved leads appear, and declining for a specialisation mismatch sends the lead back for reassignment." />
+
+<Figure src="[TODO: agent-status-update.png]" caption="Status update by the agent: the manual step that replaces integrations and feeds the manager's alerts." />
+
+## Delivery
+- **Complete mobile screens** for Contributors and Agents.
+- **Screen maps** and navigation references.
+- **Component states and annotations** for every status-dependent element.
+- **Reusable design system components.**
+- **Developer handoff documentation** that explains the logic, not only the look.
+
+<Figure src="[TODO: handoff.png]" caption="Handoff: a screen map with annotations on status-dependent components and their states." />
+
+### Marketing landing pages
+I designed **two landing page concepts** that explain the value for contributors and for agents in different ways. [TODO: which concept was chosen and why]
+
+<Figure src="[TODO: landing-concepts.png]" caption="Two landing page concepts: different ways to explain the referral model to contributors and agents." />
+
+## Impact
+- **The platform launched** on the role, status and verification model I defined.
+- **The client and developers worked from one reference**: role matrix and status map.
+- [TODO: any number after launch, e.g. leads submitted, agents onboarded, fewer review rounds]
+- [TODO: client quote]
+
+## What I learned
+- **Find logic gaps before they become UI problems.** The missing assignment step would have been a broken screen later.
+- **Status is a message, not a field.** The same state needs different words for each role.
+- **Next:** [TODO: e.g. decide the manual review for leads not found on listing services, test the contributor flow with real users]
+
+> **AI in my process:** [TODO: where AI helped, e.g. drafting flows or edge-case lists, and which decisions stayed human]
