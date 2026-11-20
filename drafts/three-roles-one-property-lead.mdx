@@ -18,7 +18,7 @@ metrics:
   - value: "4"
     label: "edge cases with a defined outcome: reassign, cancel, block or review"
     source: "status map"
-cover: "[TODO: ./images/three-roles-one-property-lead/cover.png]"
+cover: "./images/three-roles-one-property-lead/cover.png"
 nda: false
 order: 3
 project: "iModial One"
@@ -28,7 +28,7 @@ project: "iModial One"
 iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the mobile app for contributors and agents**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
 
 ## Context
-iModial One is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property.
+iModial One is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property. *In the app, contributors are called Tipsters and agents are called Brokers.*
 
 - **An early-stage startup.** Limited budget and team, so **no complex third-party integrations** at the start.
 - **Third-party data.** Every lead comes from someone who is not the owner, so it has to be checked.
@@ -98,18 +98,24 @@ While I mapped the flow, **I saw that the system did not say how an approved lea
 <Figure src="[TODO: edge-cases.png]" caption="Exception paths in the status map: reassign, cancel, block or review, so a rejection always has a defined next step." />
 
 ### 3. A contributor app that answers "Is it moving?"
-[TODO: describe the key contributor screens: submit a lead, choose an agent and see their reward %, track status, reward]
+- **Choosing a broker.** Each broker card shows a rating, badges (Top Seller, Verified, years of experience) and **"Your Potential Reward"**. The public profile adds reviews, so **the contributor compares brokers before sending the lead**.
+- **Submitting a lead in three steps:** property info, seller contact, then **Review & Sign the Agreement** with the payout stated up front: "If this deal closes, you will receive 220 €".
+- **The dashboard** shows the payout balance and every tip with **a status chip and a filter by status**. Tips that need the contributor's action get **"Action required" with a countdown**.
+- **A rejected tip explains itself:** the reason ("Owner has no intention to sell"), a short note, and a **"Refer New Property"** button, so a rejection does not end the journey.
 
-<Figure src="[TODO: contributor-submit.png]" caption="Submitting a property and choosing an agent: the reward percentage is visible before the contributor sends the lead." />
+<Figure src="./images/three-roles-one-property-lead/contributor-submit.png" caption="Choose Broker, the broker's profile with reviews, and Review & Sign: the contributor sees the reward and the broker's rating before sending the lead." />
 
-<Figure src="[TODO: contributor-tracking.png]" caption="Lead tracking for contributors: the status says what is happening now, without internal steps." />
+<Figure src="./images/three-roles-one-property-lead/contributor-tracking.png" caption="Property tips with status chips and a countdown on the one that needs action, and a rejected tip with its reason and a next step." />
 
 ### 4. An agent app built around status updates
-[TODO: describe the key agent screens: incoming leads, accept / decline with a reason, on-site check, status update]
+- **Leads list** with status chips and **a timer on every new lead**, so the broker knows how long they have to respond.
+- **New lead details** show the estimated value and commission, but **the owner's contacts stay locked until the broker accepts the lead**.
+- **Rejecting needs a reason:** "Not operating in this region", "Not working with this property type" or "Other". **These reasons feed the agent-mismatch path**, where the lead goes back for reassignment.
+- **After contacting the owner**, the broker confirms or corrects the estimated value and commission. **The change is shown on the lead** (for example +4,200 €), and every status update lands on the lead's timeline, up to **Mark as Sold**.
 
-<Figure src="[TODO: agent-leads.png]" caption="Agent's leads: only approved leads appear, and declining for a specialisation mismatch sends the lead back for reassignment." />
+<Figure src="./images/three-roles-one-property-lead/agent-leads.png" caption="Leads with a response timer, a new lead with contacts locked until it is accepted, and Reject Lead with a required reason." />
 
-<Figure src="[TODO: agent-status-update.png]" caption="Status update by the agent: the manual step that replaces integrations and feeds the manager's alerts." />
+<Figure src="./images/three-roles-one-property-lead/agent-status-update.png" caption="Confirm Owner Contact, a status update on the lead's timeline, and Mark as Sold: the manual updates that replace integrations." />
 
 ## Delivery
 - **Complete mobile screens** for Contributors and Agents.
