@@ -1,20 +1,20 @@
 ---
 title: "Three roles, one property lead: the workflow logic behind a launched real estate referral app"
 slug: "three-roles-one-property-lead"
-summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the mobile app for contributors and agents. The product launched."
+summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the mobile app for contributors and agents. The app launched and passed 1,000+ downloads on Google Play."
 product: "iModial One: a real estate referral platform (mobile app + marketing website)"
 role: "Product Designer: product structure, IA, user flows, role matrix, status map, UX/UI, handoff, landing pages"
-team: "[TODO: e.g. me as the only designer, client founder, N developers]"
+team: "Me (product designer), a PM, and a design lead who reviewed my work and set the core UI style"
 timeline: "[TODO: e.g. 3 months, 2024]"
 platform: "iOS / Android, Web (landing pages)"
 tags: ["Marketplace", "Complex logic", "Roles & permissions", "Real estate", "Mobile"]
 metrics:
+  - value: "1,000+"
+    label: "downloads on Google Play after launch"
+    source: "Google Play"
   - value: "3"
     label: "roles, each with its own status labels and access"
     source: "role matrix"
-  - value: "3"
-    label: "verification checkpoints before a lead reaches a sale"
-    source: "verification flow"
   - value: "4"
     label: "edge cases with a defined outcome: reassign, cancel, block or review"
     source: "status map"
@@ -25,7 +25,7 @@ project: "iModial One"
 ---
 
 ## Description
-iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the mobile app for contributors and agents**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. The product launched.
+iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the mobile app for contributors and agents**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
 
 ## Context
 iModial One is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property.
@@ -53,7 +53,7 @@ iModial One is a **referral platform, not a listing app**. Contributors submit p
 - **Structured the verification process** and the edge cases.
 - **Designed the mobile app** for Contributors and Agents, the design system components and the handoff.
 - **Designed two landing page concepts** for the marketing website.
-- [TODO: who else was on the project: PM, developers, other designers]
+- **Worked with a PM and a design lead.** The lead reviewed my work and set the core UI style; I designed the screens and components on top of it.
 
 ## Discovery & insights
 I started from the business requirements and **mapped every role against every stage of a lead**. [TODO: other inputs, e.g. client workshops, competitor review, talks with agents]
@@ -79,7 +79,7 @@ One status list for everyone would be simpler to build, but it would **show agen
 A fully automated flow with listing-service and CRM integrations **was not realistic for an early-stage startup**. **I designed the process around manual updates**: agents update the status of their leads, and managers **get an alert when a status has not changed for too long**. This kept the first version buildable and split the work clearly: **agents handle the property, managers watch the process**.
 
 ### Who picks the agent
-While I mapped the flow, **I saw that the system did not say how an approved lead reaches an agent**. I raised it with the client, and **we agreed on a model**: the contributor chooses the agent, each agent sets their own referral reward percentage, and the chosen agent gets the lead. **This gave contributors control and made the reward clear before they commit.** [TODO: other options discussed, e.g. manager assigns or automatic matching, and why they were dropped]
+While I mapped the flow, **I saw that the system did not say how an approved lead reaches an agent**. I raised it with the client, and **we agreed on a model**: the contributor chooses the agent, each agent sets their own referral reward percentage, and the chosen agent gets the lead. **We also discussed assigning an agent for the contributor.** Letting the contributor choose won, because it works better for both sides: **contributors can compare agents by their reviews**, and **agents can compete with different reward rates**. The reward is clear before the contributor sends the lead.
 
 ## The solution
 ### 1. Verification in three checkpoints
@@ -115,7 +115,7 @@ While I mapped the flow, **I saw that the system did not say how an approved lea
 - **Complete mobile screens** for Contributors and Agents.
 - **Screen maps** and navigation references.
 - **Component states and annotations** for every status-dependent element.
-- **Reusable design system components.**
+- **Reusable design system components** built on the core UI style set by the design lead.
 - **Developer handoff documentation** that explains the logic, not only the look.
 
 <Figure src="[TODO: handoff.png]" caption="Handoff: a screen map with annotations on status-dependent components and their states." />
@@ -126,9 +126,9 @@ I designed **two landing page concepts** that explain the value for contributors
 <Figure src="[TODO: landing-concepts.png]" caption="Two landing page concepts: different ways to explain the referral model to contributors and agents." />
 
 ## Impact
+- **1,000+ downloads on Google Play** after launch (Google Play).
 - **The platform launched** on the role, status and verification model I defined.
 - **The client and developers worked from one reference**: role matrix and status map.
-- [TODO: any number after launch, e.g. leads submitted, agents onboarded, fewer review rounds]
 - [TODO: client quote]
 
 ## What I learned
@@ -136,4 +136,4 @@ I designed **two landing page concepts** that explain the value for contributors
 - **Status is a message, not a field.** The same state needs different words for each role.
 - **Next:** [TODO: e.g. decide the manual review for leads not found on listing services, test the contributor flow with real users]
 
-> **AI in my process:** [TODO: where AI helped, e.g. drafting flows or edge-case lists, and which decisions stayed human]
+> **AI in my process:** AI played a small role here: I used it only for research and to look for concept references. The roles, statuses, verification logic and design decisions were made by me and the team.
