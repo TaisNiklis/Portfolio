@@ -2,8 +2,8 @@
 title: "Three roles, one property lead: the workflow logic behind a launched real estate referral app"
 slug: "three-roles-one-property-lead"
 summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the app for contributors and agents on mobile, tablet and web. The app launched and passed 1,000+ downloads on Google Play."
-product: "iModial One: a real estate referral platform (mobile app + marketing website)"
-role: "Product Designer: product structure, IA, user flows, role matrix, status map, visual direction, UX/UI for mobile, tablet and web, handoff, landing page"
+product: "Real estate referral platform: mobile app, tablet, web app and landing page (NDA)"
+role: "Product Designer: product structure, IA, user flows, role matrix, status map, UX/UI for mobile, tablet and web, handoff, landing page"
 team: "Me (product designer), a PM, and a design lead who reviewed my work and set the core UI style"
 timeline: "[TODO: e.g. 3 months, 2024]"
 platform: "iOS / Android, tablet, web app, landing page"
@@ -19,20 +19,22 @@ metrics:
     label: "edge cases with a defined outcome: reassign, cancel, block or review"
     source: "status map"
 cover: "./images/three-roles-one-property-lead/cover.png"
-nda: false
+nda: true
 order: 3
-project: "iModial One"
+project: "RealEstateReferral"
 ---
 
 ## Description
-iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the app for contributors and agents on mobile, tablet and web**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
+The platform lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the app for contributors and agents on mobile, tablet and web**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
 
 ## Context
-iModial One is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property. *In the app, contributors are called Tipsters and agents are called Brokers.*
+The product is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property. *In the app, contributors are called Tipsters and agents are called Brokers.*
 
 - **An early-stage startup.** Limited budget and team, so **no complex third-party integrations** at the start.
 - **Third-party data.** Every lead comes from someone who is not the owner, so it has to be checked.
 - [TODO: deadline, tech stack, how the client worked with you]
+
+*The client and product name are hidden under NDA.*
 
 ## The problem
 **Business problem:** the business earns only if leads turn into sales. **A lead that gets stuck, is fake, or reaches the wrong agent** costs the contributor's trust and the agent's time.
@@ -52,7 +54,6 @@ iModial One is a **referral platform, not a listing app**. Contributors submit p
 - **Found the missing lead-assignment step** and agreed the model with the client.
 - **Structured the verification process** and the edge cases.
 - **Designed the app for Contributors and Agents on mobile, tablet and web**, the design system components and the handoff.
-- **Explored the visual direction**: three moodboards and two visual identity options.
 - **Designed two landing page concepts** for the marketing website.
 - **Worked with a PM and a design lead.** The lead reviewed my work and set the core UI style; I designed the screens and components on top of it.
 
@@ -84,11 +85,7 @@ While I mapped the flow, **I saw that the system did not say how an approved lea
 
 
 ### Visual direction
-Before the UI, **I explored the visual direction**: three moodboards (*Neobank Minimalist*, *Dark Luxury FinTech*, *Modern Refined Brutalist*), then **two visual identity options** on the same two screens: *Clean* with Satoshi and *Bold* with Plus Jakarta Sans. Both got **updated colour versions in blue**, the colour the app uses today. The design lead set the final core UI style on top of this.
-
-<Figure src="./images/three-roles-one-property-lead/moodboards.png" caption="Three moodboards: Neobank Minimalist, Dark Luxury FinTech and Modern Refined Brutalist, each with a mood, references and a colour palette." />
-
-<Figure src="./images/three-roles-one-property-lead/visual-directions.png" caption="Two visual identity options, Clean and Bold, shown on the same sign-in and dashboard screens, and the updated blue version." />
+**The design lead explored the visual direction** (moodboards and two visual identity options) and set the core UI style. **I designed all the screens and components on top of it**, so my part here was keeping the new style consistent across mobile, tablet and web.
 
 ## The solution
 ### 1. Verification in three checkpoints
@@ -149,7 +146,7 @@ Both roles also got **a tablet layout (1024) and a web app (1440)** with the sam
 <Figure src="[TODO: handoff.png]" caption="Handoff: a screen map with annotations on status-dependent components and their states." />
 
 ### Marketing landing pages
-I designed **two landing page concepts** with the same hero ("Join as a Tipster — earn €10K per tip!") and separate calls to action for tipsters and brokers. **Concept A explains the product with its own UI**: app screens inside the About Us and How It Works cards. **Concept B leads with photography** and short stat cards. [TODO: which concept was chosen and why]
+I designed **two landing page concepts** with the same hero ("Join as a Tipster — earn €10K per tip!") and separate calls to action for tipsters and brokers. **Concept A explains the product with its own UI**: app screens inside the About Us and How It Works cards. **Concept B leads with photography** and short stat cards. **The client kept both for A/B testing**, so the launch data can decide which one explains the model better.
 
 <Figure src="./images/three-roles-one-property-lead/landing-concepts.png" caption="Two landing concepts: A explains the product with UI cards, B uses photography. Both split the call to action for tipsters and brokers." />
 
