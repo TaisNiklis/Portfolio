@@ -1,12 +1,12 @@
 ---
 title: "Three roles, one property lead: the workflow logic behind a launched real estate referral app"
 slug: "three-roles-one-property-lead"
-summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the mobile app for contributors and agents. The app launched and passed 1,000+ downloads on Google Play."
+summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the app for contributors and agents on mobile, tablet and web. The app launched and passed 1,000+ downloads on Google Play."
 product: "iModial One: a real estate referral platform (mobile app + marketing website)"
-role: "Product Designer: product structure, IA, user flows, role matrix, status map, UX/UI, handoff, landing pages"
+role: "Product Designer: product structure, IA, user flows, role matrix, status map, visual direction, UX/UI for mobile, tablet and web, handoff, landing page"
 team: "Me (product designer), a PM, and a design lead who reviewed my work and set the core UI style"
 timeline: "[TODO: e.g. 3 months, 2024]"
-platform: "iOS / Android, Web (landing pages)"
+platform: "iOS / Android, tablet, web app, landing page"
 tags: ["Marketplace", "Complex logic", "Roles & permissions", "Real estate", "Mobile"]
 metrics:
   - value: "1,000+"
@@ -25,7 +25,7 @@ project: "iModial One"
 ---
 
 ## Description
-iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the mobile app for contributors and agents**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
+iModial One lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the app for contributors and agents on mobile, tablet and web**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
 
 ## Context
 iModial One is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property. *In the app, contributors are called Tipsters and agents are called Brokers.*
@@ -51,7 +51,8 @@ iModial One is a **referral platform, not a listing app**. Contributors submit p
 - **Defined the product structure on my own**: information architecture, user flows, role matrix and status map.
 - **Found the missing lead-assignment step** and agreed the model with the client.
 - **Structured the verification process** and the edge cases.
-- **Designed the mobile app** for Contributors and Agents, the design system components and the handoff.
+- **Designed the app for Contributors and Agents on mobile, tablet and web**, the design system components and the handoff.
+- **Explored the visual direction**: three moodboards and two visual identity options.
 - **Designed two landing page concepts** for the marketing website.
 - **Worked with a PM and a design lead.** The lead reviewed my work and set the core UI style; I designed the screens and components on top of it.
 
@@ -80,6 +81,14 @@ A fully automated flow with listing-service and CRM integrations **was not reali
 
 ### Who picks the agent
 While I mapped the flow, **I saw that the system did not say how an approved lead reaches an agent**. I raised it with the client, and **we agreed on a model**: the contributor chooses the agent, each agent sets their own referral reward percentage, and the chosen agent gets the lead. **We also discussed assigning an agent for the contributor.** Letting the contributor choose won, because it works better for both sides: **contributors can compare agents by their reviews**, and **agents can compete with different reward rates**. The reward is clear before the contributor sends the lead.
+
+
+### Visual direction
+Before the UI, **I explored the visual direction**: three moodboards (*Neobank Minimalist*, *Dark Luxury FinTech*, *Modern Refined Brutalist*), then **two visual identity options** on the same two screens: *Clean* with Satoshi and *Bold* with Plus Jakarta Sans. Both got **updated colour versions in blue**, the colour the app uses today. The design lead set the final core UI style on top of this.
+
+<Figure src="./images/three-roles-one-property-lead/moodboards.png" caption="Three moodboards: Neobank Minimalist, Dark Luxury FinTech and Modern Refined Brutalist, each with a mood, references and a colour palette." />
+
+<Figure src="./images/three-roles-one-property-lead/visual-directions.png" caption="Two visual identity options, Clean and Bold, shown on the same sign-in and dashboard screens, and the updated blue version." />
 
 ## The solution
 ### 1. Verification in three checkpoints
@@ -117,8 +126,21 @@ While I mapped the flow, **I saw that the system did not say how an approved lea
 
 <Figure src="./images/three-roles-one-property-lead/agent-status-update.png" caption="Confirm Owner Contact, a status update on the lead's timeline, and Mark as Sold: the manual updates that replace integrations." />
 
+### 5. The same flows on tablet and web
+Both roles also got **a tablet layout (1024) and a web app (1440)** with the same statuses and lead logic.
+
+- **Web:** a sidebar for navigation and **leads as a table** with the same status chips and timers as on mobile. The broker's sidebar has Analytics, Finances, Team and Commission; the contributor's has Wallet, Brokers and Affiliate Program.
+- **Lead details on web** put **the timeline in a side column**, so the broker sees the lead, the contacts and every status change on one screen.
+- **Tablet:** landscape layouts that reuse the mobile components, with pop-ups such as the payout option centred on the screen.
+
+<Figure src="./images/three-roles-one-property-lead/web-app.png" caption="Web dashboards for the broker (front) and the contributor (back): leads as a table with the same status chips as on mobile." />
+
+<Figure src="./images/three-roles-one-property-lead/web-lead-details.png" caption="Lead details on web: the lead and contacts on the left, the full status timeline on the right." />
+
+<Figure src="./images/three-roles-one-property-lead/tablet.png" caption="Tablet layouts: the contributor's dashboard with the payout option pop-up, and a rejected lead with its reason." />
+
 ## Delivery
-- **Complete mobile screens** for Contributors and Agents.
+- **Complete screens for mobile, tablet and web** for Contributors and Agents.
 - **Screen maps** and navigation references.
 - **Component states and annotations** for every status-dependent element.
 - **Reusable design system components** built on the core UI style set by the design lead.
@@ -127,9 +149,9 @@ While I mapped the flow, **I saw that the system did not say how an approved lea
 <Figure src="[TODO: handoff.png]" caption="Handoff: a screen map with annotations on status-dependent components and their states." />
 
 ### Marketing landing pages
-I designed **two landing page concepts** that explain the value for contributors and for agents in different ways. [TODO: which concept was chosen and why]
+I designed **two landing page concepts** with the same hero ("Join as a Tipster — earn €10K per tip!") and separate calls to action for tipsters and brokers. **Concept A explains the product with its own UI**: app screens inside the About Us and How It Works cards. **Concept B leads with photography** and short stat cards. [TODO: which concept was chosen and why]
 
-<Figure src="[TODO: landing-concepts.png]" caption="Two landing page concepts: different ways to explain the referral model to contributors and agents." />
+<Figure src="./images/three-roles-one-property-lead/landing-concepts.png" caption="Two landing concepts: A explains the product with UI cards, B uses photography. Both split the call to action for tipsters and brokers." />
 
 ## Impact
 - **1,000+ downloads on Google Play** after launch (Google Play).
