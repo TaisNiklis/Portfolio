@@ -1,0 +1,172 @@
+---
+title: "Three roles, one property lead: the workflow logic behind a launched real estate referral app"
+slug: "three-roles-one-property-lead"
+summary: "A real estate referral app had to move one property lead between contributors, managers and agents. I defined the role matrix, status map, verification steps and lead assignment, then designed the app for contributors and agents on mobile, tablet and web. The app launched and passed 1,000+ downloads on Google Play."
+product: "Real estate referral platform: mobile app, tablet, web app and landing page (NDA)"
+role: "Product Designer: product structure, IA, user flows, role matrix, status map, UX/UI for mobile, tablet and web, handoff, landing page"
+team: "Me (product designer), a PM, and a design lead who reviewed my work and set the core UI style"
+timeline: "2 months, 2026"
+platform: "iOS / Android, tablet, web app, landing page"
+tags: ["Marketplace", "Mobile", "Roles & statuses", "Information architecture", "Real estate"]
+metrics:
+  - value: "1,000+"
+    label: "downloads on Google Play after launch"
+    source: "Google Play"
+  - value: "3"
+    label: "roles, each with its own status labels and access"
+    source: "role matrix"
+  - value: "4"
+    label: "edge cases with a defined outcome: reassign, cancel, block or review"
+    source: "status map"
+cover: "../../assets/cases/real-estate-referral-cover.png"
+nda: true
+order: 3
+project: "RealEstateReferral"
+---
+
+## Description
+The platform lets **anyone who knows about a property for sale send it as a lead** to a real estate agent and get a reward if it sells. One lead passes through three roles: Contributors, Managers and Agents. I designed **the logic behind that journey** (who sees what, when a lead moves, what stops it) and then **the app for contributors and agents on mobile, tablet and web**. While mapping the flow, **I found that nobody had defined how a lead reaches an agent**, and worked out the model with the client. **The app launched and passed 1,000+ downloads on Google Play.**
+
+## Context
+The product is a **referral platform, not a listing app**. Contributors submit property leads, track them and earn a reward on a sale. Managers review leads. Agents take approved leads and sell the property. In the app, contributors are called Tipsters and agents are called Brokers.
+
+- **An early-stage startup.** Limited budget and team, so **no complex third-party integrations** at the start.
+- **Third-party data.** Every lead comes from someone who is not the owner, so it has to be checked.
+
+*The client and product name are hidden under NDA.*
+
+## The problem
+**Business problem:** the business earns only if leads turn into sales. **A lead that gets stuck, is fake, or reaches the wrong agent** costs the contributor’s trust and the agent’s time.
+
+**User problem:** three roles touch the same lead but need different things. **A contributor wants to know the lead is moving. A manager needs to know what to review. An agent should only see leads that are ready to work on.**
+
+**How might we move one property lead through three roles so that each one always knows its next step, without exposing internal workflow?**
+
+## Goals
+- **One shared model** for roles, permissions and statuses, used by the client and developers.
+- **A clear status for every role** at every stage of the lead.
+- A verification process that **makes each responsibility explicit**.
+- A workflow the startup can run **without heavy automation**.
+
+## My role
+- **Defined the product structure on my own**: information architecture, user flows, role matrix and status map.
+- **Found the missing lead-assignment step** and agreed the model with the client.
+- **Structured the verification process** and the edge cases.
+- **Wireframed every flow** for both roles and the admin panel for managers, with the rules written in notes.
+- **Designed the app for Contributors and Agents on mobile, tablet and web**, the design system components and the handoff.
+- **Designed two landing page concepts** for the marketing website.
+- **Worked with a PM and a design lead.** The lead reviewed my work and set the core UI style; I designed the screens and components on top of it.
+
+## Discovery & insights
+I started from the business requirements and **mapped every role against every stage of a lead**.
+
+1. **Same lead, different questions.** The contributor asks “Is it moving?”, the manager “Do I need to act?”, the agent “Can I take it?”. → **Role-specific statuses instead of one shared list.**
+2. **Leads come from people who are not the owner.** → **Verification with owner consent** before an agent gets the lead.
+3. **The flow had a gap between “approved” and “agent”.** No rule said who picks the agent. → **An assignment model, agreed with the client.**
+4. **Not every rejection means the same thing.** A wrong agent, a fake property and a missing consent need different outcomes. → **Separate exception paths in the status map.**
+
+<Figure src="./images/three-roles-one-property-lead/role-matrix.png" caption="Role matrix: what Contributors, Managers and Agents can see and do at each stage. The shared reference for the client and developers." />
+
+## Exploring options
+### Role-specific statuses over one shared status
+One status list for everyone would be simpler to build, but it would **show agents leads they cannot use yet and show contributors internal steps**. **I chose to separate the internal status from the label each role sees.** Right after a contributor submits a lead:
+
+- **Contributor** sees **“Under Review”**: the lead was received.
+- **Manager** sees **“Pending Review”**: it needs their action.
+- **Agent** sees nothing: the lead has not passed review yet.
+
+<Figure src="./images/three-roles-one-property-lead/status-map.png" caption="Status map: one internal status, three role labels, and the actions that move a lead to the next stage." />
+
+### Manual status updates over integrations
+A fully automated flow with listing-service and CRM integrations **was not realistic for an early-stage startup**. **I designed the process around manual updates**: agents update the status of their leads, and managers **get an alert when a status has not changed for too long**. This kept the first version buildable and split the work clearly: **agents handle the property, managers watch the process**.
+
+### Who picks the agent
+While I mapped the flow, **I saw that the system did not say how an approved lead reaches an agent**. I raised it with the client, and **we agreed on a model**: the contributor chooses the agent, each agent sets their own referral reward percentage, and the chosen agent gets the lead.
+
+**We also discussed assigning an agent for the contributor.** Letting the contributor choose won, because it works better for both sides: **contributors can compare agents by their reviews**, and **agents can compete with different reward rates**. The reward is clear before the contributor sends the lead.
+
+### Wireframes for every flow
+Before the UI, **I wireframed every flow in grayscale**: sign-up and dashboards for both roles, Add New Lead, wallet and invoices, profiles for three tipster types (occasional, frequent, commercial), the brokers directory, and the broker’s lead management, team, finances and analytics. **Sticky notes on the wireframes hold the rules**: validation messages, back and exit behaviour, what each step must not allow. The Legal Notice checkboxes in Add New Lead are where owner consent first shows up in the UI.
+
+**The admin panel for managers was designed at wireframe level**: Brokers (verification and blocking), the Payment Approval Desk (sale confirmation, invoices, credit notes) and the Monitoring Center. Its **Scraper Alerts** tab is the cross-source check in practice: each lead’s platform status next to what listing sites show (Listing Active, Listing Removed, Price Changed, No Data Found).
+
+<Figure src="./images/three-roles-one-property-lead/add-lead-wireframes.png" caption="Add New Lead wireframes: property details, seller contact with the legal notice, discard confirmation and review & sign, with notes on navigation rules." />
+
+<Figure src="./images/three-roles-one-property-lead/admin-wireframes.png" caption="Admin panel wireframes: the Monitoring Center’s Scraper Alerts compare each lead with listing sites; the Leads table shows statuses and payment warnings." />
+
+### Visual direction
+**The design lead explored the visual direction** (moodboards and two visual identity options) and set the core UI style. **I designed all the screens and components on top of it**, so my part here was keeping the new style consistent across mobile, tablet and web.
+
+## The solution
+### 1. Verification in three checkpoints
+- **Cross-source check.** The lead is compared with other listing services. **A match approves it automatically** at this step.
+- **Owner consent.** A request goes to the owner’s contact. If the owner declines or does not answer, **the contributor is asked to contact the owner or fix the contact details**. Without consent, the lead does not move.
+- **On-site check.** After assignment, **the agent visits the property** and confirms the data.
+
+<Figure src="./images/three-roles-one-property-lead/verification-flow.png" caption="Verification flow: cross-source check, owner consent and on-site visit, with the person responsible for each step." />
+
+### 2. Edge cases with clear outcomes
+- **Agent mismatch:** the property is outside the agent’s specialisation → **back to reassignment**.
+- **Fake or invalid property** → **cancelled**, not reassigned.
+- **No owner consent** → **blocked** until the consent issue is solved.
+- **Not found on listing services** → **manual review stayed an open product decision**.
+
+<Figure src="./images/three-roles-one-property-lead/exception-paths.png" caption="Exception paths in the status map: reassign, cancel, block or review, so a rejection always has a defined next step." />
+
+### 3. A contributor app that answers “Is it moving?”
+- **Choosing a broker.** Each broker card shows a rating, badges (Top Seller, Verified, years of experience) and **“Your Potential Reward”**. The public profile adds reviews, so **the contributor compares brokers before sending the lead**.
+- **Submitting a lead in three steps:** property info, seller contact, then **Review & Sign the Agreement** with the payout stated up front: “If this deal closes, you will receive 220 €”.
+- **The dashboard** shows the payout balance and every tip with **a status chip and a filter by status**. Tips that need the contributor’s action get **“Action required” with a countdown**.
+- **A rejected tip explains itself:** the reason (“Owner has no intention to sell”), a short note, and a **“Refer New Property”** button, so a rejection does not end the journey.
+
+<Figure src="./images/three-roles-one-property-lead/choose-broker.png" caption="Choose Broker, the broker’s profile with reviews, and Review & Sign: the contributor sees the reward and the broker’s rating before sending the lead." />
+
+<Figure src="./images/three-roles-one-property-lead/property-tips.png" caption="Property tips with status chips and a countdown on the one that needs action, and a rejected tip with its reason and a next step." />
+
+### 4. An agent app built around status updates
+- **Leads list** with status chips and **a timer on every new lead**, so the broker knows how long they have to respond.
+- **New lead details** show the estimated value and commission, but **the owner’s contacts stay locked until the broker accepts the lead**.
+- **Rejecting needs a reason:** “Not operating in this region”, “Not working with this property type” or “Other”. **These reasons feed the agent-mismatch path**, where the lead goes back for reassignment.
+- **After contacting the owner**, the broker confirms or corrects the estimated value and commission. **The change is shown on the lead** (for example +4,200 €), and every status update lands on the lead’s timeline, up to **Mark as Sold**.
+
+<Figure src="./images/three-roles-one-property-lead/broker-leads.png" caption="Leads with a response timer, a new lead with contacts locked until it is accepted, and Reject Lead with a required reason." />
+
+<Figure src="./images/three-roles-one-property-lead/status-updates.png" caption="Confirm Owner Contact, a status update on the lead’s timeline, and Mark as Sold: the manual updates that replace integrations." />
+
+### 5. The same flows on tablet and web
+Both roles also got **a tablet layout (1024) and a web app (1440)** with the same statuses and lead logic.
+
+- **Web:** a sidebar for navigation and **leads as a table** with the same status chips and timers as on mobile. The broker’s sidebar has Analytics, Finances, Team and Commission; the contributor’s has Wallet, Brokers and Affiliate Program.
+- **Lead details on web** put **the timeline in a side column**, so the broker sees the lead, the contacts and every status change on one screen.
+- **Tablet:** landscape layouts that reuse the mobile components. Lead details keep the timeline beside the lead, and if the broker does not respond within 24 hours, the contributor is asked to choose another broker.
+
+<Figure src="./images/three-roles-one-property-lead/web-dashboards.png" caption="Web dashboards for the broker (front) and the contributor (back): leads as a table with the same status chips as on mobile." />
+
+<Figure src="./images/three-roles-one-property-lead/web-lead-details.png" caption="Lead details on web: the lead and contacts on the left, the full status timeline on the right." />
+
+<Figure src="./images/three-roles-one-property-lead/tablet-layouts.png" caption="Tablet layouts: the contributor’s dashboard, and a lead where the broker did not respond within 24 hours, with a prompt to choose another broker." />
+
+## Delivery
+- **Complete screens for mobile, tablet and web** for Contributors and Agents.
+- **Screen maps** and navigation references.
+- **Component states and annotations** for every status-dependent element.
+- **Reusable design system components** built on the core UI style set by the design lead.
+- **Developer handoff documentation** that explains the logic, not only the look.
+
+<Figure src="./images/three-roles-one-property-lead/design-system.png" caption="Delivery: Satoshi Variable type scale, buttons and role-based status chips, colour tokens, and part of the screen map with notes for developers." />
+
+### Marketing landing pages
+I designed **two landing page concepts** with the same hero (“Join as a Tipster — earn €10K per tip!”) and separate calls to action for tipsters and brokers. **Concept A explains the product with its own UI**: app screens inside the About Us and How It Works cards. **Concept B leads with photography** and short stat cards. **The client kept both for A/B testing**, so the launch data can decide which one explains the model better.
+
+<Figure src="./images/three-roles-one-property-lead/landing-concepts.png" caption="Two landing concepts: A explains the product with UI cards, B uses photography. Both split the call to action for tipsters and brokers." />
+
+## Impact
+- **1,000+ downloads on Google Play** after launch (Google Play).
+- **The platform launched** on the role, status and verification model I defined.
+- **The client and developers worked from one reference**: role matrix and status map.
+
+## What I learned
+- **Find logic gaps before they become UI problems.** The missing assignment step would have been a broken screen later.
+- **Status is a message, not a field.** The same state needs different words for each role.
+
+> **AI in my process:** AI played a small role here: I used it only for research and to look for concept references. The roles, statuses, verification logic and design decisions were made by me and the team.
