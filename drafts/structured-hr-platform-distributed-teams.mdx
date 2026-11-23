@@ -1,0 +1,145 @@
+---
+title: "From fragmented requirements to a structured HR platform"
+slug: "structured-hr-platform-distributed-teams"
+summary: "An HR platform for distributed teams had a half-working prototype and documentation that did not match it. I audited the product, defined who does what across three roles and many businesses, designed the core workflows, and built a design system the team could develop against."
+product: "Remote Leverage: HR platform for managing remote talent, timesheets, payments and documents (B2B SaaS)"
+role: "Product Designer: product audit, discovery, role and permission model, user flows, UX/UI, design system"
+team: "Me + a UX lead at ANODA; on the client side a PM, an operations lead, the CMO and backend and frontend developers"
+timeline: "[TODO: e.g. Jun–Aug 2026, ≈2.5 months]"
+platform: "Web"
+tags: ["B2B SaaS", "HR tech", "Complex B2B logic", "Roles & permissions", "Design system"]
+metrics:
+  - value: "3"
+    label: "roles with clear boundaries in one permission matrix"
+    source: "role and permission matrix"
+  - value: "11"
+    label: "user flows for Talent and Business, with edge cases and open questions"
+    source: "user flow boards, Milestone 1"
+  - value: "On time"
+    label: "first milestone: all audits and user flows delivered by the deadline"
+    source: "client sign-off"
+cover: "./images/structured-hr-platform-distributed-teams/cover.png"
+nda: false
+order: 3
+project: "RemoteLeverage"
+---
+
+## Description
+Remote Leverage helps businesses hire and manage remote talent. Its new platform had **a working prototype, but the documentation, the business rules and the interface did not agree with each other**. I audited what existed, ran structured interviews with the client, and turned the answers into a role model, core workflows and a design system. The product is still in development; my work gave the developers **one agreed structure to build against**.
+
+## Context
+Remote Leverage recruits talent, mostly in Latin America, for businesses that need remote teams. The platform moves the company's operations in-app: **timesheets, payments, and documents for onboarding and offboarding**.
+
+- **A prototype already existed.** The client's developers had built a partly working version, so we had to work with real code, not a blank page.
+- **The documentation lived in Notion** and often described a different product from the one in the prototype.
+- **The timeline was short**, and the client kept shipping features while we designed.
+
+## The problem
+**Business problem:** the company wanted to move a service it ran by hand into a product. Without clear rules, developers built screens that did not match how the service really worked.
+
+**User problem:** three roles used the platform: **Talent, Manager and Business**. Nobody had defined where the Manager's work ended and the Business's began. Managers worked with many businesses, but the product had no clear way to switch between them. Timesheet review, payments and documents had missing steps and no edge cases.
+
+**How might we turn a half-built prototype and scattered requirements into one product structure that the business, the developers and the users all understand the same way?**
+
+## Goals
+- Find every gap between the prototype, the documentation and the real business process.
+- **Define each role's responsibilities and access** before designing screens.
+- Design the core workflows: business workspaces, timesheets, payments, documents and integrations.
+- Build a consistent visual system the developers can reuse.
+
+## My role
+- **Audited the existing prototype** and compared it with the documentation in Notion.
+- **Prepared the open questions and ran structured interviews** with the client's PM, operations lead and CMO.
+- **Proposed solutions where the business had no answer yet**, instead of only writing down requirements.
+- **Built the role and permission matrices, user flows and UI** for the core workflows.
+- **Created the design system** and the specifications for developers.
+- Worked with a UX lead at ANODA, who reviewed my work. [TODO: confirm the split of work with the UX lead]
+
+## Discovery & insights
+I started with the product, not with the brief. **I went through the prototype screen by screen, marked every problem on annotated screenshots** and checked each flow against the Notion documentation. Every gap became a question for the client.
+
+<Figure src="[TODO: audit-annotated.png]" caption="Annotated audit of the existing prototype: each card names a problem, its priority and the fix. This is how gaps between the code and the documentation became visible." />
+
+The interviews showed that **some workflows were not defined even on the business side**.
+
+1. **The product was built around one service, but nobody had said so.** The interviews showed that the client thought about the platform from the point of view of its managed service, where the company runs talent operations for a business. Our first role model did not reflect this → I rebuilt the roles around that service.
+2. **Managers switch between businesses all day.** The operations lead said managers do it "very often… it's their entire day." → Switching business context had to be a core part of navigation, not a setting.
+3. **"Managed" is not the same as "blocked".** The CMO explained that businesses on the managed service still see everything: "It's not that they are blocked… these functions are now managed on their behalf." → The Business role needed a view state, not disabled buttons.
+4. **Approving timesheets one by one was the main pain for managers.** Managers asked for bulk review, and accidental approvals happened because buttons sat close together → bulk selection plus one confirmation step.
+
+<Figure src="[TODO: open-questions.png]" caption="The open-questions list from discovery: each question is linked to the flow it blocks and gets an answer, a proposal or an owner. It turned interviews into decisions." />
+
+## Exploring options
+### One model for all packages vs. the first release only
+The client planned several subscription packages, but **only one was defined**: the company manages talent operations for the business. The others had no features and no prices yet. Designing for all of them would have meant guessing.
+
+**I chose to design for the defined service only** and to treat the other packages as future scope. This kept the first release realistic and gave developers one set of rules. The trade-off: some screens will need new states when the next packages arrive, so I kept the role model open for that.
+
+### Who can act: the role or the package
+The client gave two answers that did not fit together. One person said the Manager and the Business could do the same things; another said all actions belonged to the Manager. **I proposed that permissions follow the package, not the role.** Under the managed service, the Manager acts and the Business sees the information and confirms payments. This explained both answers, and the client agreed.
+
+<Figure src="[TODO: role-matrix.png]" caption="Role and permission matrix for Talent, Manager and Business. Business cells say View, not a dash: the work is done for them, not hidden from them." />
+
+### A confirmation step instead of undo
+To stop accidental approvals, the client's PM suggested a reject-and-reset action after approval. **I proposed a confirmation modal before approving instead**, because it prevents the mistake rather than fixing it later. The PM agreed: "That sounds much easier. The less stress the manager has, the better."
+
+## The solution
+### 1. Workspaces for managers who work across businesses
+**Each business is a workspace.** The Manager picks a business in the top navigation, and the whole dashboard (talent, timesheets, payments, documents) switches to that business. Data from different businesses never mixes on one screen.
+
+<Figure src="[TODO: workspace-switcher.png]" caption="Business switcher in the top navigation: the Manager changes the business, and every section follows. One starting point for every account." />
+
+### 2. Bulk timesheet approval
+- Managers **select several timesheets** with checkboxes and approve them in one action.
+- **One review modal per selection, not one per timesheet.** It shows how many timesheets, total hours and total amount, so bulk approval stays a review, not a blind click.
+- Timesheets are grouped by pay period, and an approved timesheet is read-only.
+
+<Figure src="[TODO: timesheets-bulk.png]" caption="Bulk timesheet review: row selection, then one confirmation with the number of timesheets, total hours and amount for the period." />
+
+### 3. Payments for one talent or a whole period
+- Payments are **organized by period**. A business can pay one talent or **pay a group of talents for the selected period** at once.
+- **The Business confirms payments with a one-time code.** The Manager prepares them, and the Business approves. Following the operations lead's advice, the code is asked once per session, not for every payment, which would make people avoid the platform.
+- **I researched which details each payout method needs** (bank transfer, Wise and others) and built the forms around those fields.
+
+<Figure src="[TODO: payments-grouped.png]" caption="Grouped payment for a period, with the Business confirmation step. The Manager prepares, the Business confirms." />
+
+<Figure src="[TODO: payout-method-fields.png]" caption="Payout method forms: each method asks only for the fields it needs." />
+
+### 4. Integrations inside the user flows
+I clarified with the client what each planned integration does, then **placed every one at a specific step of a user flow**:
+- **Veriff** (identity check): the talent completes it on the phone with a QR code. It locks payouts only, never access to the platform.
+- **DocuSeal** (e-signature): the talent signs documents the business prepares and never uploads compliance documents themselves.
+- **Time Doctor** (time tracking): it fills timesheets automatically but never overwrites an entry the talent has edited. It can be turned on or off for each talent.
+
+<Figure src="[TODO: integrations-flow.png]" caption="Talent onboarding flow with integrations at their steps: identity check, document signing and time tracking. Each one has its own success, error and blocked states." />
+
+### 5. A calmer visual language
+The old interface used many accent colours, and the client wanted purple everywhere. **Purple on large areas failed contrast checks, and the audit showed that too many colours made screens hard to read.** I proposed **purple as the accent for actions only**, on a light, mostly white interface, and showed the client several visual directions before choosing one.
+
+<Figure src="[TODO: visual-directions.png]" caption="Visual directions shown to the client on one real screen, the Documents repository. The chosen one keeps purple for actions only." />
+
+<Figure src="[TODO: before-after.png]" caption="Before / after: the same screen in the old prototype and in the new design. Fewer colours, clearer table structure, one primary action." />
+
+## Delivery
+- **A design system** with a colour and type foundation, reusable components, their states and spacing rules. [TODO: number of components and variants]
+- **User flows with notes, errors and open questions** for every core workflow, so developers could see the logic, not only the screens.
+- **Specifications** for developers, built on the agreed role model.
+- **Fixed product language:** the person is always "Talent". "Employee" and "payroll" were removed, because under the managed service they create a legal risk for the company.
+
+<Figure src="[TODO: design-system.png]" caption="Design system: colours, type scale, buttons, inputs, status badges and tables with their states." />
+
+## Impact
+The product was still in development when my part ended. The proposed solutions had **limited stakeholder review**; usability testing and post-launch metrics were outside my scope.
+
+- **The first milestone (audits and all user flows) was delivered by the deadline.** The client's PM reviewed the flows: "They all look mostly correct."
+- **Several of my proposals were accepted into the product**: the confirmation step for approvals, an Archive tab for former talent instead of deleting them, and permissions that follow the package.
+- **The developers got one agreed structure**: roles, workflows and components, instead of a prototype and documentation that disagreed.
+
+[TODO: any later feedback from the client or developers, or proxy evidence such as fewer revision rounds]
+
+## What I learned
+- **Ask about the business model before the screens.** The biggest correction in the project came from one question about the service, not from the UI.
+- **When two stakeholders disagree, look for the rule that explains both answers.** "Permissions follow the package" settled a conflict that more meetings would not have.
+- **Next, I would test the bulk approval and payment flows with real managers** before the launch.
+
+> **AI in my process:** I used Claude to keep a project knowledge base from call notes, to summarize interviews, and to draft notes and edge cases for user flows. I checked every summary against the call recordings. The role model, the scope decisions and the UI stayed my decisions. [TODO: confirm how AI was used]
