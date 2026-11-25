@@ -69,7 +69,7 @@ The interviews showed that **some workflows were not defined even on the busines
 3. **"Managed" is not the same as "blocked".** The CMO explained that businesses on the managed service still see everything: "It's not that they are blocked… these functions are now managed on their behalf." → The Business role needed a view state, not disabled buttons.
 4. **Approving timesheets one by one was the main pain for managers.** Managers asked for bulk review, and accidental approvals happened because buttons sat close together → bulk selection plus one confirmation step.
 
-<Figure src="[TODO: open-questions.png]" caption="The open-questions list from discovery: each question is linked to the flow it blocks and gets an answer, a proposal or an owner. It turned interviews into decisions." />
+<Figure src="./images/structured-hr-platform-distributed-teams/open-questions.png" caption="A slice of the open-questions register: each question gets an answer, my proposal, or an owner on the client side. It turned interviews into decisions." />
 
 ## Exploring options
 ### One model for all packages vs. the first release only
@@ -80,7 +80,7 @@ The client planned several subscription packages, but **only one was defined**: 
 ### Who can act: the role or the package
 The client gave two answers that did not fit together. One person said the Manager and the Business could do the same things; another said all actions belonged to the Manager. **I proposed that permissions follow the package, not the role.** Under the managed service, the Manager acts and the Business sees the information and confirms payments. This explained both answers, and the client agreed.
 
-<Figure src="[TODO: role-matrix.png]" caption="Role and permission matrix for Talent, Manager and Business. Business cells say View, not a dash: the work is done for them, not hidden from them." />
+<Figure src="./images/structured-hr-platform-distributed-teams/role-matrix.png" caption="Role and permission matrix for the first release: who acts and who only sees each module. Business cells say View, not a dash: the work is done for them, not hidden from them." />
 
 ### A confirmation step instead of undo
 To stop accidental approvals, the client's PM suggested a reject-and-reset action after approval. **I proposed a confirmation modal before approving instead**, because it prevents the mistake rather than fixing it later. The PM agreed: "That sounds much easier. The less stress the manager has, the better."
@@ -89,21 +89,21 @@ To stop accidental approvals, the client's PM suggested a reject-and-reset actio
 ### 1. Workspaces for managers who work across businesses
 **I proposed the workspace model on a call with the client: each business is a workspace.** The Manager picks a business in the top navigation, and the whole dashboard (talent, timesheets, payments, documents) switches to that business. Data from different businesses never mixes on one screen.
 
-<Figure src="[TODO: workspace-switcher.png]" caption="Business switcher in the top navigation: the Manager changes the business, and every section follows. One starting point for every account." />
+<Figure src="./images/structured-hr-platform-distributed-teams/workspace-model.png" caption="Workspace model: the Manager switches business in the top navigation and every section follows. A business sees only its own workspace." />
 
 ### 2. Bulk timesheet approval
 - Managers **select several timesheets** with checkboxes and approve them in one action.
 - **One review modal per selection, not one per timesheet.** It shows how many timesheets, total hours and total amount, so bulk approval stays a review, not a blind click.
 - Timesheets are grouped by pay period, and an approved timesheet is read-only.
 
-<Figure src="[TODO: timesheets-bulk.png]" caption="Bulk timesheet review: row selection, then one confirmation with the number of timesheets, total hours and amount for the period." />
+<Figure src="./images/structured-hr-platform-distributed-teams/bulk-approval-flow.png" caption="Bulk approval: select several timesheets, review one summary with the count, hours and amount, approve once. Approved timesheets become read-only." />
 
 ### 3. Payments for one talent or a whole period
 - Payments are **organized by period**. A business can pay one talent or **pay a group of talents for the selected period** at once.
 - **The Business confirms payments with a one-time code.** The Manager prepares them, and the Business approves. Following the operations lead's advice, the code is asked once per session, not for every payment, which would make people avoid the platform.
 - **I researched which details each payout method needs** and built the forms around those fields, so each method asks only for what it needs.
 
-<Figure src="[TODO: payments-grouped.png]" caption="Grouped payment for a period, with the Business confirmation step. The Manager prepares, the Business confirms." />
+<Figure src="./images/structured-hr-platform-distributed-teams/payment-flow.png" caption="Payment flow by role: the Manager prepares payouts for one talent or a group, the Business confirms with a code once per session, and the platform processes them." />
 
 <Figure src="./images/structured-hr-platform-distributed-teams/payout-method-fields.png" caption="Adding a payout method: Wise needs only a tag, while a bank transfer needs the account, routing code and bank country. Each method asks only for the fields it needs." />
 
@@ -130,7 +130,7 @@ The same rules shape what the talent sees.
 ### 6. A calmer visual language
 The old interface used many accent colours, and the client wanted purple everywhere. **Purple on large areas failed contrast checks, and the audit showed that too many colours made screens hard to read.** I proposed **purple as the accent for actions only**, on a light, mostly white interface, and showed the client several visual directions before choosing one.
 
-<Figure src="[TODO: visual-directions.png]" caption="Visual directions shown to the client on one real screen, the Documents repository. The chosen one keeps purple for actions only." />
+<Figure src="./images/structured-hr-platform-distributed-teams/visual-directions.png" caption="Two of the six visual directions I showed the client on one real screen, the Documents repository: purple across the sidebar, or purple for actions only." />
 
 <Figure src="[TODO: before-after.png]" caption="Before / after: the same screen in the old prototype and in the new design. Fewer colours, clearer table structure, one primary action." />
 
