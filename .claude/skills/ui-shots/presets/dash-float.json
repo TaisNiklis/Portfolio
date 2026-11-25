@@ -1,0 +1,9 @@
+{
+  "$description": "Dashboard ref 'DoDo' (learning platform, lime). The whole dashboard as a floating card with soft corners on a muted sage/neutral background taken from the UI, soft shadow, generous padding so the full layout reads. Best for light dashboards shown whole: the overview image of a case.",
+  "device": "card",
+  "fit": "contain",
+  "radius": 0.02,
+  "background": "auto-muted",
+  "shadow": "soft",
+  "padding": 0.06
+}

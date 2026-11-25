@@ -1,0 +1,15 @@
+{
+  "$description": "Mobile ref 'Get Loans in Minutes' (light fintech, lavender). Bare white screens as thick slabs (visible edge thickness) in a 3D-tilted masonry that runs off the edges, on a very light cool grey. Soft, airy, premium. Best for a light mobile UI overview with 3-5 screens, cover shots.",
+  "layout": "masonry",
+  "columns": 3,
+  "colOffset": [0.45, 0, 0.3],
+  "cellWidth": 0.36,
+  "rotate": 0,
+  "tilt": { "rx": 28, "ry": 0, "rz": -24 },
+  "device": "card",
+  "radius": 0.1,
+  "depth": 0.035,
+  "background": "#EDEDF0",
+  "shadow": "soft",
+  "gap": 0.05
+}

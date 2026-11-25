@@ -1,0 +1,17 @@
+{
+  "$description": "Dashboard ref 'Team management' (dark). A close-up of a MacBook's top-right corner: the laptop is zoomed in so the frame runs off the left and bottom edges and the dashboard fills the shot. Very dark, slightly textured background. Best for dark dashboards when one area (sidebar, widgets) should be readable and the device should still read as 'a real app'.",
+  "device": "macbook",
+  "zoom": 2.0,
+  "focus": [
+    0.86,
+    0.06
+  ],
+  "anchor": [
+    0.62,
+    0.2
+  ],
+  "background": "radial-gradient(ellipse at 70% 20%, #2a2a2c, #0d0d0e 70%)",
+  "grain": 0.08,
+  "shadow": "deep",
+  "shadowColor": "#000000"
+}

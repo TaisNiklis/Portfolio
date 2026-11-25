@@ -1,0 +1,603 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  html, body { margin: 0; padding: 0; }
+  body { font-family: Inter, -apple-system, "Segoe UI", sans-serif; }
+  #canvas { position: relative; overflow: hidden; }
+  #bg, #grain { position: absolute; inset: 0; }
+  #bg { background-size: cover; background-position: center; }
+  #stage { position: absolute; inset: 0; display: flex; justify-content: center; perspective: 2400px; }
+  #group { display: flex; transform-style: preserve-3d; }
+  .col { display: flex; flex-direction: column; flex: none; }
+  .wrap { position: relative; flex: none; }
+  .dev { position: relative; flex: none; }
+  .layer { position: absolute; left: 0; right: 0; }
+  .screen { position: absolute; overflow: hidden; background: #fff; }
+  .screen img { width: 100%; height: 100%; display: block; object-fit: cover; }
+</style></head><body><div id="canvas"><div id="bg"></div><svg id="grain" width="100%" height="100%"></svg><div id="stage"><div id="group"></div></div></div>
+<script>
+// ---------- colour helpers ----------
+function hexToRgb(h) {
+  if (Array.isArray(h)) return h;
+  h = String(h).trim();
+  const m = h.match(/^rgba?\(([^)]+)\)$/);
+  if (m) return m[1].split(',').slice(0, 3).map(v => parseFloat(v));
+  h = h.replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  const n = parseInt(h, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+const rgbStr = c => 'rgb(' + c.map(v => Math.round(v)).join(',') + ')';
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+function rgbToHsl([r, g, b]) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+  let h = 0, s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = l > .5 ? d / (2 - max - min) : d / (max + min);
+    h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h /= 6;
+  }
+  return [h, s, l];
+}
+function hslToRgb([h, s, l]) {
+  if (!s) return [l * 255, l * 255, l * 255];
+  const q = l < .5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+  const f = t => { t = (t + 1) % 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; };
+  return [f(h + 1 / 3) * 255, f(h) * 255, f(h - 1 / 3) * 255];
+}
+// Average colour and the dominant saturated "accent" colour of a set of images.
+function palette(imgs) {
+  const S = 160; // big enough that small brand details (checkboxes, buttons) survive downsampling
+  const c = document.createElement('canvas'); c.width = c.height = S;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+  let sum = [0, 0, 0], n = 0; const bins = Array.from({ length: 12 }, () => ({ w: 0, c: [0, 0, 0] }));
+  imgs.forEach(im => {
+    ctx.clearRect(0, 0, S, S); ctx.drawImage(im, 0, 0, S, S);
+    const d = ctx.getImageData(0, 0, S, S).data;
+    for (let i = 0; i < d.length; i += 4) {
+      const p = [d[i], d[i + 1], d[i + 2]];
+      sum = sum.map((v, k) => v + p[k]); n++;
+      const [h, s, l] = rgbToHsl(p);
+      if (s > .35 && l > .2 && l < .8) { const b = bins[Math.floor(h * 12) % 12]; const w = s * (1 - Math.abs(l - .5)); b.w += w; b.c = b.c.map((v, k) => v + p[k] * w); }
+    }
+  });
+  const avg = sum.map(v => v / n);
+  const best = bins.reduce((a, b) => (b.w > a.w ? b : a));
+  const accent = best.w > n * 0.002 ? best.c.map(v => v / best.w) : avg;
+  const [, , avgL] = rgbToHsl(avg);
+  return { avg, accent, found: best.w > n * 0.002, isDark: avgL < .45 };
+}
+function resolveColor(v, pal, kind) {
+  if (typeof v !== 'string' || !v.startsWith('auto')) return v;
+  const [ah, as] = rgbToHsl(pal.accent);
+  const [vh, vs] = rgbToHsl(pal.avg);
+  switch (v) {
+    case 'auto-accent': return rgbStr(pal.accent);                                       // bright brand colour (ref: neon watch grid)
+    case 'auto-light':  return rgbStr(hslToRgb([ah, Math.min(as, .25) * .6, .93]));       // almost-neutral light with a hint of the brand
+    case 'auto-soft':   return rgbStr(hslToRgb([ah, Math.min(as, .6), .88]));             // pastel of the accent
+    case 'auto-muted':  return rgbStr(hslToRgb([vs > .08 ? vh : ah, Math.min(Math.max(vs, as * .35), .32), .74])); // earthy mid tone (ref: beige travel app)
+    case 'auto-dark':   return rgbStr(hslToRgb([ah, Math.min(as, .4) * .5, .05]));        // near-black with a tint
+    case 'auto-aurora': {                                                                   // dark with a glow of the accent rising from the bottom (ref: brighter)
+      const glow = hslToRgb([ah, Math.max(as, .5), .45]), base = hslToRgb([ah, Math.min(as, .4) * .5, .07]);
+      return 'radial-gradient(ellipse 75% 55% at 50% 110%, rgba(' + glow.map(Math.round).join(',') + ',.75), rgba(' + glow.map(Math.round).join(',') + ',.18) 55%, transparent 80%), ' + rgbStr(base);
+    }
+    case 'auto':        return kind === 'shadow' ? rgbStr(mix(pal.accent, [0, 0, 0], .45)) : rgbStr(hslToRgb([ah, Math.min(as, .25) * .6, .93]));
+    default: return v;
+  }
+}
+
+// ---------- shadows ----------
+function shadowCss(kind, D, color) {
+  if (!kind || kind === 'none') return 'none';
+  const [r, g, b] = hexToRgb(color || '#000');
+  const c = a => 'rgba(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ',' + a + ')';
+  const px = f => (f * D).toFixed(1) + 'px';
+  const presets = {
+    soft:   [[0, .012, .045, 0, .07], [0, .002, .008, 0, .05]],
+    medium: [[0, .025, .08, 0, .14], [0, .006, .018, 0, .08]],
+    deep:   [[0, .05, .13, -.01, .30], [0, .012, .035, 0, .14]],
+    float:  [[0, .09, .16, -.04, .26], [0, .02, .05, -.01, .10]],
+    glow:   [[0, .07, .16, -.02, .38], [0, .02, .05, 0, .10]],
+  };
+  const p = presets[kind];
+  if (!p) return kind; // custom CSS
+  return p.map(([x, y, blur, spread, a]) => px(x) + ' ' + px(y) + ' ' + px(blur) + ' ' + px(spread) + ' ' + c(a)).join(', ');
+}
+function cropPos(crop) {
+  if (typeof crop === 'number') return '50% ' + (crop * 100) + '%';
+  return '50% ' + ({ top: '0%', center: '50%', bottom: '100%' }[crop] || '0%');
+}
+function loadImg(src) {
+  return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+}
+
+// Device geometry in units of the device's own width (D = 1).
+const GEOM = {
+  iphone:           { aspect: 0.488, bezel: 0.036, outerR: 0.165, screenR: 0.13, frame: '#121214' },
+  ipad:             { aspect: 0.721, bezel: 0.040, outerR: 0.055, screenR: 0.030, frame: '#1a1a1c' },
+  'ipad-landscape': { aspect: 1.387, bezel: 0.029, outerR: 0.040, screenR: 0.022, frame: '#1a1a1c' },
+  macbook:          { aspect: 1.671, frame: '#0d0d0f' },
+};
+// Metal finishes for phones/tablets: frameColor: silver | titanium | graphite | rose | gold | midnight.
+const METALS = {
+  silver:   { band: 'linear-gradient(135deg,#f6f6f8,#c6c7cc 25%,#f0f0f2 50%,#a7a9ae 78%,#e6e6e9)', button: '#c4c5ca' },
+  titanium: { band: 'linear-gradient(135deg,#d9d5cf,#9b968f 25%,#d4d0ca 50%,#87827b 78%,#c9c5bf)', button: '#9f9a93' },
+  graphite: { band: 'linear-gradient(135deg,#6b6c70,#2d2e31 25%,#5d5e62 50%,#232427 78%,#55565a)', button: '#3a3b3e' },
+  rose:     { band: 'linear-gradient(135deg,#f6d9d0,#c99a8e 25%,#f3d3ca 50%,#b8877b 78%,#ecc9bf)', button: '#d1a497' },
+  gold:     { band: 'linear-gradient(135deg,#f7e7c6,#cfae72 25%,#f3e0b9 50%,#b8955a 78%,#ecd7a9)', button: '#d4b47b' },
+  midnight: { band: 'linear-gradient(135deg,#3a4150,#151a24 25%,#323947,#10141c 78%,#2c3240)', button: '#1d222c' },
+};
+const FLEX = ['none', 'card', 'browser', 'browser-dark', 'glass'];
+
+// Total height of a flexible device of width D showing image im.
+function flexHeight(cfg, im, D) {
+  const t = cfg.device;
+  const chrome = t.startsWith('browser') ? Math.max(18, D * (cfg.url ? 0.042 : 0.034)) : t === 'glass' ? 2 * glassPad(D) : 0;
+  return im.naturalHeight * ((D - (t === 'glass' ? 2 * glassPad(D) : 0)) / im.naturalWidth) + chrome;
+}
+const glassPad = D => Math.max(5, D * 0.009);
+
+// Build one device. H = forced total height (null = natural, capped by maxH).
+function buildDevice(cfg, img, D, H, maxH) {
+  const el = document.createElement('div');
+  el.className = 'dev';
+  const shadow = shadowCss(cfg.shadow, D, cfg._shadowColor);
+  const imgTag = '<img src="' + img.src + '" style="object-position:' + cropPos(img._crop != null ? img._crop : cfg.crop) + '">';
+  const t = cfg.device;
+  const dark = t === 'browser-dark' || cfg._isDarkBg;
+
+  if (FLEX.includes(t)) {
+    const isBrowser = t.startsWith('browser');
+    const glass = t === 'glass';
+    const bar = isBrowser ? Math.max(18, D * (cfg.url ? 0.042 : 0.034)) : 0;
+    const gp = glass ? glassPad(D) : 0;
+    const radius = cfg.radius != null ? (cfg.radius <= 1 ? cfg.radius * D : cfg.radius) : (t === 'none' ? 0 : D * (isBrowser ? 0.012 : glass ? 0.04 : 0.024));
+    let h = H != null ? H : flexHeight(cfg, img, D);
+    if (H == null && maxH != null && cfg.fit !== 'bleed') h = Math.min(h, maxH);
+    el.style.width = D + 'px';
+    el.style.height = h + 'px';
+    el.style.borderRadius = radius + 'px';
+    el.style.boxShadow = shadow;
+    if (cfg.depth) {
+      // Solid stacked edges make the screen look like a thick slab (ref: iso light fintech).
+      const d = cfg.depth <= 1 ? cfg.depth * D : cfg.depth, steps = Math.max(2, Math.round(d));
+      const edge = cfg.depthColor || (dark ? '#1b1b1f' : '#dcdce2');
+      const layers = []; for (let i = 1; i <= steps; i++) layers.push('0 ' + (d * i / steps).toFixed(2) + 'px 0 ' + edge);
+      el.style.boxShadow = layers.join(', ') + (shadow !== 'none' ? ', ' + shadow : '');
+    }
+    if (glass) {
+      el.style.background = dark ? 'rgba(255,255,255,.07)' : 'rgba(255,255,255,.45)';
+      el.style.border = '1px solid ' + (dark ? 'rgba(255,255,255,.14)' : 'rgba(255,255,255,.85)');
+      el.style.boxSizing = 'border-box';
+      el.style.boxShadow = shadow + ', inset 0 0 0 1px ' + (dark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.04)');
+      el.innerHTML = '<div class="screen" style="left:' + gp + 'px;right:' + gp + 'px;top:' + gp + 'px;bottom:' + gp + 'px;border-radius:' + Math.max(0, radius - gp) + 'px">' + imgTag + '</div>';
+      return el;
+    }
+    el.style.overflow = 'hidden';
+    el.style.background = t === 'browser-dark' ? '#1f1f22' : '#fff';
+    if (cfg.border) el.style.border = cfg.border;
+    else if (isBrowser || t === 'card') el.style.outline = '1px solid ' + (dark ? 'rgba(255,255,255,.10)' : 'rgba(0,0,0,.06)');
+    if (t === 'card' || t === 'none') el.style.outlineOffset = '-1px';
+    let html = '';
+    if (isBrowser) {
+      const bd = t === 'browser-dark';
+      const dot = bar * 0.24, gap = bar * 0.17;
+      html += '<div style="position:absolute;left:0;right:0;top:0;height:' + bar + 'px;background:' + (bd ? '#2a2a2e' : '#F4F4F5') +
+        ';border-bottom:1px solid ' + (bd ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)') + '">';
+      ['#FF5F57', '#FEBC2E', '#28C840'].forEach((c, i) => {
+        html += '<span style="position:absolute;top:' + (bar - dot) / 2 + 'px;left:' + (bar * 0.42 + i * (dot + gap)) + 'px;width:' + dot +
+          'px;height:' + dot + 'px;border-radius:50%;background:' + c + '"></span>';
+      });
+      if (cfg.url) {
+        // Navigation icons (sidebar, back, forward) like Safari/Arc.
+        const ic = bd ? '#8a8a90' : '#7a7a80', sw = Math.max(1.2, bar * 0.045), x0 = bar * 0.42 + 3 * (dot + gap) + bar * 0.5, sz = bar * 0.36, y0 = (bar - sz) / 2;
+        html += '<svg style="position:absolute;left:' + x0 + 'px;top:' + y0 + 'px" width="' + sz * 4 + '" height="' + sz + '" viewBox="0 0 40 10" fill="none" stroke="' + ic + '" stroke-width="' + sw * 10 / sz + '" stroke-linecap="round" stroke-linejoin="round">' +
+          '<rect x="0.8" y="0.8" width="11" height="8.4" rx="2"/><line x1="4.6" y1="0.8" x2="4.6" y2="9.2"/><polyline points="23,1.5 19.5,5 23,8.5"/><polyline points="31,1.5 34.5,5 31,8.5"/></svg>';
+        const w = Math.min(D * 0.4, Math.max(D * 0.22, cfg.url.length * bar * 0.32));
+        html += '<span style="position:absolute;top:' + bar * 0.2 + 'px;height:' + bar * 0.6 + 'px;left:50%;width:' + w + 'px;transform:translateX(-50%);border-radius:' + bar * 0.3 +
+          'px;background:' + (bd ? '#1c1c1f' : '#fff') + ';color:' + (bd ? '#aaa' : '#666') + ';font-size:' + bar * 0.32 + 'px;line-height:' + bar * 0.6 +
+          'px;text-align:center;overflow:hidden;white-space:nowrap"><span style="opacity:.6;font-size:.85em">&#128274;&#xFE0E;</span> ' + cfg.url.replace(/</g, '&lt;') + '</span>';
+      }
+      html += '</div>';
+    }
+    html += '<div class="screen" style="left:0;right:0;bottom:0;top:' + bar + 'px">' + imgTag + '</div>';
+    el.innerHTML = html;
+    return el;
+  }
+
+  if (t === 'macbook') {
+    const frame = cfg.frameColor || GEOM.macbook.frame;
+    const L = D / 1.16, sw = L * 0.95, sh = sw / 1.6, top = L * 0.03, bottom = L * 0.035;
+    const lidH = top + sh + bottom, baseH = L * 0.035;
+    el.style.width = D + 'px';
+    el.style.height = (lidH + baseH) + 'px';
+    const r = cfg.radius != null ? cfg.radius : L * 0.006;
+    el.innerHTML =
+      '<div style="position:absolute;left:' + (D - L) / 2 + 'px;top:0;width:' + L + 'px;height:' + lidH + 'px;border-radius:' + L * 0.03 + 'px ' + L * 0.03 +
+        'px 0 0;background:' + frame + ';box-shadow:' + shadow + ', inset 0 0 0 ' + Math.max(1, L * 0.002) + 'px #3a3a3e"></div>' +
+      '<div class="screen" style="left:' + ((D - sw) / 2) + 'px;top:' + top + 'px;width:' + sw + 'px;height:' + sh + 'px;border-radius:' + r + 'px">' + imgTag + '</div>' +
+      '<div style="position:absolute;left:50%;transform:translateX(-50%);top:' + top + 'px;width:' + L * 0.11 + 'px;height:' + L * 0.018 + 'px;background:' + frame +
+        ';border-radius:0 0 ' + L * 0.008 + 'px ' + L * 0.008 + 'px"></div>' +
+      '<div style="position:absolute;left:0;right:0;top:' + lidH + 'px;height:' + baseH + 'px;border-radius:' + L * 0.002 + 'px ' + L * 0.002 + 'px ' + L * 0.03 + 'px ' + L * 0.03 +
+        'px / ' + L * 0.002 + 'px ' + L * 0.002 + 'px ' + baseH * 0.9 + 'px ' + baseH * 0.9 + 'px;background:linear-gradient(#e3e4e6,#b9bbbf 55%,#8e9095);box-shadow:' + shadow + '"></div>' +
+      '<div style="position:absolute;left:50%;transform:translateX(-50%);top:' + lidH + 'px;width:' + L * 0.16 + 'px;height:' + baseH * 0.38 + 'px;background:#a4a6aa;border-radius:0 0 ' +
+        L * 0.01 + 'px ' + L * 0.01 + 'px"></div>';
+    return el;
+  }
+
+  const g = GEOM[t];
+  if (!g) throw new Error('Unknown device: ' + t);
+  const devH = D / g.aspect, bz = D * g.bezel;
+  el.style.width = D + 'px';
+  el.style.height = devH + 'px';
+  el.style.borderRadius = D * g.outerR + 'px';
+  const metal = METALS[cfg.frameColor];
+  const sr = cfg.radius != null ? cfg.radius : D * g.screenR;
+  let html = '';
+  if (metal) {
+    // Metal band + black glass bezel + side buttons, like a real phone.
+    const ring = D * 0.013;
+    el.style.background = metal.band;
+    el.style.boxShadow = shadow + ', inset 0 0 0 ' + Math.max(1, D * 0.003) + 'px rgba(0,0,0,.25)';
+    html += '<div style="position:absolute;inset:' + ring + 'px;border-radius:' + (D * g.outerR - ring) + 'px;background:#050505;box-shadow:inset 0 0 0 ' + Math.max(1, D * 0.002) + 'px rgba(255,255,255,.08)"></div>';
+    if (t === 'iphone') {
+      const btn = (side, top, h) => '<div style="position:absolute;' + side + ':' + (-D * 0.009) + 'px;top:' + top * devH + 'px;width:' + D * 0.012 + 'px;height:' + h * devH +
+        'px;border-radius:' + D * 0.006 + 'px;background:' + metal.button + '"></div>';
+      html = btn('left', 0.17, 0.035) + btn('left', 0.24, 0.07) + btn('left', 0.33, 0.07) + btn('right', 0.27, 0.11) + html;
+    }
+  } else {
+    el.style.background = cfg.frameColor || g.frame;
+    el.style.boxShadow = shadow + ', inset 0 0 0 ' + Math.max(1, D * 0.006) + 'px rgba(255,255,255,.10)';
+  }
+  html += '<div class="screen" style="left:' + bz + 'px;right:' + bz + 'px;top:' + bz + 'px;bottom:' + bz + 'px;border-radius:' + sr + 'px">' + imgTag + '</div>';
+  if (t === 'iphone' && cfg.island !== false) {
+    html += '<div style="position:absolute;left:50%;transform:translateX(-50%);top:' + (bz + D * 0.028) + 'px;width:' + D * 0.29 + 'px;height:' + D * 0.082 +
+      'px;border-radius:' + D * 0.05 + 'px;background:#000"></div>';
+  }
+  el.innerHTML = html;
+  return el;
+}
+
+// Wrap a device with "stacked cards" peeking out above it (ref: dark component stack).
+function withStack(cfg, el, D) {
+  const n = cfg.stack | 0;
+  if (!n) return el;
+  const wrap = document.createElement('div');
+  wrap.className = 'wrap';
+  wrap.style.width = el.style.width;
+  wrap.style.height = el.style.height;
+  const r = el.style.borderRadius;
+  for (let k = n; k >= 1; k--) {
+    const layer = document.createElement('div');
+    layer.className = 'layer';
+    const inset = D * 0.045 * k;
+    layer.style.cssText += 'left:' + inset + 'px;right:' + inset + 'px;top:' + (-D * 0.028 * k) + 'px;height:' + el.style.height + ';border-radius:' + r +
+      ';background:' + (cfg._isDarkBg ? 'rgb(' + (30 - 6 * k) + ',' + (30 - 6 * k) + ',' + (33 - 6 * k) + ')' : 'rgba(255,255,255,' + (0.75 - 0.2 * k) + ')') +
+      ';border:1px solid ' + (cfg._isDarkBg ? 'rgba(255,255,255,' + (0.09 - 0.02 * k) + ')' : 'rgba(0,0,0,.04)') + ';box-sizing:border-box';
+    wrap.appendChild(layer);
+  }
+  el.style.position = 'absolute'; el.style.left = '0'; el.style.top = '0';
+  wrap.appendChild(el);
+  return wrap;
+}
+
+// Crop a screenshot to a region {x, y, w, h}; values <= 1 are fractions of the image size.
+function clipImg(im, clip) {
+  const W = im.naturalWidth, H = im.naturalHeight;
+  const v = (val, full, dflt) => (val == null ? dflt : (val <= 1 ? val * full : val));
+  const x = v(clip.x, W, 0), y = v(clip.y, H, 0);
+  const w = Math.min(v(clip.w, W, W - x), W - x), h = Math.min(v(clip.h, H, H - y), H - y);
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  c.getContext('2d').drawImage(im, x, y, w, h, 0, 0, w, h);
+  return loadImg(c.toDataURL('image/png'));
+}
+
+// Blur regions of a screenshot (NDA): [{x, y, w, h}], values <= 1 are fractions of the image size.
+function redactImg(im, regions) {
+  const W = im.naturalWidth, H = im.naturalHeight;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(im, 0, 0);
+  const v = (val, full) => (val <= 1 ? val * full : val);
+  [].concat(regions).forEach(r => {
+    const x = v(r.x, W), y = v(r.y, H), w = v(r.w, W), h = v(r.h, H);
+    ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+    ctx.filter = 'blur(' + Math.max(6, Math.min(w, h) * 0.18) + 'px)';
+    ctx.drawImage(im, 0, 0);
+    ctx.restore();
+  });
+  return loadImg(c.toDataURL('image/png'));
+}
+
+// A small tag above a device ("DESKTOP", "Before", "v2").
+function withLabel(cfg, el, text, W, pal) {
+  const wrap = document.createElement('div');
+  wrap.className = 'wrap';
+  wrap.style.width = el.style.width;
+  wrap.style.height = el.style.height;
+  el.style.position = 'absolute'; el.style.left = '0'; el.style.top = '0';
+  const fs = W * 0.0095;
+  const [h, sat] = rgbToHsl(pal.accent);
+  const dark = cfg._isDarkBg;
+  const tag = document.createElement('div');
+  tag.textContent = text;
+  tag.style.cssText = 'position:absolute;left:0;bottom:100%;margin-bottom:' + fs * 2.2 + 'px;padding:' + fs * 0.7 + 'px ' + fs * 1.1 + 'px;border-radius:' + fs * 0.4 +
+    'px;font:500 ' + fs + 'px/1 ui-monospace,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;' +
+    'background:' + rgbStr(hslToRgb([h, Math.min(sat, .5), dark ? .2 : .9])) + ';color:' + rgbStr(hslToRgb([h, Math.min(sat, .9), dark ? .72 : .3]));
+  wrap.appendChild(tag);
+  wrap.appendChild(el);
+  return wrap;
+}
+
+// Lift a region of a screenshot out of its frame, enlarged, as a floating card (zoom on a detail).
+function addCallout(cfg, W, H) {
+  const list = [].concat(cfg.callout);
+  const screens = [...document.querySelectorAll('.screen')];
+  const canvas = document.getElementById('canvas');
+  list.forEach(c => {
+    const scr = screens[c.screen || 0];
+    if (!scr) return;
+    const img = scr.querySelector('img');
+    const nw = img.naturalWidth, nh = img.naturalHeight;
+    const r = scr.getBoundingClientRect();
+    const s = Math.max(r.width / nw, r.height / nh);
+    const crop = img._cropFrac != null ? img._cropFrac : 0;
+    const ox = (r.width - nw * s) * 0.5, oy = (r.height - nh * s) * crop;
+    const v = (val, full) => (val <= 1 ? val * full : val);
+    const rx = v(c.x, nw), ry = v(c.y, nh), rw = v(c.w, nw), rh = v(c.h, nh);
+    const k = c.scale || 1.15;
+    const cx = r.left + ox + (rx + rw / 2) * s, cy = r.top + oy + (ry + rh / 2) * s;
+    const w = rw * s * k, h = rh * s * k;
+    const el = document.createElement('div');
+    const radius = c.radius != null ? c.radius : Math.min(w, h) * 0.04;
+    el.style.cssText = 'position:absolute;overflow:hidden;background:#fff;border-radius:' + radius + 'px;width:' + w + 'px;height:' + h + 'px;left:' +
+      (cx - w / 2 + (c.dx || 0) * W) + 'px;top:' + (cy - h / 2 + (c.dy || 0) * H) + 'px;box-shadow:' + shadowCss(c.shadow || 'deep', Math.max(w, 400), cfg._shadowColor) +
+      (cfg._isDarkBg ? ', 0 0 0 1px rgba(255,255,255,.08)' : ', 0 0 0 1px rgba(0,0,0,.05)');
+    el.innerHTML = '<div style="position:absolute;left:' + (-rx * s * k) + 'px;top:' + (-ry * s * k) + 'px;width:' + nw * s * k + 'px;height:' + nh * s * k +
+      'px;background:url(' + img.src + ') 0 0 / 100% 100% no-repeat"></div>';
+    canvas.appendChild(el);
+  });
+}
+
+function fixedAspect(t) { return t === 'macbook' ? GEOM.macbook.aspect : (GEOM[t] ? GEOM[t].aspect : null); }
+
+window.render = async function (cfg) {
+  const W = cfg.width, H = cfg.height;
+  const canvas = document.getElementById('canvas');
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  let imgs = await Promise.all(cfg.images.map(loadImg));
+  if (cfg.clip) imgs = await Promise.all(imgs.map(im => clipImg(im, cfg.clip)));
+  if (cfg.redact) imgs = await Promise.all(imgs.map(im => redactImg(im, cfg.redact)));  // regions are relative to the clipped image
+  // crop may be a list: one value per screenshot.
+  imgs.forEach((im, i) => { im._crop = Array.isArray(cfg.crop) ? cfg.crop[i % cfg.crop.length] : cfg.crop; });
+  const cropFrac = c => (typeof c === 'number' ? c : ({ top: 0, center: 0.5, bottom: 1 }[c] || 0));
+
+  // Colours (auto-* values are derived from the screenshots).
+  const pal = palette(imgs);
+  if (cfg.accent) { pal.accent = hexToRgb(cfg.accent); pal.found = true; }  // brand colour given explicitly wins over detection
+  const bgColor = resolveColor(cfg.background, pal, 'bg');
+  cfg._shadowColor = resolveColor(cfg.shadowColor, pal, 'shadow');
+  if (cfg.shadow === 'glow' && cfg.shadowColor === 'auto') cfg._shadowColor = rgbStr(pal.accent);
+  const bgRgb = (() => { try { return hexToRgb(bgColor); } catch (_) { return null; } })();
+  cfg._isDarkBg = cfg.darkBg != null ? cfg.darkBg : (['auto-dark', 'auto-aurora'].includes(cfg.background) || (bgRgb && !isNaN(bgRgb[0]) ? rgbToHsl(bgRgb)[2] < .35 : false));
+
+  const bg = document.getElementById('bg');
+  bg.style.background = bgColor;
+  if (cfg.bgImageData) { bg.style.backgroundImage = 'url(' + cfg.bgImageData + ')'; bg.style.backgroundSize = 'cover'; bg.style.backgroundPosition = 'center'; }
+  if (cfg.pattern) {
+    const pt = typeof cfg.pattern === 'string' ? { type: cfg.pattern } : cfg.pattern;
+    const size = (pt.size || 0.07) * Math.max(W, H), col = pt.color || (cfg._isDarkBg ? '#ffffff' : '#ffffff'), op = pt.opacity != null ? pt.opacity : 0.35;
+    const layer = document.createElement('div');
+    layer.style.cssText = 'position:absolute;inset:0;opacity:' + op;
+    if (pt.type === 'dots') layer.style.background = 'radial-gradient(' + col + ' ' + size * 0.06 + 'px, transparent ' + size * 0.07 + 'px) 0 0 / ' + size * 0.4 + 'px ' + size * 0.4 + 'px';
+    else if (pt.type === 'grid') layer.style.background = 'linear-gradient(' + col + ' 1px, transparent 1px) 0 0 / ' + size + 'px ' + size + 'px, linear-gradient(90deg, ' + col + ' 1px, transparent 1px) 0 0 / ' + size + 'px ' + size + 'px';
+    else if (pt.type === 'hex') {
+      const w = size, h = size * 0.866, sw = Math.max(2, size * 0.06);
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w * 3 + '" height="' + h * 2 + '"><g fill="none" stroke="' + col + '" stroke-width="' + sw + '">' +
+        [[0, 0], [1.5, 1], [3, 0], [0, 2], [3, 2]].map(([cx, cy]) => {
+          const x = cx * w, y = cy * h; const pts = [0, 60, 120, 180, 240, 300].map(a => (x + w * Math.cos(a * Math.PI / 180)) + ',' + (y + w * Math.sin(a * Math.PI / 180))).join(' ');
+          return '<polygon points="' + pts + '"/>';
+        }).join('') + '</g></svg>';
+      layer.style.background = 'url("data:image/svg+xml;base64,' + btoa(svg) + '") 0 0 / ' + w * 3 + 'px ' + h * 2 + 'px';
+    }
+    document.getElementById('bg').appendChild(layer);
+  }
+  if (cfg.grain > 0) {
+    document.getElementById('grain').innerHTML = '<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>' +
+      '<rect width="100%" height="100%" filter="url(#n)" opacity="' + cfg.grain + '"/>';
+  }
+
+  const short = Math.min(W, H);
+  const unit = v => (v > 1 ? v : v * short);
+  const pad = unit(cfg.padding), gap = unit(cfg.gap);
+  const availW = W - 2 * pad, availH = H - 2 * pad;
+  const t = cfg.device;
+  const fa = fixedAspect(t);
+  const stage = document.getElementById('stage');
+  const group = document.getElementById('group');
+  stage.style.padding = pad + 'px';
+  group.style.gap = gap + 'px';
+  // Room the stack layers need above the card.
+  const stackRoom = f => (cfg.stack ? f * 0.028 * cfg.stack : 0);
+
+  if (cfg.layout === 'grid' || cfg.layout === 'masonry') {
+    const masonry = cfg.layout === 'masonry';
+    const cols = cfg.columns || (masonry ? 3 : Math.min(3, imgs.length));
+    // Cell aspect (w/h): device aspect, explicit cellAspect, or (grid) the tallest screenshot's, so no
+    // screenshot is cut; masonry keeps the first screenshot's.
+    const aspects = imgs.map(im => im.naturalWidth / im.naturalHeight);
+    const cellAspect = fa || cfg.cellAspect || (masonry ? aspects[0] : Math.min(...aspects));
+    const offsets = cfg.colOffset || (masonry ? [0.35, 0, 0.5, 0.15] : (cols === 3 ? [0, 0.15, 0.3] : [0, 0.2, 0.1, 0.3]));
+    let D, perCol;
+    if (masonry) {
+      D = (cfg.cellWidth || 0.3) * W;
+      const cellH = D / cellAspect;
+      const alongLen = cfg.flow === 'rows' ? D : cellH;
+      perCol = cfg.repeat === false ? (cfg.perColumn ? Math.max(...cfg.perColumn) : Math.ceil(imgs.length / cols)) : Math.ceil((Math.hypot(W, H) * 1.1) / (alongLen + gap)) + 1;
+      stage.style.alignItems = 'center';
+      stage.style.padding = '0';
+    } else {
+      perCol = Math.ceil(imgs.length / cols);
+      const maxOff = Math.max(...offsets.slice(0, cols));
+      const dByW = (availW - gap * (cols - 1)) / cols;
+      const dByH = (availH - gap * (perCol - 1)) / ((perCol + maxOff) / cellAspect + 0);
+      D = Math.min(dByW, dByH);
+      stage.style.alignItems = 'center';
+    }
+    const cellH = D / cellAspect;
+    // flow: 'rows' turns columns into rows shifted sideways (brick wall of sections).
+    const rows = cfg.flow === 'rows';
+    if (rows) { group.style.flexDirection = 'column'; group.style.alignItems = 'center'; }
+    const along = rows ? D : cellH;
+    let k = 0;
+    for (let c = 0; c < cols; c++) {
+      const col = document.createElement('div');
+      col.className = 'col';
+      if (rows) col.style.flexDirection = 'row';
+      col.style.gap = gap + 'px';
+      const shift = (offsets[c % offsets.length] || 0) * along - (masonry ? 0 : (Math.max(...offsets.slice(0, cols)) * along) / 2);
+      col.style.transform = (rows ? 'translateX(' : 'translateY(') + shift + 'px)';
+      for (let r = 0; r < perCol; r++) {
+        let im;
+        if (masonry && cfg.repeat === false) {
+          const counts = cfg.perColumn || Array.from({ length: cols }, () => perCol);
+          const start = counts.slice(0, c).reduce((x, y) => x + y, 0);
+          if (r >= (counts[c] || 0)) break;
+          im = imgs[start + r]; if (!im) break;
+        }
+        else if (masonry) { const n = imgs.length, mid = Math.floor(perCol / 2), cc = Math.floor(cols / 2); im = imgs[(((r - mid) * cols + (c - cc)) % n + n * 1000) % n]; }
+        else { if (k >= imgs.length) break; im = imgs[c * perCol + r]; if (!im) break; k++; }
+        // Grid: each flexible device takes its screenshot's own height (never taller than the cell),
+        // so screenshots of different heights stay whole. Masonry fills fixed cells.
+        col.appendChild(buildDevice(cfg, im, D, fa ? null : (masonry || cfg.cellAspect ? cellH : null)));
+      }
+      group.appendChild(col);
+    }
+    group.style.transform = 'rotate(' + (cfg.rotate != null ? cfg.rotate : (masonry ? -18 : 0)) + 'deg)';
+  } else if (cfg.layout === 'overlap') {
+    // Front page bottom-left, the next ones behind it, shifted up and right (ref: Pockit, Pathpro).
+    const o = Object.assign({ dx: 0.4, dy: -0.12, fade: 0.5 }, cfg.overlap || {});
+    const D = (cfg.cellWidth || 0.58) * W;
+    const n = imgs.length;
+    const totalW = D + o.dx * W * (n - 1);
+    const left0 = (W - totalW) / 2;
+    const top0 = pad + Math.max(0, -o.dy * H * (n - 1));
+    stage.style.display = 'block'; stage.style.padding = '0';
+    group.style.display = 'block'; group.style.position = 'absolute'; group.style.inset = '0';
+    for (let i = n - 1; i >= 0; i--) {
+      const fixedH = cfg.cellAspect ? D / cfg.cellAspect : null;
+      const el = buildDevice(cfg, imgs[i], D, fixedH, null);
+      el.style.position = 'absolute';
+      el.style.left = (left0 + o.dx * W * i) + 'px';
+      el.style.top = (top0 + o.dy * H * i) + 'px';
+      if (i > 0 && o.fade) {
+        // Back pages fade out toward the bottom so the front one stays the hero.
+        const m = 'linear-gradient(to bottom, #000 ' + Math.round((1 - o.fade) * 100) + '%, transparent 100%)';
+        el.style.webkitMaskImage = m; el.style.maskImage = m;
+      }
+      group.appendChild(el);
+    }
+  } else {
+    // Row layout (default): one or more devices side by side.
+    const n = imgs.length;
+    let perW = (availW - gap * (n - 1)) / n;
+    if (cfg.maxDeviceWidth) perW = Math.min(perW, cfg.maxDeviceWidth <= 1 ? cfg.maxDeviceWidth * W : cfg.maxDeviceWidth);
+    // widths: relative width of each device, e.g. [0.72, 0.28] for desktop + mobile side by side.
+    let Ds = imgs.map((_, i) => {
+      if (!cfg.widths) return perW;
+      const sum = cfg.widths.reduce((a, b) => a + b, 0);
+      return (availW - gap * (n - 1)) * (cfg.widths[i] || 0) / sum;
+    });
+    const labelRoom = cfg.labels ? W * 0.045 : 0;
+    const roomH = availH - labelRoom;
+    if (fa && cfg.fit !== 'bleed') Ds = Ds.map(d => Math.min(d, roomH * fa));
+    if (!fa && cfg.fit === 'contain') {
+      // Whole screenshot visible: shrink (all devices by the same factor) until each fits the height.
+      let k = 1;
+      imgs.forEach((im, i) => {
+        let d = Ds[i];
+        for (let j = 0; j < 6; j++) { const h = flexHeight(cfg, im, d) + stackRoom(d); if (h <= roomH) break; d *= roomH / h; }
+        k = Math.min(k, d / Ds[i]);
+      });
+      Ds = cfg.widths ? Ds.map(d => d * k) : Ds.map(() => Math.min(...Ds) * k);
+    }
+    const D = Math.max(...Ds);
+    const maxH = roomH - stackRoom(D);
+    const bleed = cfg.fit === 'bleed';
+    const ai = bleed || cfg.align === 'top' || cfg.labels ? 'flex-start' : (cfg.align === 'bottom' ? 'flex-end' : 'center');
+    stage.style.alignItems = cfg.labels && !bleed ? 'center' : ai;
+    group.style.alignItems = ai;
+    if (cfg.stack) stage.style.paddingTop = (pad + stackRoom(D)) + 'px';
+    if (cfg.stack && ai === 'center') stage.style.paddingBottom = pad + 'px';
+    if (cfg.labels) group.style.paddingTop = labelRoom + 'px';
+    imgs.forEach((im, i) => {
+      let el = withStack(cfg, buildDevice(cfg, im, Ds[i], null, maxH), Ds[i]);
+      if (cfg.labels && cfg.labels[i]) el = withLabel(cfg, el, cfg.labels[i], W, pal);
+      const tf = [];
+      if (cfg.stagger) tf.push('translateY(' + ((i % 2 ? 1 : -1) * cfg.stagger * H / 2) + 'px)');
+      if (cfg.fan) {
+        const deg = Array.isArray(cfg.fan) ? (cfg.fan[i] || 0) : (n > 1 ? -cfg.fan + (2 * cfg.fan * i) / (n - 1) : 0);
+        tf.push('rotate(' + deg + 'deg)');
+      }
+      if (tf.length) el.style.transform = tf.join(' ');
+      group.appendChild(el);
+    });
+    if (cfg.rotate) group.style.transform = 'rotate(' + cfg.rotate + 'deg)';
+  }
+  if (cfg.tilt) {
+    const { rx = 0, ry = 0, rz = 0 } = cfg.tilt;
+    group.style.transform = (group.style.transform || '') + ' rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) rotateZ(' + rz + 'deg)';
+  }
+  if (cfg.zoom && cfg.zoom !== 1) {
+    // Zoom into a point of the composition: focus [fx, fy] (0..1 of the group's box) lands at
+    // the canvas point 'anchor' (default centre). Used for close-ups of a device corner.
+    const r = group.getBoundingClientRect();
+    const [fx, fy] = cfg.focus || [0.5, 0.5];
+    const [ax, ay] = cfg.anchor || [0.5, 0.5];
+    const px = r.left + fx * r.width, py = r.top + fy * r.height;
+    const wrap = document.getElementById('stage');
+    wrap.style.transformOrigin = px + 'px ' + py + 'px';
+    wrap.style.transform = 'translate(' + (ax * W - px) + 'px,' + (ay * H - py) + 'px) scale(' + cfg.zoom + ')';
+  }
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  document.querySelectorAll('.screen img').forEach((el, i) => { const src = imgs.find(im => im.src === el.src); el._cropFrac = cropFrac(src ? src._crop : cfg.crop); });
+  if (cfg.callout) addCallout(cfg, W, H);
+  if (cfg.logoData) {
+    // Brand mark in a corner: logo = {position: bottom-left|bottom-right|top-left|top-right, height: 0.035}
+    const l = Object.assign({ position: 'bottom-left', height: 0.035 }, cfg.logo || {});
+    const img = document.createElement('img');
+    img.src = cfg.logoData;
+    const m = Math.min(W, H) * 0.035, h = l.height * H;
+    img.style.cssText = 'position:absolute;height:' + h + 'px;' + (l.position.includes('bottom') ? 'bottom' : 'top') + ':' + m + 'px;' + (l.position.includes('right') ? 'right' : 'left') + ':' + m + 'px';
+    document.getElementById('canvas').appendChild(img);
+    await img.decode().catch(() => {});
+  }
+  // Crop audit: every screen must be shown whole. Report screens that run off the canvas, screens
+  // cut inside their frame (object-fit: cover), and source crops (clip). compose.cjs refuses to save
+  // a cropped shot unless allowCrop is set.
+  const crops = [];
+  const cr = canvas.getBoundingClientRect();
+  const off = new Set(), inner = new Set();
+  document.querySelectorAll('#group .dev').forEach(d => {
+    const r = d.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const ix = Math.max(0, Math.min(r.right, cr.right) - Math.max(r.left, cr.left));
+    const iy = Math.max(0, Math.min(r.bottom, cr.bottom) - Math.max(r.top, cr.top));
+    const hidden = 1 - (ix * iy) / (r.width * r.height);
+    const img = d.querySelector('.screen img');
+    const n = img ? imgs.findIndex(im => im.src === img.src) + 1 : 0;
+    if (hidden > 0.005) off.add(n + ' (' + Math.round(hidden * 100) + '% off the canvas)');
+    if (img && img.naturalWidth && img.clientWidth && img.clientHeight) {
+      const ea = img.clientWidth / img.clientHeight, na = img.naturalWidth / img.naturalHeight;
+      const lost = 1 - Math.min(ea / na, na / ea);
+      if (lost > 0.02) inner.add(n + ' (' + Math.round(lost * 100) + '% hidden inside its frame)');
+    }
+  });
+  if (off.size) crops.push('screens run off the canvas: ' + [...off].slice(0, 6).join(', ') + (off.size > 6 ? ', …' : ''));
+  if (inner.size) crops.push('screens cut inside their frame: ' + [...inner].slice(0, 6).join(', ') + (inner.size > 6 ? ', …' : ''));
+  if (cfg.clip) crops.push('clip crops the source screenshots');
+  const usesAuto = [cfg.background, cfg.shadowColor].some(v => typeof v === 'string' && v.startsWith('auto'));
+  return { crops, warning: usesAuto && !pal.found ? 'no clear brand colour in the screenshots; pass --accent "#hex" for auto-* colours' : null, background: bgColor, shadowColor: cfg._shadowColor, accent: rgbStr(pal.accent), average: rgbStr(pal.avg) };
+};
+</script></body></html>

@@ -1,0 +1,17 @@
+{
+  "$description": "Table ref 'desktop / mobile' (dark GPU marketplace). The desktop and mobile versions of the same view side by side, flat on the background, no frames, each with a small mono tag above it (DESKTOP / MOBILE). Documentation-like, honest. Best for responsive design, before/after, or variants. Use widths [0.72, 0.28] and labels.",
+  "device": "none",
+  "fit": "contain",
+  "background": "auto-dark",
+  "shadow": "none",
+  "padding": 0.12,
+  "gap": 0.08,
+  "widths": [
+    0.72,
+    0.28
+  ],
+  "labels": [
+    "Desktop",
+    "Mobile"
+  ]
+}

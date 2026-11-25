@@ -1,0 +1,12 @@
+{
+  "$description": "Ref 3 'Shape Your Digital Fortune'. A dark UI component as a card with a hairline border and two stacked cards peeking out above it, on a near-black background. Best for dark-mode UI, fintech/AI/dev-tool products, single components or wide sections.",
+  "device": "card",
+  "fit": "contain",
+  "background": "#060607",
+  "shadow": "deep",
+  "shadowColor": "#000000",
+  "stack": 2,
+  "border": "1px solid rgba(255,255,255,.09)",
+  "padding": 0.11,
+  "radius": 0.025
+}

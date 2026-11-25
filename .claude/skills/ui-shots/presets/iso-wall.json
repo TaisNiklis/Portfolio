@@ -1,0 +1,24 @@
+{
+  "$description": "Table ref 'orders / customers' (Untitled UI tables). Many table cards in an isometric 3D wall: rows of cards tilted back and rotated, running off every edge, white cards with soft shadows on a near-white background. Best for showing a family of tables or list views from a design system.",
+  "layout": "masonry",
+  "flow": "rows",
+  "columns": 3,
+  "colOffset": [
+    0.3,
+    0,
+    0.5
+  ],
+  "cellWidth": 0.46,
+  "cellAspect": 1.35,
+  "rotate": 0,
+  "tilt": {
+    "rx": 32,
+    "ry": 0,
+    "rz": -12
+  },
+  "device": "card",
+  "radius": 0.02,
+  "background": "#F3F3F4",
+  "shadow": "soft",
+  "gap": 0.03
+}

@@ -1,0 +1,9 @@
+{
+  "$description": "Web ref '.COINBASE' (finance hero). One landing hero as a big white card with a large radius, filling the frame, on flat charcoal (#2E2E2E). No shadow, high contrast, poster-like. The original adds 3D objects breaking out of the card; that needs a separate render. Best for a bold hero section, especially one with a strong headline.",
+  "device": "card",
+  "fit": "contain",
+  "radius": 0.03,
+  "background": "#2E2E2E",
+  "shadow": "none",
+  "padding": 0.05
+}

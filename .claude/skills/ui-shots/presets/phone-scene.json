@@ -1,0 +1,12 @@
+{
+  "$description": "Mobile ref 'Kawaii Bank virtual card' (3D scene). One large phone in a coloured metal frame standing in front of a patterned pastel backdrop. The original is a 3D render: for the real thing pass bgImage with a scene/backdrop image; without it the hex pattern on a pastel gradient gives the same mood. Best for a single hero screen of a playful consumer app, or a cover.",
+  "device": "iphone",
+  "frameColor": "rose",
+  "island": false,
+  "background": "radial-gradient(ellipse at 50% 30%, #f6d9f2, #e6c3ea 45%, #bfc8f5 100%)",
+  "pattern": { "type": "hex", "size": 0.09, "opacity": 0.55, "color": "#ffffff" },
+  "shadow": "deep",
+  "shadowColor": "#5b3a7a",
+  "padding": 0.07,
+  "maxDeviceWidth": 0.32
+}

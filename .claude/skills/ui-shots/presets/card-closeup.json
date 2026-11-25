@@ -1,0 +1,18 @@
+{
+  "$description": "Table ref 'ticket table with column editor'. A close-up of the top-right corner of a web-app card: zoomed in so the card runs off the left and bottom edges and the controls are big and readable. Neutral grey background, soft shadow. Best for showing an interaction (dropdown, column editor, filter) in detail on desktop UI.",
+  "device": "card",
+  "fit": "contain",
+  "radius": 0.012,
+  "zoom": 1.8,
+  "focus": [
+    0.9,
+    0.04
+  ],
+  "anchor": [
+    0.8,
+    0.12
+  ],
+  "background": "#C9CACD",
+  "shadow": "soft",
+  "padding": 0.05
+}

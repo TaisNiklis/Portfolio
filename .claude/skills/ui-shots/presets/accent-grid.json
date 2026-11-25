@@ -1,0 +1,16 @@
+{
+  "$description": "Ref 4 'Enode Pro watch'. Several small screens (watch, widgets, cards, mobile screens) as bare rounded tiles in a 3-column grid with columns shifted down step by step, on a loud solid background in the product's accent colour. No device frames, no shadow. Best for 4-9 screens of a product with a bold brand colour.",
+  "layout": "grid",
+  "columns": 3,
+  "colOffset": [
+    0,
+    0.15,
+    0.3
+  ],
+  "device": "card",
+  "background": "auto-accent",
+  "shadow": "none",
+  "padding": 0.07,
+  "gap": 0.045,
+  "radius": 0.22
+}
