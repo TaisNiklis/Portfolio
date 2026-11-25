@@ -66,6 +66,10 @@ const DEFAULTS = {
   logo: null,             // brand mark in a corner: {src: path, position: bottom-left, height: 0.035}
   maxDeviceWidth: null,   // row: cap one device's width (fraction of canvas width if <= 1)
   darkBg: null,           // force dark-background styling of glass/stack (null = detect)
+  positions: null,        // layout "free": [{x, y, w}] top-left and width of each input, fractions of the canvas
+  annotations: null,      // cards with dashed connectors: [{title, text, icon, x, y, w, to: [fx, fy], screen}]
+  annotationColor: null,  // connector + icon colour (default: the accent)
+  focusBlur: null,        // keep {x, y, w, h} of a screenshot sharp and blur the rest: {x,y,w,h, blur, screen}
   allowCrop: false,       // false = refuse to save a shot where any screen is cut (runs off the canvas,
                           // is cut inside its frame, or is clipped). Set true (--allow-crop) ONLY when
                           // the user explicitly asked for a crop, close-up or wall.

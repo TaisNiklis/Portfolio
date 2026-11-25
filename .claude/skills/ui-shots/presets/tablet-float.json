@@ -1,0 +1,10 @@
+{
+  "$description": "Ref: talent timesheet and payments (lavender, own case). One whole web-app screen in a thin dark tablet bezel that adapts to the screenshot's proportions, centred on a flat lavender background, soft shadow. Calm, product-like, nothing cut. Best for the main screen of a case section: dashboards, tables, lists.",
+  "device": "card",
+  "border": "11px solid #141416",
+  "radius": 0.034,
+  "fit": "contain",
+  "background": "#DFDEFB",
+  "shadow": "soft",
+  "padding": 0.09
+}

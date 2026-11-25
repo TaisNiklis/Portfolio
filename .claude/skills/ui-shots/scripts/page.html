@@ -293,6 +293,80 @@ function clipImg(im, clip) {
 }
 
 // Blur regions of a screenshot (NDA): [{x, y, w, h}], values <= 1 are fractions of the image size.
+// Keep one region sharp and blur the rest of the screenshot (ref: document version history).
+// focusBlur = {x, y, w, h (px or fractions), blur (px, default 1.2% of width), screen}
+function focusBlurImg(im, f) {
+  const W = im.naturalWidth, H = im.naturalHeight;
+  const v = (val, full) => (val <= 1 ? val * full : val);
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const ctx = c.getContext('2d');
+  ctx.filter = 'blur(' + (f.blur || W * 0.012) + 'px)';
+  ctx.drawImage(im, 0, 0);
+  ctx.filter = 'none';
+  const x = v(f.x, W), y = v(f.y, H), w = v(f.w, W), h = v(f.h, H);
+  ctx.drawImage(im, x, y, w, h, x, y, w, h);
+  return loadImg(c.toDataURL('image/png'));
+}
+
+// Annotation cards with dashed connectors to points on the screen (ref: onboarding + integrations).
+// annotations = [{title, text, icon, x, y, w, to: [fx, fy], screen}]: x, y, w = card top-left and
+// width as fractions of the canvas; to = the point on the screenshot (fractions of the screenshot).
+const ANN_ICONS = {
+  id: '<rect x="2" y="5" width="20" height="14" rx="2.5"/><circle cx="8" cy="11" r="2.3"/><path d="M4.8 16.2c.8-1.6 1.9-2.3 3.2-2.3s2.4.7 3.2 2.3M14 10h5M14 14h4"/>',
+  sign: '<path d="M14 3H6.5A2.5 2.5 0 0 0 4 5.5v13A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V9zM14 3v6h6"/><path d="M7.5 16.5c1.2-1.8 2-1.8 2.6-.4.5 1.2 1.2 1.2 2.2-.2.8-1 1.4-.8 2.2.4"/>',
+  clock: '<circle cx="12" cy="12" r="9.2"/><path d="M12 7v5.2l3.4 2"/>',
+  check: '<path d="M5 12.5l4.2 4.2L19 7"/>',
+  lock: '<rect x="4.5" y="10.5" width="15" height="10" rx="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
+  doc: '<path d="M14 3H6.5A2.5 2.5 0 0 0 4 5.5v13A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V9zM14 3v6h6M8 13h8M8 17h5"/>',
+  wallet: '<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16 14.5h2"/>',
+  user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.3-3.6 4.1-5.4 7.5-5.4s6.2 1.8 7.5 5.4"/>',
+  bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20h4"/>',
+  star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.8z"/>',
+};
+function addAnnotations(cfg, W, H, pal) {
+  const canvas = document.getElementById('canvas');
+  const screens = [...document.querySelectorAll('.screen')];
+  const acc = cfg.annotationColor || rgbStr(pal.accent);
+  const tint = rgbStr(mix(pal.accent, [255, 255, 255], 0.86));
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none';
+  canvas.appendChild(svg);
+  const fs = W * 0.021, ts = W * 0.0165, pad = W * 0.018, ir = W * 0.021;
+  [].concat(cfg.annotations).forEach(a => {
+    const card = document.createElement('div');
+    const cw = (a.w || 0.25) * W;
+    card.style.cssText = 'position:absolute;left:' + a.x * W + 'px;top:' + a.y * H + 'px;width:' + cw + 'px;box-sizing:border-box;padding:' + pad + 'px;background:#fff;border-radius:' +
+      W * 0.016 + 'px;box-shadow:' + shadowCss('soft', cw * 2, cfg._shadowColor) + ', 0 0 0 1px rgba(0,0,0,.04);font-family:Inter,-apple-system,sans-serif';
+    const icon = a.icon ? '<span style="flex:none;width:' + ir * 2 + 'px;height:' + ir * 2 + 'px;border-radius:' + ir * 0.5 + 'px;background:' + tint +
+      ';display:inline-flex;align-items:center;justify-content:center"><svg width="' + ir * 1.15 + '" height="' + ir * 1.15 + '" viewBox="0 0 24 24" fill="none" stroke="' + acc +
+      '" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + (ANN_ICONS[a.icon] || '') + '</svg></span>' : '';
+    card.innerHTML = '<div style="display:flex;align-items:center;gap:' + pad * 0.7 + 'px">' + icon + '<span style="font-size:' + fs + 'px;font-weight:700;color:#16131d">' +
+      (a.title || '').replace(/</g, '&lt;') + '</span></div>' + (a.text ? '<div style="margin-top:' + pad * 0.6 + 'px;font-size:' + ts + 'px;line-height:1.35;color:#55505f">' +
+      a.text.replace(/</g, '&lt;') + '</div>' : '');
+    canvas.appendChild(card);
+    if (!a.to) return;
+    const scr = screens[a.screen || 0]; if (!scr) return;
+    const img = scr.querySelector('img'), r = scr.getBoundingClientRect();
+    const nw = img.naturalWidth, nh = img.naturalHeight, s = Math.max(r.width / nw, r.height / nh);
+    const ox = (r.width - nw * s) * 0.5, oy = (r.height - nh * s) * (img._cropFrac || 0);
+    const px = r.left + ox + a.to[0] * nw * s, py = r.top + oy + a.to[1] * nh * s;
+    const cr = card.getBoundingClientRect();
+    const right = px > cr.left + cr.width / 2;
+    const sx = right ? cr.right : cr.left, sy = cr.top + cr.height * (a.anchorY != null ? a.anchorY : 0.62);
+    const mx = (sx + px) / 2;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M' + sx + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + py + ' ' + px + ' ' + py);
+    path.setAttribute('fill', 'none'); path.setAttribute('stroke', acc); path.setAttribute('stroke-width', Math.max(1.5, W * 0.0018));
+    path.setAttribute('stroke-dasharray', W * 0.005 + ' ' + W * 0.006); path.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(path);
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', px); dot.setAttribute('cy', py); dot.setAttribute('r', W * 0.0045);
+    dot.setAttribute('fill', '#fff'); dot.setAttribute('stroke', acc); dot.setAttribute('stroke-width', Math.max(1.5, W * 0.002));
+    svg.appendChild(dot);
+  });
+}
+
 function redactImg(im, regions) {
   const W = im.naturalWidth, H = im.naturalHeight;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -369,6 +443,7 @@ window.render = async function (cfg) {
   let imgs = await Promise.all(cfg.images.map(loadImg));
   if (cfg.clip) imgs = await Promise.all(imgs.map(im => clipImg(im, cfg.clip)));
   if (cfg.redact) imgs = await Promise.all(imgs.map(im => redactImg(im, cfg.redact)));  // regions are relative to the clipped image
+  if (cfg.focusBlur) imgs = await Promise.all(imgs.map((im, i) => i === (cfg.focusBlur.screen || 0) ? focusBlurImg(im, cfg.focusBlur) : im));
   // crop may be a list: one value per screenshot.
   imgs.forEach((im, i) => { im._crop = Array.isArray(cfg.crop) ? cfg.crop[i % cfg.crop.length] : cfg.crop; });
   const cropFrac = c => (typeof c === 'number' ? c : ({ top: 0, center: 0.5, bottom: 1 }[c] || 0));
@@ -475,6 +550,20 @@ window.render = async function (cfg) {
       group.appendChild(col);
     }
     group.style.transform = 'rotate(' + (cfg.rotate != null ? cfg.rotate : (masonry ? -18 : 0)) + 'deg)';
+  } else if (cfg.layout === 'free') {
+    // Free collage (ref: payout fragments): every input placed by hand.
+    // positions: [{x, y, w}] = top-left corner and width as fractions of the canvas; later inputs on top.
+    stage.style.display = 'block'; stage.style.padding = '0';
+    group.style.display = 'block'; group.style.position = 'absolute'; group.style.inset = '0';
+    const pos = cfg.positions || [];
+    imgs.forEach((im, i) => {
+      const p = pos[i] || { x: 0.1 + i * 0.08, y: 0.1 + i * 0.08, w: 0.4 };
+      const el = buildDevice(cfg, im, p.w * W, null, null);
+      el.style.position = 'absolute';
+      el.style.left = p.x * W + 'px';
+      el.style.top = p.y * H + 'px';
+      group.appendChild(el);
+    });
   } else if (cfg.layout === 'overlap') {
     // Front page bottom-left, the next ones behind it, shifted up and right (ref: Pockit, Pathpro).
     const o = Object.assign({ dx: 0.4, dy: -0.12, fade: 0.5 }, cfg.overlap || {});
@@ -563,6 +652,7 @@ window.render = async function (cfg) {
   await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
   document.querySelectorAll('.screen img').forEach((el, i) => { const src = imgs.find(im => im.src === el.src); el._cropFrac = cropFrac(src ? src._crop : cfg.crop); });
   if (cfg.callout) addCallout(cfg, W, H);
+  if (cfg.annotations) addAnnotations(cfg, W, H, pal);
   if (cfg.logoData) {
     // Brand mark in a corner: logo = {position: bottom-left|bottom-right|top-left|top-right, height: 0.035}
     const l = Object.assign({ position: 'bottom-left', height: 0.035 }, cfg.logo || {});

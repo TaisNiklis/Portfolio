@@ -1,0 +1,10 @@
+{
+  "$description": "Ref: onboarding checklist with Veriff / DocuSeal / Time Doctor cards (lavender, own case). One UI fragment or screen in the middle, white annotation cards (icon + title + one or two lines) around it, each joined to its row by a dashed accent curve with a dot. Flat lavender background. Best for explaining where something plugs in: integrations, rules, states. Pass `annotations` per job.",
+  "device": "card",
+  "radius": 0.02,
+  "fit": "contain",
+  "background": "#DFDEFB",
+  "shadow": "soft",
+  "padding": 0.06,
+  "maxDeviceWidth": 0.5
+}

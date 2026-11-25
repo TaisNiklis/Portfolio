@@ -14,13 +14,17 @@ the device width (radius), unless noted.
 | `clip` | — | ✂ Crop the source first (needs `allowCrop`): `{"x":0,"y":0,"w":1,"h":0.35}`, px or fractions of the source |
 | `redact` | — | Blur regions for NDA: `[{"x":0.1,"y":0.2,"w":0.3,"h":0.05}]`, measured on the clipped image |
 | `callout` | — | Lift a detail out, enlarged: `{"x":0,"y":0.3,"w":1,"h":0.25,"scale":1.12,"dx":-0.03,"dy":0,"screen":0}`. A list for several |
+| `focusBlur` | — | Keep one region sharp and blur the rest of a screenshot: `{"x":0.56,"y":0.02,"w":0.42,"h":0.29,"blur":20,"screen":0}` |
+| `annotations` | — | Cards with dashed connectors to points on a screen: `[{"title":"Veriff","text":"Locks payouts only","icon":"id","x":0.02,"y":0.34,"w":0.25,"to":[0.2,0.61]}]`. `x, y, w` = card, fractions of the canvas; `to` = point, fractions of the screenshot. Icons: id, sign, clock, check, lock, doc, wallet, user, bell, star |
+| `annotationColor` | accent | Colour of the connectors and icons |
 | `allowCrop` | false | `--allow-crop`. Without it, a shot where any screen runs off the canvas, is cut inside its frame or was clipped is **not saved**. Only when the user asked for a crop |
 | `logo` | — | Brand mark in a corner: a path, or `{"src":"logo.svg","position":"bottom-left","height":0.035}` |
 
 ## Layout
 | Option | Default | Meaning |
 |---|---|---|
-| `layout` | `row` | `row`: side by side. `grid`: columns of tiles. `masonry`: rotated columns that overflow. `overlap`: pages behind each other |
+| `layout` | `row` | `row`: side by side. `grid`: columns of tiles. `masonry`: rotated columns that overflow. `overlap`: pages behind each other. `free`: each input placed by `positions` |
+| `positions` | — | Free layout: `[{"x":0.2,"y":0.05,"w":0.25}, …]` top-left and width of each input, fractions of the canvas; later inputs on top |
 | `fit` | `contain` | Row only. `contain`: whole screenshot visible. `crop`: fills the area, cuts the bottom. `bleed`: anchored at the top and runs off the bottom edge |
 | `crop` | `top` | Which part of a tall screenshot shows: `top`, `center`, `bottom` or 0..1. A list sets one value per screenshot |
 | `padding` | 0.08 | Space around the content |

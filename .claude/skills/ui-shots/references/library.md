@@ -1,7 +1,8 @@
 # Style library
 
-25 presets in five groups. Each one comes from a real reference shot the user picked (the
-originals are in `examples/` where available). Previews on test content are in
+29 presets in six groups, plus one reference-only style. Each one comes from a real reference shot the user
+picked (the originals are in `examples/` where available). The **case family: lavender** group is
+the user's own work and is the default for portfolio case images. Previews on test content are in
 `presets/previews/<name>.png`: they show the composition, not how a real product will look.
 When you need the precise feel, open the original in `examples/`.
 
@@ -44,6 +45,11 @@ When you need the precise feel, open the original in `examples/`.
 | | 1 | bold brand | `brand-solid` |
 | | desktop + mobile | responsive | `responsive-pair` |
 | | many tables | design system | `iso-wall` ✂ |
+| **Case family: lavender** (default for case images) | 1 screen | product | `tablet-float` |
+| | 1 fragment + 2–4 notes | explain | `annotated-fragment` |
+| | 2–4 fragments | compare | `fragment-collage` |
+| | 1 control | detail | `focus-closeup` (deliberate crop) |
+| | 1 hero, real-life | cover | photo mockup (Figma only) |
 
 ### Rules of thumb
 - **Inside one case, keep one family**: the same background rule, radius and shadow on every
@@ -244,14 +250,68 @@ with soft shadows on near-white.
 
 ---
 
+## Case family: lavender (the user's own references)
+
+The user made these for the HR-platform case and wants them used as references. They share one
+system: flat lavender background `#DFDEFB`, white cards with soft shadows, purple accent only on
+actions and connectors, rounded image corners, no frames except the dark tablet bezel. **Use this
+family by default for portfolio case images**, and keep all images of one case inside it.
+Originals: `examples/<preset>-<n>.png`.
+
+### tablet-float
+**Ref:** talent timesheet, talent payments (`tablet-float-1.png`, `tablet-float-2.png`).
+**Looks like:** one whole web-app screen in a thin dark tablet bezel (about 11 px at 954 wide) that
+takes the screenshot's own proportions, centred on flat lavender with a soft shadow.
+**Use for:** the main screen of a section: tables, dashboards, lists. The calm default.
+**Tune:** `padding` for size. In the originals the bezel touches the bottom edge; here it stays
+whole.
+
+### annotated-fragment
+**Ref:** onboarding checklist with Veriff, DocuSeal and Time Doctor cards (`annotated-fragment-1.png`).
+**Looks like:** one UI fragment in the middle (the checklist card, exported on its own) with white
+annotation cards around it: an icon in a pale accent square, a bold title, one or two lines. Each
+card is joined to its row by a dashed accent curve that ends in a hollow dot.
+**Use for:** where things plug in: integrations, rules, states, who does what.
+**Tune:** export the fragment itself (a Figma frame or `capture.cjs --selector`), not the whole
+screen, so the rows are big. Set `annotations` per job: `[{title, text, icon, x, y, w, to:[fx, fy]}]`,
+cards may overlap the fragment's edge. Icons: id, sign, clock, check, lock, doc, wallet, user,
+bell, star.
+
+### fragment-collage
+**Ref:** payout method forms (`fragment-collage-1.png`).
+**Looks like:** several fragments (method cards, an account field, two drawers) placed by hand,
+slightly overlapping, white cards with soft shadows on lavender. Reads as "the parts of one flow".
+**Use for:** comparing variants of one form, or showing the parts of a step.
+**Tune:** `layout: "free"` with `positions: [{x, y, w}]` (fractions of the canvas, later inputs on
+top). Export each fragment on its own. In the original the drawers run off the bottom edge; keep
+them whole unless the user asks.
+
+### focus-closeup
+**Ref:** document version history (`focus-closeup-1.png`).
+**Looks like:** a close-up of one control (toolbar and its dropdown) on a white card; the control
+stays sharp and the rest of the screen is blurred, on lavender.
+**Use for:** one small interaction the caption is about: a dropdown, a menu, a version list.
+**Tune:** `focusBlur: {x, y, w, h}` = the control on the screenshot; `focus` = the control's centre
+in the composition, `zoom` about 1.8–2.2. This is the one preset that crops on purpose
+(`allowCrop: true` is in the preset): the blur makes the crop read as deliberate.
+
+### photo mockup (reference only)
+**Ref:** a tablet held in two hands, cut out, on lavender (`photo-mockup-1.png`, the case cover).
+**Looks like:** a photo of hands holding a tablet with the screen in perspective, the photo running
+off the right edge, flat lavender behind.
+**Use for:** a cover or hero that should feel real.
+**How:** the renderer can't place a screen into a photo. Make it in Figma with a mockup plugin or
+photo template, blur logos under NDA, and use the export as is. Offer this to the user instead of
+faking it with a device frame.
+
 ## Building blocks for new presets
 - **Frames** (`device`): `none`, `card`, `glass`, `browser`, `browser-dark`, `iphone`, `ipad`,
   `ipad-landscape`, `macbook`. Metal `frameColor`: silver, titanium, graphite, rose, gold,
   midnight.
 - **Layouts:** `row` (with `widths`, `labels`, `stagger`, `fan`), `grid`, `masonry` (`flow`:
-  columns or rows, `repeat`, `perColumn`), `overlap`.
-- **Effects:** `stack`, `depth`, `tilt`, `rotate`, `zoom` + `focus`, `callout`, `glow`,
-  `grain`, `pattern`, `logo`.
+  columns or rows, `repeat`, `perColumn`), `overlap`, `free` (`positions`).
+- **Effects:** `stack`, `depth`, `tilt`, `rotate`, `zoom` + `focus`, `callout`, `annotations`,
+  `focusBlur`, `glow`, `grain`, `pattern`, `logo`.
 - **Colours:** `auto`, `auto-light`, `auto-soft`, `auto-muted`, `auto-accent`, `auto-dark`,
   `auto-aurora`, plus `accent` to set the brand colour.
 

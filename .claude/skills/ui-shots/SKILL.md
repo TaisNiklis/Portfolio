@@ -41,11 +41,14 @@ source. The user reads a cut-off screen as a mistake, not a style.
   or named a cropping preset. Say in your report that the shot is cropped on purpose.
 - Presets marked **crops** in `references/library.md` (walls, masonry, perspective, overlap,
   close-ups, desktop screens in phones) need that permission. Default to the whole-screen
-  presets: `dash-float`, `muted-card`, `browser-clean`, `glass-glow`, `brand-solid`,
+  presets: `tablet-float`, `annotated-fragment`, `fragment-collage`, `dash-float`, `muted-card`, `browser-clean`, `glass-glow`, `brand-solid`,
   `charcoal-card`, `dark-stack`, `dark-aurora`, `kit-flat`, `responsive-pair`, `accent-grid`,
   `table-callout`, or `layout: row`/`grid` with `fit: contain`.
 - Need a detail to be readable? Keep the whole screen and lift the detail out with
   `callout`. Too many screens for one image? Use fewer, or split into two images.
+- One exception is built in: `focus-closeup` (the user's own reference) crops on purpose
+  and blurs everything but the control, so it may be used without asking when an image
+  is about one control.
 
 ## Workflow
 
@@ -82,6 +85,9 @@ it's still unclear, ask once.
 Read `references/library.md` and choose a preset from the content (web page, section, mobile
 screens, dark UI, many small screens), the number of screens and the product's colours.
 That file has the selection rules. In short:
+- **Portfolio case images: use the case family "lavender" by default** (`tablet-float`,
+  `annotated-fragment`, `fragment-collage`, `focus-closeup`). These come from the user's own
+  images, so match them unless the user asks for something else.
 - **Within one case, keep one style family**: the same background tone, frame and shadow
   on every image. Vary only the composition. A reviewer reads consistency as craft.
 - **Separate shots** (Dribbble, social, a cover): choose freely and don't repeat the
