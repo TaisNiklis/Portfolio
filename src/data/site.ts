@@ -2,6 +2,7 @@
 import aiPlatformCover from '../assets/cases/ai-platform-cover.png';
 import providerPlatformCover from '../assets/cases/provider-platform-cover.png';
 import realEstateReferralCover from '../assets/cases/real-estate-referral-cover.png';
+import hrPlatformCover from '../assets/cases/hr-platform-cover.png';
 
 export const person = {
   name: 'Taisiia Silkina',
@@ -75,17 +76,22 @@ export const work = [
     visual: 'roles',
   },
   {
-    href: person.links.behance,
+    slug: 'structured-hr-platform-distributed-teams',
     title: 'Complex HR Management Platform',
-    facts: ['Product designer', 'HR · Talent operations'],
+    cover: hrPlatformCover,
+    facts: ['Product designer', 'HR · Talent operations', 'Web', '2026'],
     highlights: [
-      'From a prototype to a structured product',
-      'Timesheets, payments and document flows',
-      'A reusable design system for the team',
+      'Audit of a half-built prototype and its documentation',
+      'One role model for Talent, Manager and Business',
+      'Workspaces, bulk approval and payments confirmed by the business',
+      'A design system with 272 component variants',
     ],
-    text: 'Remote Leverage manages distributed talent operations, supporting timesheets, payments, and document handling. I improved a prototype into a structured product, aligning business needs with user workflows, design, and a reusable system.',
-    metrics: [{ value: '+167%', label: 'conversion' }],
-    visual: 'conversion',
+    text: 'A recruiting company was building an HR platform for remote teams, but its prototype, documentation and business rules disagreed. I audited the product, defined who does what across three roles and many businesses, designed timesheets, payments and documents, and built a design system. The client accepted the final work without a single revision.',
+    metrics: [
+      { value: '0', label: 'revisions to the final design' },
+      { value: '3', label: 'roles in one permission model' },
+    ],
+    visual: 'roles',
   },
 ] as const;
 
