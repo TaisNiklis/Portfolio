@@ -1,0 +1,9 @@
+{
+  "$description": "Dashboard ref 'Taskflow' (messaging SaaS). A web app in a clean Safari-like window (traffic lights, sidebar and back/forward icons, address bar with a lock) on a very light cool tint, soft shadow, full width. Best for SaaS screens where 'it runs in the browser' matters; the calm default for web-app case images.",
+  "device": "browser",
+  "url": "app.yourapp.io",
+  "fit": "crop",
+  "background": "auto-light",
+  "shadow": "soft",
+  "padding": 0.045
+}

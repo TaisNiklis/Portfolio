@@ -1,0 +1,22 @@
+{
+  "$description": "Mobile ref 'Solidity Swap' (DeFi, dark screens on lavender). Big bare dark screens in two columns, the whole group rotated, one tall screen on the left and two on the right with the top one cut by the frame. Pastel background in the accent's tint, medium shadow. Each screen appears once. Best for 3 mobile screens where one is the hero.",
+  "layout": "masonry",
+  "repeat": false,
+  "columns": 2,
+  "colOffset": [
+    0.15,
+    -0.3
+  ],
+  "cellWidth": 0.31,
+  "rotate": -14,
+  "device": "card",
+  "radius": 0.1,
+  "background": "auto-soft",
+  "shadow": "medium",
+  "gap": 0.05,
+  "perColumn": [
+    1,
+    2
+  ],
+  "cellAspect": 0.5
+}

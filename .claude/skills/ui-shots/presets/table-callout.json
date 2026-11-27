@@ -1,0 +1,18 @@
+{
+  "$description": "Table ref 'Transactions' (bulk selection). A table card with a horizontal strip of rows lifted out of it, enlarged, with a deep shadow, sticking out past the card's left edge. The background in the original is a night-sky photo; without bgImage a deep navy gradient is used. Best for showing one interaction or detail inside a big table (selection, inline edit, status). Set callout {y, h} to the rows to lift.",
+  "device": "card",
+  "fit": "crop",
+  "radius": 0.025,
+  "background": "radial-gradient(ellipse at 30% 0%, #26304a, #0b1020 70%)",
+  "shadow": "deep",
+  "shadowColor": "#000000",
+  "padding": 0.09,
+  "callout": {
+    "x": 0,
+    "y": 0.3,
+    "w": 1,
+    "h": 0.28,
+    "scale": 1.1,
+    "dx": -0.035
+  }
+}

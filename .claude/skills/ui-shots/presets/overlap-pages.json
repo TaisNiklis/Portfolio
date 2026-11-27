@@ -1,0 +1,16 @@
+{
+  "$description": "Web ref 'Pockit' (fintech landing, pink). Two pages of a site: the main one in front, lower left, running off the bottom; a second page behind it, up and to the right, fading out toward the bottom. Very light background, soft shadow. Best for a landing page plus one inner page, or two sections of one site.",
+  "layout": "overlap",
+  "overlap": {
+    "dx": 0.36,
+    "dy": -0.1,
+    "fade": 0.55
+  },
+  "cellWidth": 0.58,
+  "cellAspect": 0.62,
+  "device": "card",
+  "radius": 0.02,
+  "background": "auto-light",
+  "shadow": "soft",
+  "padding": 0.06
+}

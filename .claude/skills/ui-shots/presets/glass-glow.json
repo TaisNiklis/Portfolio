@@ -1,0 +1,10 @@
+{
+  "$description": "Ref 1 'Let's Get In Touch'. One wide component or page section in a thin frosted-glass bezel, floating on a near-neutral light background, with a soft glow tinted by the screenshot's brand colour underneath. Best for a single hero/section/banner with a strong colour.",
+  "device": "glass",
+  "fit": "contain",
+  "background": "#E4E4E4",
+  "shadow": "glow",
+  "shadowColor": "auto",
+  "padding": 0.07,
+  "radius": 0.035
+}

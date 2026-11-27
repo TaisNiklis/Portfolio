@@ -1,0 +1,17 @@
+{
+  "$description": "Ref 5 'freud UI Kit'. Mobile screens as bare rounded cards in a rotated masonry of 3 columns that runs off every edge, with a soft shadow on a cool grey background. Screens repeat to fill the frame. Best for a mobile app overview / cover shot with 3-6 screens.",
+  "layout": "masonry",
+  "columns": 3,
+  "colOffset": [
+    0.35,
+    0,
+    0.5
+  ],
+  "cellWidth": 0.27,
+  "rotate": -16,
+  "device": "card",
+  "background": "#B9BDC4",
+  "shadow": "soft",
+  "gap": 0.045,
+  "radius": 0.1
+}

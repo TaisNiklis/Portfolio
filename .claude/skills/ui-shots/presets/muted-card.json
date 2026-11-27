@@ -1,0 +1,10 @@
+{
+  "$description": "Ref 2 'Travel App'. A web page or long section as a flat card with soft corners, filling most of the frame, on an earthy muted background picked from the screenshot's own tones. No shadow, calm editorial feel. Best for landing pages and marketing sections; works for warm, beige, pastel products.",
+  "device": "card",
+  "fit": "crop",
+  "crop": "top",
+  "background": "auto-muted",
+  "shadow": "none",
+  "padding": 0.08,
+  "radius": 0.022
+}

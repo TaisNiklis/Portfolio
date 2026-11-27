@@ -1,0 +1,19 @@
+{
+  "$description": "Dashboard ref 'workwise' (project management). A wall of screens and fragments (dashboard, sidebar, widgets, profile, kanban) in rows shifted like bricks, cropped by the frame, on very light grey with even gaps. Shows a whole product system at once. Feed 5-9 screenshots and fragments.",
+  "layout": "masonry",
+  "flow": "rows",
+  "columns": 3,
+  "colOffset": [
+    0.2,
+    0,
+    0.45
+  ],
+  "cellWidth": 0.5,
+  "cellAspect": 1.55,
+  "rotate": 0,
+  "device": "card",
+  "radius": 0.02,
+  "background": "#EDEDED",
+  "shadow": "none",
+  "gap": 0.022
+}

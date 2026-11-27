@@ -1,0 +1,9 @@
+{
+  "$description": "Dashboard ref 'Campfire' (dark UI kit bento). For exports that are already a composed board (UI kit, bento of components, style sheet): place it flat on its own background colour with no frame and no shadow, just breathing room. Best when the design itself is the composition.",
+  "device": "none",
+  "fit": "contain",
+  "background": "auto-dark",
+  "shadow": "none",
+  "padding": 0.06,
+  "radius": 0
+}

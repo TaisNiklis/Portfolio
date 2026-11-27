@@ -1,0 +1,8 @@
+{
+  "$description": "Ref: payout method forms (lavender, own case). Several whole UI fragments (drawers, cards, inputs exported on their own) placed by hand and overlapping slightly, white cards with soft shadows on flat lavender. Best for comparing variants of one form or showing the parts of a flow. Export each fragment separately (Figma frame or capture --selector) and set `positions` per job.",
+  "layout": "free",
+  "device": "card",
+  "radius": 0.03,
+  "background": "#DFDEFB",
+  "shadow": "soft"
+}

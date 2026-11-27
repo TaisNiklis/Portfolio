@@ -1,0 +1,22 @@
+{
+  "$description": "Web ref 'Socrates' (AI doc tool landing). A long landing page cut into two tall columns side by side, the left one lower and the right one starting above the frame, both running off the top or bottom edge. Flat cards, no shadow, warm muted background from the page. Pass the same screenshot twice with crop [0, 0.55] so each column shows a different part. Best for a long landing page in one shot.",
+  "layout": "masonry",
+  "repeat": false,
+  "columns": 2,
+  "perColumn": [
+    1,
+    1
+  ],
+  "rotate": 0,
+  "cellWidth": 0.44,
+  "cellAspect": 0.62,
+  "colOffset": [
+    0.16,
+    -0.1
+  ],
+  "device": "card",
+  "radius": 0.035,
+  "background": "auto-muted",
+  "shadow": "none",
+  "gap": 0.03
+}

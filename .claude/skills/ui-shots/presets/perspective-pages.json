@@ -1,0 +1,21 @@
+{
+  "$description": "Web ref 'Pathpro' (sport tracker landing). Pages tilted in 3D perspective: the main page large in front, another screen behind on the right, both turned slightly away. Light grey background, medium shadow. Dynamic, editorial. Best for a landing page with a strong photo or hero, plus one supporting screen.",
+  "layout": "overlap",
+  "overlap": {
+    "dx": 0.42,
+    "dy": -0.12,
+    "fade": 0
+  },
+  "cellWidth": 0.66,
+  "cellAspect": 1.1,
+  "tilt": {
+    "rx": 14,
+    "ry": -16,
+    "rz": 7
+  },
+  "device": "card",
+  "radius": 0.006,
+  "background": "#E4E4E4",
+  "shadow": "medium",
+  "padding": 0.04
+}

@@ -1,0 +1,9 @@
+{
+  "$description": "Table ref 'Lemon Squeezy discounts'. A full app screen as a card with small square-ish corners, centred on a flat solid background in the brand colour, deep shadow, optional brand logo in the bottom-left corner. Direct and product-marketing-like. Best for a single app screen of a product with a strong brand colour.",
+  "device": "card",
+  "fit": "contain",
+  "radius": 0.004,
+  "background": "auto-accent",
+  "shadow": "deep",
+  "padding": 0.06
+}

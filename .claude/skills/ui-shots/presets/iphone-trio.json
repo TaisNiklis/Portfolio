@@ -1,0 +1,11 @@
+{
+  "$description": "Mobile ref 'fintech dark app, yellow accent'. Three realistic iPhones (metal band, black glass bezel, side buttons), the middle one lower, all slightly fanned, on a pale pastel tint of the product's accent. Soft shadow. Best for 2-3 key mobile screens when the device itself should read as 'a real app'. Pass accent with the brand colour if the screens contain other strong colours (charts), so the background picks the right tint.",
+  "device": "iphone",
+  "frameColor": "silver",
+  "background": "auto-soft",
+  "shadow": "medium",
+  "stagger": 0.1,
+  "fan": 4,
+  "padding": 0.06,
+  "gap": 0.04
+}

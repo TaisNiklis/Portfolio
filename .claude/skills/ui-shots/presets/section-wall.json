@@ -1,0 +1,19 @@
+{
+  "$description": "Web ref 'Studio' (marketing agency). A wall of a site's sections as rounded cards in rows shifted like bricks, running off every edge, with small gaps on black. The first screenshot sits in the middle. Shows the breadth of a site in one shot. Feed 5-9 section screenshots (capture with --selector per section).",
+  "layout": "masonry",
+  "flow": "rows",
+  "columns": 3,
+  "colOffset": [
+    0.35,
+    0,
+    0.55
+  ],
+  "cellWidth": 0.44,
+  "cellAspect": 1.6,
+  "rotate": 0,
+  "device": "card",
+  "radius": 0.045,
+  "background": "#000000",
+  "shadow": "none",
+  "gap": 0.012
+}

@@ -1,0 +1,12 @@
+{
+  "$description": "Mobile ref 'brighter' (dark purple fintech). Three bare dark screens with rounded corners in a row, the middle one lower, on near-black with a glow of the product's accent rising from the bottom. No device frames. Best for 3 dark-mode mobile screens with one strong accent colour.",
+  "device": "card",
+  "radius": 0.08,
+  "background": "auto-aurora",
+  "shadow": "deep",
+  "shadowColor": "#000000",
+  "stagger": 0.12,
+  "padding": 0.08,
+  "gap": 0.05,
+  "border": "1px solid rgba(255,255,255,.06)"
+}
