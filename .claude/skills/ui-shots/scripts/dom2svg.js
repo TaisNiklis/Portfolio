@@ -189,7 +189,17 @@
         const ax = pos[0] === '0%' || pos[0] === 'left' ? 'xMin' : pos[0] === '100%' ? 'xMax' : 'xMid';
         const ay = (pos[1] || '50%') === '0%' ? 'YMin' : pos[1] === '100%' ? 'YMax' : 'YMid';
         const par = fit === 'fill' ? 'none' : `${ax}${ay} ${fit === 'contain' ? 'meet' : 'slice'}`;
-        let out = `<image href="${el.currentSrc || el.src}" x="${n(r.x)}" y="${n(r.y)}" width="${n(r.w)}" height="${n(r.h)}" preserveAspectRatio="${par}"/>`;
+        // Figma drops embedded images larger than 4096 px on a side: downscale big ones.
+        let href = el.currentSrc || el.src;
+        const big = Math.max(el.naturalWidth, el.naturalHeight);
+        if (big > 4000) {
+          const k = 4000 / big, cv = document.createElement('canvas');
+          cv.width = Math.round(el.naturalWidth * k); cv.height = Math.round(el.naturalHeight * k);
+          cv.getContext('2d').drawImage(el, 0, 0, cv.width, cv.height);
+          href = cv.toDataURL('image/png');
+          warnings.add('images over 4000 px downscaled for Figma');
+        }
+        let out = `<image href="${href}" x="${n(r.x)}" y="${n(r.y)}" width="${n(r.w)}" height="${n(r.h)}" preserveAspectRatio="${par}"/>`;
         const rx = radius(cs, r.w, r.h);
         if (rx) { const cid = id('c'); defs.push(`<clipPath id="${cid}"><rect x="${n(r.x)}" y="${n(r.y)}" width="${n(r.w)}" height="${n(r.h)}" rx="${n(rx)}"/></clipPath>`); out = `<g clip-path="url(#${cid})">${out}</g>`; }
         return `<g${matrixAttr(el, r)}${op}>${out}</g>`;

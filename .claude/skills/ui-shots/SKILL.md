@@ -18,6 +18,8 @@ Every deliverable is an `.svg` file. Never hand the user a PNG or JPG.
   keeps every box, text line and inline icon as its own layer.
 - Imported into Figma (`upload_assets` with `image/svg+xml`, or drag and drop) the SVG
   becomes editable frames and text, so the user can keep working on it.
+- Embedded images larger than 4000 px on a side are downscaled automatically: Figma drops
+  images over 4096 px when it imports an SVG.
 - A PNG is only a check for you: pass `--preview` to see what you made. Don't deliver it,
   don't link it in a case, don't upload it to Figma.
 - Case pages show the SVG with `<Figure src="./images/<slug>/<name>.svg" …/>`; browsers
