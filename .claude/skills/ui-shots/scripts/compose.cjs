@@ -148,12 +148,16 @@ async function renderAll(jobs) {
       const page = await browser.newPage({ viewport: { width: cfg.width, height: cfg.height }, deviceScaleFactor: cfg.scale });
       await page.setContent(PAGE);
       const info = await page.evaluate(c => window.render(c), cfg);
+      // Layout rules (crop only at the canvas edge, top-left never cut, inner padding < outer).
+      await page.addScriptTag({ path: path.join(__dirname, 'dom2svg.js') });
+      info.crops = await page.evaluate(() => window.auditLayout(document.getElementById('canvas'), { frames: '.dev' }));
+      if (cfg.clip) info.crops.push('clip crops the source screenshots');
       if (info.crops && info.crops.length) {
         if (!cfg.allowCrop) {
           // Screens must be shown whole. Don't write a cropped file that could slip into a case.
           await page.close();
           failed++;
-          console.error(`NOT SAVED ${cfg.out}: ${info.crops.join('; ')}.\n  Fix: layout row/grid with fit "contain", fewer screens per image, no clip/zoom/masonry/overlap/bleed;` +
+          console.error(`NOT SAVED ${cfg.out}: ${info.crops.join('; ')}.\n  Fix: keep every image's top-left inside the canvas and its frame; let images run off only the right/bottom canvas edge; inner padding smaller than outer; no clip/zoom/cover;` +
             ` lift a detail with "callout" instead. Pass --allow-crop only if the user asked for a crop or close-up.`);
           continue;
         }
@@ -164,7 +168,6 @@ async function renderAll(jobs) {
       const out = cfg.out.replace(/\.(png|jpe?g|webp)$/i, '') .replace(/\.svg$/i, '') + '.svg';
       if (!/\.svg$/i.test(cfg.out)) console.warn(`note: output is SVG only, writing ${out}`);
       fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
-      await page.addScriptTag({ path: path.join(__dirname, 'dom2svg.js') });
       const res = await page.evaluate(() => window.domToSvg(document.getElementById('canvas')));
       fs.writeFileSync(out, res.svg);
       if (cfg.preview) await page.locator('#canvas').screenshot({ path: cfg.preview === true ? out.replace(/\.svg$/, '.preview.png') : cfg.preview });

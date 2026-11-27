@@ -56,7 +56,7 @@ When you need the precise feel, open the original in `examples/`.
   image. The cover may be the loud version of that family (wall, masonry, tilt), but inner
   images stay calm: `muted-card`, `dash-float`, `browser-clean`, `glass-glow`. Different cases
   and standalone Dribbble shots can differ.
-- **Screens are never cut** (see SKILL.md). Presets marked ✂ / "crops" run screens off the
+- **Layout rules** (see SKILL.md): crop only at the canvas edge, never the top-left corner, inner padding smaller than outer spacing. **Screens are never cut** (see SKILL.md). Presets marked ✂ / "crops" run screens off the
   canvas or cut them inside the frame; `compose.cjs` refuses to save them unless the user
   asked for a crop and you pass `--allow-crop`. `iphone-trio` and `phone-scene` only work
   with phone-shaped screenshots; a desktop screen in a phone frame is cut.
@@ -286,14 +286,14 @@ slightly overlapping, white cards with soft shadows on lavender. Reads as "the p
 top). Export each fragment on its own. In the original the drawers run off the bottom edge; keep
 them whole unless the user asks.
 
-### focus-closeup
+### focus-closeup · crops (only on request)
 **Ref:** document version history (`focus-closeup-1.png`).
 **Looks like:** a close-up of one control (toolbar and its dropdown) on a white card; the control
 stays sharp and the rest of the screen is blurred, on lavender.
 **Use for:** one small interaction the caption is about: a dropdown, a menu, a version list.
 **Tune:** `focusBlur: {x, y, w, h}` = the control on the screenshot; `focus` = the control's centre
-in the composition, `zoom` about 1.8–2.2. This is the one preset that crops on purpose
-(`allowCrop: true` is in the preset): the blur makes the crop read as deliberate.
+in the composition, `zoom` about 1.8–2.2. It cuts the top-left of the screen, so use it only when
+the user asks for a close-up (`--allow-crop`).
 
 ### photo mockup (reference only)
 **Ref:** a tablet held in two hands, cut out, on lavender (`photo-mockup-1.png`, the case cover).

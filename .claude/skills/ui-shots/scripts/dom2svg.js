@@ -227,5 +227,59 @@
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs>${defs.join('')}</defs>${content}</svg>`;
     return { svg, warnings: [...warnings] };
   }
+  // Layout rules every shot must pass (used by compose.cjs and html2svg.cjs):
+  // 1. Crop only at the canvas edge. An image's top-left corner is always visible; an image may
+  //    be cut on the right or bottom only where its frame (or the image) runs past the canvas.
+  //    Never cut inside a frame that ends inside the canvas, never object-fit: cover crops.
+  // 2. Inner padding < outer spacing. For every frame (opts.frames selector, default
+  //    '.frame, [data-frame]'): the gap between the frame edge and its content is smaller than
+  //    the gap between the frame and the canvas edge or a neighbouring frame.
+  function auditLayout(root, opts) {
+    opts = opts || {};
+    const issues = [];
+    const R = root.getBoundingClientRect();
+    const e = 0.5;
+    const imgs = [...root.querySelectorAll('img')].filter(i => i.getBoundingClientRect().width > 1);
+    imgs.forEach((img, i) => {
+      const r = img.getBoundingClientRect();
+      const tag = 'image ' + (i + 1);
+      if (r.left < R.left - e || r.top < R.top - e) issues.push(tag + ' is cut at the top-left by the canvas edge');
+      for (let a = img.parentElement; a && a !== root; a = a.parentElement) {
+        if (getComputedStyle(a).overflow === 'visible') continue;
+        const q = a.getBoundingClientRect();
+        if (r.left < q.left - e || r.top < q.top - e) issues.push(tag + ' is cut at the top-left inside its frame');
+        if (r.right > q.right + e && q.right < R.right - e) issues.push(tag + ' is cut on the right inside its frame');
+        if (r.bottom > q.bottom + e && q.bottom < R.bottom - e) issues.push(tag + ' is cut at the bottom inside its frame');
+      }
+      const cs = getComputedStyle(img);
+      if (cs.objectFit === 'cover' && img.naturalWidth) {
+        const ea = r.width / r.height, na = img.naturalWidth / img.naturalHeight;
+        if (Math.abs(ea - na) / na > 0.02) issues.push(tag + ' is cut inside its frame (object-fit: cover)');
+      }
+    });
+    const frames = [...root.querySelectorAll(opts.frames || '.frame, [data-frame]')].filter(f => f.getBoundingClientRect().width > 1);
+    frames.forEach((f, i) => {
+      const q = f.getBoundingClientRect();
+      const kids = [...f.querySelectorAll('img, svg, :scope > *')].map(k => k.getBoundingClientRect()).filter(k => k.width > 1 && k.height > 1);
+      if (!kids.length) return;
+      const inner = Math.max(0, Math.min(...kids.map(k => k.left - q.left)), Math.min(...kids.map(k => k.top - q.top)));
+      if (inner < e) return; // content flush with the frame: nothing to compare
+      const outs = [];
+      if (q.left >= R.left - e) outs.push(q.left - R.left);
+      if (q.top >= R.top - e) outs.push(q.top - R.top);
+      if (q.right <= R.right + e) outs.push(R.right - q.right);
+      if (q.bottom <= R.bottom + e) outs.push(R.bottom - q.bottom);
+      frames.forEach(g => {
+        if (g === f || g.contains(f) || f.contains(g)) return;
+        const p = g.getBoundingClientRect();
+        if (p.top < q.bottom && p.bottom > q.top) { if (p.left >= q.right) outs.push(p.left - q.right); if (p.right <= q.left) outs.push(q.left - p.right); }
+        if (p.left < q.right && p.right > q.left) { if (p.top >= q.bottom) outs.push(p.top - q.bottom); if (p.bottom <= q.top) outs.push(q.top - p.bottom); }
+      });
+      const outer = Math.min(...outs.filter(v => v >= 0));
+      if (isFinite(outer) && inner >= outer - e) issues.push('frame ' + (i + 1) + ': inner padding ' + Math.round(inner) + 'px is not smaller than outer spacing ' + Math.round(outer) + 'px');
+    });
+    return [...new Set(issues)];
+  }
+  window.auditLayout = auditLayout;
   window.domToSvg = domToSvg;
 })();

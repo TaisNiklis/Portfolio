@@ -46,15 +46,32 @@ code stay in English.
 Scripts need only Node and Playwright (`require('playwright')`), which are preinstalled in
 cloud sessions. Run them with `node <skill-dir>/scripts/<name>.cjs`.
 
+## Layout rules (checked on every render)
+
+Both `compose.cjs` and `html2svg.cjs` run these checks and print `NOT SAVED` with the reason
+when one fails. Fix the layout; don't work around the check.
+
+1. **Crop only at the canvas edge.** An image may be cut only where it (or its frame) runs
+   past the edge of the canvas. Never cut inside a frame that ends inside the canvas, never
+   `object-fit: cover`, never `clip`.
+2. **The top-left corner of an image is never cut.** Every image starts inside the canvas and
+   at the top-left of its frame. Only the right and bottom edges may run off the canvas.
+3. **Inner padding is always smaller than outer spacing.** The gap between a frame's edge and
+   its content is smaller than the gap between that frame and the canvas edge or the next
+   frame (e.g. inner 14, outer 24). In HTML you build, mark every presentation frame with
+   `class="frame"` so the check sees it; in `compose.cjs` the device frames are checked.
+4. A frame that ends inside the canvas shows its content whole: size the frame to the
+   content, or let the frame run off the right/bottom edge.
+
 ## The one hard rule: screens are never cut
 
 **Every screen in a shot is shown whole**: all four edges visible inside the canvas, nothing
 cut at the bottom, nothing hidden inside its frame, no zoom into a corner, no `clip` of the
 source. The user reads a cut-off screen as a mistake, not a style.
 
-- `compose.cjs` checks this on every render and **refuses to save** a shot where any screen
-  runs off the canvas, is cut inside its frame, or was clipped. It prints `NOT SAVED` with
-  the reason. Fix the composition; don't work around the check.
+- The checks above refuse anything cut inside its frame or at the top-left. A screen that
+  runs off the right or bottom canvas edge passes, but for case images keep screens whole
+  unless the composition is meant to bleed (a bento, a wall the user asked for).
 - Pass `--allow-crop` (or `"allowCrop": true` in a job) **only when the user explicitly asked
   for a crop**: "крупний план", "close-up", "обріж", "стіна з екранів", "тільки цей блок",
   or named a cropping preset. Say in your report that the shot is cropped on purpose.
@@ -65,9 +82,8 @@ source. The user reads a cut-off screen as a mistake, not a style.
   `table-callout`, or `layout: row`/`grid` with `fit: contain`.
 - Need a detail to be readable? Keep the whole screen and lift the detail out with
   `callout`. Too many screens for one image? Use fewer, or split into two images.
-- One exception is built in: `focus-closeup` (the user's own reference) crops on purpose
-  and blurs everything but the control, so it may be used without asking when an image
-  is about one control.
+- `focus-closeup` (the user's own reference) zooms into one control, so its top-left is cut:
+  it now needs an explicit request (`--allow-crop`) like the other close-ups.
 
 ## Workflow
 
@@ -105,7 +121,7 @@ Read `references/library.md` and choose a preset from the content (web page, sec
 screens, dark UI, many small screens), the number of screens and the product's colours.
 That file has the selection rules. In short:
 - **Portfolio case images: use the case family "lavender" by default** (`tablet-float`,
-  `annotated-fragment`, `fragment-collage`, `focus-closeup`). These come from the user's own
+  `annotated-fragment`, `fragment-collage`; `focus-closeup` on request). These come from the user's own
   images, so match them unless the user asks for something else.
 - **Within one case, keep one style family**: the same background tone, frame and shadow
   on every image. Vary only the composition. A reviewer reads consistency as craft.

@@ -2,6 +2,7 @@
 // Convert a self-contained HTML illustration or UI mock into a layered, editable SVG.
 //   node html2svg.cjs --input page.html --out page.svg [--size 954x537] [--selector body] [--preview page.png]
 // Text stays <text>, boxes stay <rect>, inline icons stay vector, <img> are embedded.
+// Refuses to save when a layout rule fails (see auditLayout in dom2svg.js); --allow-crop only on request.
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
@@ -18,6 +19,12 @@ const [W, H] = String(args.size || '954x537').split('x').map(Number);
   await p.evaluate(() => document.fonts.ready);
   await p.waitForTimeout(200);
   await p.addScriptTag({ path: path.join(__dirname, 'dom2svg.js') });
+  const issues = await p.evaluate(sel => window.auditLayout(document.querySelector(sel)), args.selector || 'body');
+  if (issues.length && !args['allow-crop']) {
+    await b.close();
+    console.error('NOT SAVED ' + args.out + ': ' + issues.join('; ') + '.\n  Fix: start every image at the top-left of its frame, let it run off only the right/bottom canvas edge, keep inner padding smaller than outer spacing (mark frames with class="frame").');
+    process.exit(1);
+  }
   const res = await p.evaluate(sel => window.domToSvg(document.querySelector(sel)), args.selector || 'body');
   const out = String(args.out).replace(/\.(png|jpe?g|webp)$/i, '').replace(/\.svg$/i, '') + '.svg';
   fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });

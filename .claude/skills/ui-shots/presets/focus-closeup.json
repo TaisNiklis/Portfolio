@@ -1,5 +1,5 @@
 {
-  "$description": "Ref: document version history (lavender, own case). A close-up of one control (a dropdown, a menu, a toolbar) on a white card; the control stays sharp and the rest of the screen is blurred, so the crop reads as deliberate. Flat lavender background. The only cropping preset allowed without asking, and only when the image is about that one control. Set `focusBlur` to the control and `focus` to where it sits.",
+  "$description": "Ref: document version history (lavender, own case). A close-up of one control (a dropdown, a menu, a toolbar) on a white card; the control stays sharp and the rest of the screen is blurred, so the crop reads as deliberate. Flat lavender background. Cuts the screen's top-left, so only when the user asks for a close-up (--allow-crop). Set `focusBlur` to the control and `focus` to where it sits.",
   "device": "card",
   "radius": 0.02,
   "fit": "contain",
@@ -14,6 +14,5 @@
   "anchor": [
     0.52,
     0.4
-  ],
-  "allowCrop": true
+  ]
 }
