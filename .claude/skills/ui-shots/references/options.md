@@ -8,9 +8,10 @@ the device width (radius), unless noted.
 | Option | Default | Meaning |
 |---|---|---|
 | `input` | — | Screenshot path. Repeat `--input` or pass a list for several screens |
-| `out` | — | Output PNG path (folders are created) |
+| `out` | — | Output path. Always written as `.svg` (other extensions are rewritten); folders are created |
+| `preview` | false | `--preview` also writes `<out>.preview.png`, or a given path. For checking only, never delivered |
 | `size` | `1600x1200` | Canvas size `WxH` |
-| `scale` | 1 | Pixel multiplier (2 = retina) |
+| `scale` | 1 | Pixel multiplier for the preview PNG only; the SVG is resolution-independent |
 | `clip` | — | ✂ Crop the source first (needs `allowCrop`): `{"x":0,"y":0,"w":1,"h":0.35}`, px or fractions of the source |
 | `redact` | — | Blur regions for NDA: `[{"x":0.1,"y":0.2,"w":0.3,"h":0.05}]`, measured on the clipped image |
 | `callout` | — | Lift a detail out, enlarged: `{"x":0,"y":0.3,"w":1,"h":0.25,"scale":1.12,"dx":-0.03,"dy":0,"screen":0}`. A list for several |

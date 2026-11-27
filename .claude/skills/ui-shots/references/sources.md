@@ -26,7 +26,7 @@ A link like `figma.com/design/<fileKey>/<name>?node-id=12-345` gives fileKey and
 ## Figma as the target size
 If the link points to an image slot in a layout (an empty frame or rectangle, often named
 like "image", "cover", "mockup"), read its width and height with `get_metadata` and render
-`--size <w>x<h> --scale 2`. The user then drops the PNG into that slot. Say which node you
+`--size <w>x<h>` (the output is SVG, so no scale is needed). The user then drops the SVG into that slot. Say which node you
 measured.
 
 ## Site template as the target size
@@ -35,7 +35,7 @@ For "make it fit my case page":
 node scripts/measure.cjs --url https://portfolio.com/cases/some-case --selector "article img, figure"
 ```
 It prints the CSS size of each image slot at a 1440 viewport. Pick the slot the image is for
-(cover vs. inline), then render at that size with `--scale 2`. If the template is local
+(cover vs. inline), then render at that size. If the template is local
 (an Astro/Next project), you can also read the width from the component's CSS, e.g. a
 `max-width` on the article column with an aspect-ratio on `<Figure>`.
 
@@ -49,5 +49,5 @@ It prints the CSS size of each image slot at a 1440 viewport. Pick the slot the 
 | LinkedIn / OG image | 1200×627 / 1200×630 |
 | Square | 1600×1600 |
 
-`--size` is the visible size and `--scale 2` doubles the pixels for retina. Use scale 1 when
-the user gives an exact pixel size, and scale 2 when the size came from CSS or Figma.
+`--size` is the SVG's size in px. The SVG is resolution-independent; embedded screenshots keep
+their own resolution, so export sources at 2x. `--scale` only affects the preview PNG.

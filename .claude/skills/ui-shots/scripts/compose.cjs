@@ -159,11 +159,19 @@ async function renderAll(jobs) {
         }
         console.warn(`warning (${cfg.out}): cropped on purpose (allowCrop): ${info.crops.join('; ')}`);
       }
-      fs.mkdirSync(path.dirname(path.resolve(cfg.out)), { recursive: true });
-      await page.locator('#canvas').screenshot({ path: cfg.out, omitBackground: false });
+      // Output is always SVG: frames, backgrounds, shadows, labels and annotations stay vector and
+      // editable (Figma imports them as layers); screenshots are embedded as images.
+      const out = cfg.out.replace(/\.(png|jpe?g|webp)$/i, '') .replace(/\.svg$/i, '') + '.svg';
+      if (!/\.svg$/i.test(cfg.out)) console.warn(`note: output is SVG only, writing ${out}`);
+      fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
+      await page.addScriptTag({ path: path.join(__dirname, 'dom2svg.js') });
+      const res = await page.evaluate(() => window.domToSvg(document.getElementById('canvas')));
+      fs.writeFileSync(out, res.svg);
+      if (cfg.preview) await page.locator('#canvas').screenshot({ path: cfg.preview === true ? out.replace(/\.svg$/, '.preview.png') : cfg.preview });
       await page.close();
-      if (info.warning) console.warn(`warning (${cfg.out}): ${info.warning}`);
-      console.log(`saved ${cfg.out} (${cfg.width * cfg.scale}x${cfg.height * cfg.scale}, layout=${cfg.layout}, device=${cfg.device}, preset=${job.preset || '-'}, bg=${info.background}, accent=${info.accent})`);
+      if (info.warning) console.warn(`warning (${out}): ${info.warning}`);
+      if (res.warnings.length) console.warn(`warning (${out}): ${res.warnings.join('; ')}`);
+      console.log(`saved ${out} (${cfg.width}x${cfg.height} SVG, layout=${cfg.layout}, device=${cfg.device}, preset=${job.preset || '-'}, bg=${info.background}, accent=${info.accent})`);
     }
   } finally {
     await browser.close();

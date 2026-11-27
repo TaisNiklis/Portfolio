@@ -1,12 +1,27 @@
 ---
 name: ui-shots
-description: Turns a UI screenshot, a live web page or a Figma frame into a polished presentation shot (PNG) — the screen placed in a device or frame on a background with a shadow, at an exact size — and can drop it straight into a portfolio case. Use whenever the user asks to "додай зображення до кейсу", "додай шот", "оформи інтерфейс", "зроби мокап", "зроби гарний скрін", "make a Dribbble/Behance shot", "put this screen in a mockup / device", "make a cover for the case", or gives a URL / Figma link / screenshot and wants it to look presentable, even if they don't say "mockup".
+description: Turns a UI screenshot, a live web page or a Figma frame into a polished presentation shot delivered as SVG only — the screen placed in a device or frame on a background with a shadow, at an exact size, with frames, text and annotations as editable vector layers — and can drop it straight into a portfolio case or Figma. Also turns HTML illustrations, diagrams and UI mocks into editable SVG. Use whenever the user asks to "додай зображення до кейсу", "додай шот", "оформи інтерфейс", "зроби мокап", "зроби гарний скрін", "make a Dribbble/Behance shot", "put this screen in a mockup / device", "make a cover for the case", or gives a URL / Figma link / screenshot and wants it to look presentable, even if they don't say "mockup".
 ---
 
 # UI Shots
 
 Make a presentation shot out of an interface: take the screen (screenshot, URL or Figma),
-pick a style from the library, render a PNG of the right size, check it, deliver it.
+pick a style from the library, render it at the right size, check it, deliver it as **SVG**.
+
+## Output: SVG only
+
+Every deliverable is an `.svg` file. Never hand the user a PNG or JPG.
+- `compose.cjs` always writes SVG (an `--out` ending in `.png` is rewritten to `.svg`).
+  Backgrounds, device frames, shadows, labels, callouts and annotation cards are vector
+  layers; text stays `<text>`; the screenshots themselves are embedded as images.
+- Illustrations, diagrams and UI mocks you build in HTML go through `html2svg.cjs`, which
+  keeps every box, text line and inline icon as its own layer.
+- Imported into Figma (`upload_assets` with `image/svg+xml`, or drag and drop) the SVG
+  becomes editable frames and text, so the user can keep working on it.
+- A PNG is only a check for you: pass `--preview` to see what you made. Don't deliver it,
+  don't link it in a case, don't upload it to Figma.
+- Case pages show the SVG with `<Figure src="./images/<slug>/<name>.svg" …/>`; browsers
+  render it like any image.
 
 Talk to the user in their language (usually Ukrainian). File names, captions in MDX and
 code stay in English.
@@ -18,7 +33,9 @@ code stay in English.
 | `references/library.md` | The style library: 25 presets in five groups (sections, web, mobile, dashboards, tables), every preset, what it looks like, which reference it came from, when to use it, and how to pick one | Step 3, every time |
 | `references/sources.md` | Getting the screen and the target size from a URL, a Figma link, a site template or a file | Steps 1–2 |
 | `references/options.md` | Every compose option with examples | When a preset needs tuning |
-| `scripts/compose.cjs` | The renderer (Playwright + HTML/CSS) | Step 4 |
+| `scripts/compose.cjs` | The renderer (Playwright + HTML/CSS), writes SVG | Step 4 |
+| `scripts/html2svg.cjs` | Any self-contained HTML (illustration, diagram, UI mock) → layered SVG | Illustrations |
+| `scripts/dom2svg.js` | The DOM → SVG serializer both scripts use | When output looks off |
 | `scripts/capture.cjs` | Screenshot of a URL or one element of it | Step 1, URL input |
 | `scripts/measure.cjs` | Sizes of the image slots on a page | Step 2, size from a site |
 | `presets/*.json` | Ready styles; `presets/previews/` shows each one | Step 3 |
@@ -53,7 +70,7 @@ source. The user reads a cut-off screen as a mistake, not a style.
 ## Workflow
 
 ### 1. Get the screen
-Work out what the source is and get a PNG of it. Details are in `references/sources.md`.
+Work out what the source is and get an image of it (a PNG screenshot is fine as **input**). Details are in `references/sources.md`.
 - **File** the user attached or named: use it as is.
 - **URL**: `capture.cjs`. Desktop at 1440 wide by default, `--mobile` for phone screens,
   `--selector` for one section, `--hide` for cookie banners and chat widgets.
@@ -70,9 +87,9 @@ In priority order:
    sizes: Dribbble 1600×1200 (4:3), Behance module 1920×1080 or 1400 wide, Instagram
    1080×1350, LinkedIn 1200×627, square 1600×1600.
 2. **A Figma link points at a target slot** (an empty frame or a placeholder in a case layout):
-   take that node's width and height and render at `scale: 2`.
+   take that node's width and height as the size (SVG scales without loss).
 3. **A site template** (e.g. a case page): measure the image slot with `measure.cjs` and
-   render at `scale: 2`.
+   use that size.
 4. **A case MDX** without other hints: 1600×1200 (4:3), the same for every image of the case,
    unless the case already has images of another size. Then match those.
 5. Otherwise: 1600×1200.
@@ -106,15 +123,25 @@ that instead.
 ### 4. Render
 ```bash
 node <skill-dir>/scripts/compose.cjs --input shot.png --preset glass-glow \
-  --size 1600x1200 --out out/hero.png
+  --size 1600x1200 --out out/hero.svg --preview
 ```
+`--preview` also writes `out/hero.preview.png` for your check only.
+
+An illustration, diagram or UI mock built as HTML:
+```bash
+node <skill-dir>/scripts/html2svg.cjs --input diagram.html --out out/diagram.svg \
+  --size 954x537 --preview out/diagram.preview.png
+```
+Build such HTML with real elements (divs, text, inline `<svg>` icons), set `html, body` to
+the exact size, embed images as data URIs. Avoid CSS masks and 3D transforms: the
+converter drops masks and flattens 3D, and says so in a warning.
 Several screens: repeat `--input`. Several shots at once: write a jobs JSON and pass
 `--batch jobs.json` (one browser for all). Any preset option can be overridden from the
 command line (`--background auto-soft --shadow soft`). The script prints the colours it
 picked, so you can mention or reuse them.
 
 ### 5. Check it, then fix it
-Open the PNG and look at it as the viewer will. Fix and re-render if you see any of these:
+Open the preview PNG and look at it as the viewer will (the SVG renders the same; if a warning says something was dropped or approximated, check that spot). Fix and re-render if you see any of these:
 - Any screen is cut off (the script refuses to save these, but check walls you were allowed
   to crop too). Use `fit: contain`, a row or grid layout, fewer screens, or two images.
 - The key part of the UI is too small to read. Use fewer screens per image, or `callout`
@@ -130,15 +157,17 @@ Open the PNG and look at it as the viewer will. Fix and re-render if you see any
 At most 2–3 rounds. If it's still not right, show the best version and say what you'd change.
 
 ### 6. Deliver
-- **Standalone shot**: save it where the user asked, or next to the source, and send it to
-  the user (SendUserFile if available).
+- **Standalone shot**: save the `.svg` where the user asked, or next to the source, and send
+  it to the user (SendUserFile if available). Only the SVG.
 - **Into a case** ("додай зображення до кейсу"): find the case MDX (`src/content/cases/<slug>.mdx`
-  or `drafts/<slug>.mdx`). Save the PNG as `images/<slug>/<short-name>.png` next to it (the
+  or `drafts/<slug>.mdx`). Save the SVG as `images/<slug>/<short-name>.svg` next to it (the
   case template uses `./images/<slug>/…`). Then either replace the matching
-  `<Figure src="[TODO: file]" …/>` or add a new `<Figure src="./images/<slug>/<name>.png"
+  `<Figure src="[TODO: file]" …/>` or add a new `<Figure src="./images/<slug>/<name>.svg"
   caption="…" />` where it belongs. A caption says what the image shows and why it
   matters. If the case frontmatter has `nda: true`, check for sensitive data before saving.
-- Name files by content: `cover.png`, `onboarding-flow.png`, `dashboard-before-after.png`.
+- **Into Figma**: upload the SVG with `upload_assets` (`image/svg+xml`); it lands as editable
+  layers. Name and place the new frame next to the slot it is for.
+- Name files by content: `cover.svg`, `onboarding-flow.svg`, `dashboard-before-after.svg`.
 
 Report in 2–3 lines: the file path(s), the size and preset, and anything you weren't sure
 about.
@@ -152,7 +181,7 @@ a word like "мобілка", "дашборди", "таблиці"), for each on
    Otherwise create a new `presets/<name>.json` with a `$description`. If the renderer
    can't do it yet (a new frame type, a new layout), extend `scripts/page.html` and document
    the option in `references/options.md`.
-3. Render a preview to `presets/previews/<name>.png` and compare it with the reference
+3. Render a preview to `presets/previews/<name>.png` (internal, for the library only) and compare it with the reference
    side by side. Tune until the feel matches, not the pixels.
 4. Add the entry and its selection rule to `references/library.md`.
 
