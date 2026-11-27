@@ -1,6 +1,7 @@
 // Site copy and lists in one place, so text edits never touch layout code.
 import aiPlatformCover from '../assets/cases/ai-platform-cover.png';
 import providerPlatformCover from '../assets/cases/provider-platform-cover.png';
+import realEstateReferralCover from '../assets/cases/real-estate-referral-cover.png';
 
 export const person = {
   name: 'Taisiia Silkina',
@@ -60,9 +61,10 @@ export const work = [
     visual: 'tokens',
   },
   {
-    href: person.links.behance,
+    slug: 'three-roles-one-property-lead',
     title: 'Real Estate Referral Platform',
-    facts: ['Product designer', 'Real estate · Referrals'],
+    cover: realEstateReferralCover,
+    facts: ['Product designer', 'Real estate · Referrals', 'Mobile & web', '2026'],
     highlights: [
       'One lead flow from contributor to manager to agent',
       'Roles and permissions for 3 user types',
