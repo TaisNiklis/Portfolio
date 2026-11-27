@@ -44,6 +44,9 @@
     const saved = [];
     const tf = new Map();
     for (const el of all) {
+      // Elements inside an inline <svg> are copied as markup; their own transforms must stay untouched.
+      if (el instanceof SVGElement && !(el instanceof SVGSVGElement)) continue;
+      if (el instanceof SVGSVGElement && el.parentElement && el.parentElement.closest('svg')) continue;
       const cs = getComputedStyle(el);
       if (cs.transform && cs.transform !== 'none') {
         tf.set(el, { t: cs.transform, o: cs.transformOrigin });
